@@ -1,0 +1,22 @@
+<section id="services_new" class="services">
+  <h1>New account</h1>
+
+  <div>
+      <h3>This authentication is new to ATIS</h3>
+
+      <p class="small">
+          Provider: <%= @authhash[:provider] %><br />
+          Name: <%= @authhash[:name] %><br />
+          Email: <%= @authhash[:email] %> <br />
+      </p>
+
+      <%= form_tag :controller => "services", :action => "newaccount" do %>
+          <%= submit_tag "Confirm and create new account", class: 'btn btn-primary btn-large' %> <%= submit_tag "Cancel", class: 'btn btn-large' %>
+      <% end %>
+  </div>
+    
+  <div class="alert alert-info">
+    <h4><u>If you already have an ATIS account then you’re in the wrong place.</u></h4>
+    <p>If you used a different Google account to sign in, make sure that you have signed into that account and try again.</p>
+  </div>
+</section>

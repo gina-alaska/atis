@@ -1,4 +1,25 @@
 Atis::Application.routes.draw do
+  resources :services, :only => [:index, :create, :destroy] do
+    collection do
+      get 'signout'
+      get 'signup'
+      post 'newaccount'
+      get 'failure'
+    end
+  end
+
+  resources :users, :only => [:index] do
+    collection do
+      get 'test'
+    end
+  end
+
+  match "/signin" => redirect('/auth/google'), as: 'signin'
+  match "/signout" => "services#signout", as: 'signout'
+
+  match '/auth/:service/callback' => 'services#create', as: 'auth_signin'
+  match '/auth/failure' => 'services#failure'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
