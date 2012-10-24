@@ -1,0 +1,2 @@
+class SowsController < ApplicationController
+end

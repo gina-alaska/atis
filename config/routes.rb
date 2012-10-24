@@ -1,4 +1,6 @@
 Atis::Application.routes.draw do
+  resources :sows
+
   resources :services, :only => [:index, :create, :destroy] do
     collection do
       get 'signout'
