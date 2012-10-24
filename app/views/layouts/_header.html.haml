@@ -1,0 +1,9 @@
+#header.navbar.navbar-static-top
+  .navbar-inner
+    = link_to root_url, class: 'brand' do
+      ATIS: Award Tracking Information System
+    %ul.nav.pull-right
+      %li
+        = link_to '/login' do
+          %i.icon-lock
+          Login
