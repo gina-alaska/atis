@@ -9,6 +9,8 @@ gem 'sqlite3'
 gem 'haml'
 gem 'quiet_assets'
 gem 'bootstrap-sass'
+gem 'omniauth'
+gem 'omniauth-openid'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -4,6 +4,11 @@
       ATIS: Award Tracking Information System
     %ul.nav.pull-right
       %li
-        = link_to '/login' do
-          %i.icon-lock
-          Login
+        - if user_signed_in?
+          = link_to signout_path do
+            %i.icon-lock
+            Sign out
+        - else
+          = link_to signin_path do
+            %i.icon-lock
+            Sign in
