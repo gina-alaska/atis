@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024202404) do
+ActiveRecord::Schema.define(:version => 20121024203927) do
 
   create_table "services", :force => true do |t|
     t.integer  "user_id"
@@ -32,8 +32,13 @@ ActiveRecord::Schema.define(:version => 20121024202404) do
     t.integer  "period"
     t.string   "title"
     t.string   "other_strategic_objective"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.text     "description"
+    t.text     "collaborators"
+    t.text     "research_milestones_and_outcomes"
+    t.text     "accomplished_objectives"
+    t.text     "budget_justification"
   end
 
   create_table "users", :force => true do |t|
