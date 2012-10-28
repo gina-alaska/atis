@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024203927) do
+ActiveRecord::Schema.define(:version => 20121027235537) do
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "roles_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+  end
 
   create_table "services", :force => true do |t|
     t.integer  "user_id"
@@ -28,17 +39,27 @@ ActiveRecord::Schema.define(:version => 20121024203927) do
     t.string   "last_name"
     t.string   "email"
     t.string   "telephone"
-    t.string   "uaid"
-    t.integer  "period"
-    t.string   "title"
+    t.string   "ua_number"
+    t.string   "period"
+    t.string   "project_title"
     t.string   "other_strategic_objective"
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
-    t.text     "description"
+    t.text     "statement_of_work"
     t.text     "collaborators"
     t.text     "research_milestones_and_outcomes"
     t.text     "accomplished_objectives"
     t.text     "budget_justification"
+    t.string   "research_period_of_performance"
+    t.integer  "other_period"
+    t.integer  "user_id"
+    t.string   "state"
+    t.integer  "created_by"
+    t.datetime "submited_on"
+    t.integer  "submited_by"
+    t.integer  "reviewed_by"
+    t.datetime "accepted_on"
+    t.datetime "rejected_on"
   end
 
   create_table "users", :force => true do |t|
