@@ -31,6 +31,6 @@
         - if (sow.created? or sow.rejected?) and sow.user == current_user
           = link_to 'Edit', edit_sow_path(sow), class: 'btn' 
           = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
-        - if sow.submitted? and (current_user.has_role?(:admin) or current_user.has_role?(:reviewer))
+        - if (sow.submitted? or sow.reviewing?) and (current_user.has_role?(:admin) or current_user.has_role?(:reviewer))
           = link_to 'Review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
         
