@@ -1,6 +1,12 @@
 .row
   .span8
-    Placeholder for some sort of status information, maybe latest notices
+    - if Sow.owner(current_user).count > 0
+      %h4 Active statements of work
+      = render 'sows/list', sows: Sow.owner(current_user).active.all
+
+    - if Sow.owner(current_user).pending_review.count > 0
+      %h4 Pending review statements of work
+      = render 'sows/list', sows: Sow.owner(current_user).pending_review.all
   .span4
     .well.well-small
       %ul.nav.nav-list
@@ -9,7 +15,3 @@
           = link_to new_sow_path do
             %i.icon-plus
             New Statement of Work
-        %li
-          = link_to sows_path do
-            %i.icon-list
-            Current Statement of Work forms

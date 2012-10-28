@@ -18,5 +18,12 @@ class ApplicationController < ActionController::Base
         flash[:error] = 'You need to sign in before accessing this page!'
         redirect_to signin_services_path
       end
+    end
+    
+    def authenticate_admin!
+      if !current_user or !current_user.has_role?(:admin)
+        flash[:error] = "You don't have permission to view this page"
+        redirect_to root_url
+      end
     end  
 end

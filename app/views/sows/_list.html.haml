@@ -1,0 +1,36 @@
+.sow_list
+  - sows.each do |sow|
+    .sow
+      %h4 
+        =sow.project_title
+      .status.alert{class: sow_status_class(sow)}
+        Status: 
+        = sow.state.humanize
+    
+      .row-fluid
+        .span6
+          Created: 
+          = sow.created_at.strftime('%Y-%m-%d')
+      .row-fluid
+        .span2
+          Submited by: 
+        .span4
+          = "#{sow.first_name} #{sow.last_name} <#{sow.email}>"
+        .span6
+          UA #:
+          = sow.ua_number
+          %br/
+          Telephone: 
+          = sow.telephone
+      
+      %p
+        :markdown
+          #{sow.statement_of_work}
+      
+      %p.actions
+        - if (sow.created? or sow.rejected?) and sow.user == current_user
+          = link_to 'Edit', edit_sow_path(sow), class: 'btn' 
+          = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
+        - if sow.submitted? and (current_user.has_role?(:admin) or current_user.has_role?(:reviewer))
+          = link_to 'Review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
+        

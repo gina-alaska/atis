@@ -1,0 +1,13 @@
+%h3 Users
+%table.table.table-stripped.table-bordered.table-condensed
+  %thead
+    %tr
+      %th Name
+      %th Roles
+      %th Actions
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= user.roles.collect(&:name).join(', ')
+        %td.span3= link_to 'Edit Permissions', edit_user_path(user), class: 'btn btn-block'

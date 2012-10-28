@@ -7,3 +7,29 @@
     content: ': '
   }
 }
+
+.sow_list {
+  .sow {
+    position: relative;
+    border: 1px solid #ddd;
+    @include border-radius(4px);
+    background-color: #eee;
+    padding: 0px 5px;
+    margin-bottom: 5px;
+  }
+
+  .sow .actions {
+    text-align: right;
+  }
+
+  .sow .status {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 7px 12px;
+    border: 1px solid #ddd;
+    @include border-radius(0);
+    @include border-bottom-left-radius(4px);
+    @include border-top-right-radius(4px);
+  }
+}

@@ -1,68 +1,101 @@
 = form_for sow, html: { class: 'sow_form' } do |f|
-  = label_tag :date, 'Date'
-  = text_field_tag :date, Time.now.strftime('%Y-%m-%d'), :readonly => true
+  - if sow.errors.any?
+    #error_explanation.alert.alert-error
+      %h4
+        = pluralize(sow.errors.count, "error")
+        prohibited this statement of work from being saved:
+      %ul
+        - sow.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row-fluid.form-inline
+    .span12
+      .control-group
+        = label_tag :date, 'Date', class: 'span1 control-label'
+        .controls
+          = text_field_tag :date, Time.now.strftime('%Y-%m-%d'), :readonly => true
+  
+  %h4 Submitter information
+  .row-fluid
+    .span5
+      .control-group
+        = f.label :first_name
+        = f.text_field :first_name, class: 'span12'
+    .span5
+      .control-group
+        = f.label :last_name
+        = f.text_field :last_name, class: 'span12'
+    .span2
+      .control-group
+        = f.label :ua_number, 'UA #'
+        = f.text_field :ua_number, class: 'span12'
+  .row-fluid
+    .span6
+      .control-group
+        = f.label :email
+        = f.email_field :email, class: 'span12'
+    .span6
+      .control-group
+        = f.label :telephone
+        = f.telephone_field :telephone, class: 'span12'
+  
+  %h4 Project information
+  .row-fluid
+    .span12
+      .control-group
+        = f.label :project_title
+        = f.text_field :project_title, class: 'span12'    
     
-  .row-fluid
-    .span6
-      = f.label :first_name
-      = f.text_field :first_name, class: 'span12'
-    .span6
-      = f.label :last_name
-      = f.text_field :last_name, class: 'span12'
-  .row-fluid
-    .span5
-      = f.label :email
-      = f.email_field :email, class: 'span12'
-    .span5
-      = f.label :telephone
-      = f.telephone_field :telephone, class: 'span12'
-    .span2
-      = f.label :uaid, 'ID #'
-      = f.text_field :uaid, class: 'span12'
-  .row-fluid
-    .span12
-      = f.label :period
-  .row-fluid
-    .span2.offset1
-      %label.radio
-        = f.radio_button :period, '30'
-        30 days
-    .span2
-      %label.radio
-        = f.radio_button :period, '60'
-        60 days
-    .span2
-      %label.radio
-        = f.radio_button :period, '120'
-        120 days
-    .span5.form-inline
-      %label.radio
-        = f.radio_button :period, 'other'
-        Other
-      = f.text_field :period
+  .control-group
+    .row-fluid
+      .span1
+        = f.label :period
+      .span2
+        %label.radio
+          = f.radio_button :period, '30'
+          30 days
+      .span2
+        %label.radio
+          = f.radio_button :period, '60'
+          60 days
+      .span2
+        %label.radio
+          = f.radio_button :period, '120'
+          120 days
+      .span4.form-inline
+        %label.radio.span3
+          = f.radio_button :period, 'other'
+          Other
+        &nbsp;
+        = f.text_field :other_period, class: 'span6'
   .row-fluid
     .span12
+      .control-group
+        = f.label :research_period_of_performance
+        = f.text_field :research_period_of_performance, class: 'span12'
 
-      = f.label :period, 'Research Period of Performance'
-      = f.text_field :period, class: 'span12'
-
-      = f.label :title, 'Project Title'
-      = f.text_field :title, class: 'span12'
+  %h4 Additional information
+  .row-fluid
+    .span12
+      .control-group
+        = f.label :statement_of_work
+        = f.text_area :statement_of_work, rows: 10, class: 'span12'
       
-      = f.label :description, 'Statement of Work'
-      = f.text_area :description, rows: 10, class: 'span12'
-      
-      = f.label :collaborators
-      = f.text_area :collaborators, rows: 10, class: 'span12'
+      .control-group
+        = f.label :collaborators
+        = f.text_area :collaborators, rows: 10, class: 'span12'
 
-      = f.label :research_milestones_and_outcomes
-      = f.text_area :research_milestones_and_outcomes, rows: 10, class: 'span12'
+      .control-group
+        = f.label :research_milestones_and_outcomes
+        = f.text_area :research_milestones_and_outcomes, rows: 10, class: 'span12'
 
-      = f.label :accomplished_objectives
-      = f.text_area :accomplished_objectives, rows: 10, class: 'span12'
+      .control-group
+        = f.label :accomplished_objectives
+        = f.text_area :accomplished_objectives, rows: 10, class: 'span12'
 
-      = f.label :budget_justification
-      = f.text_area :budget_justification, rows: 10, class: 'span12'
+      .control-group
+        = f.label :budget_justification
+        = f.text_area :budget_justification, rows: 10, class: 'span12'
   .row-fluid
     .span12
       = link_to root_path, class: 'btn' do
