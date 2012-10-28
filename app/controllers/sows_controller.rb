@@ -1,7 +1,7 @@
 class SowsController < ApplicationController
   respond_to :html
   
-  before_filter :fetch_sow, :only => [:show, :update, :edit, :destroy, :submit]
+  before_filter :fetch_sow, :except => [:index, :new, :create]
   
   def index
     @sows = Sow.owner(current_user).created.all
@@ -19,7 +19,56 @@ class SowsController < ApplicationController
       flash[:error] = 'There was an error trying to submit statement of work for review'
     end
     
-    redirect_to root_path
+    respond_to do |format|
+      format.html {
+        redirect_to root_path
+      }
+    end
+  end
+  
+  def review
+    @sow.review    
+    respond_to do |format|
+      format.html {
+        redirect_to sow_path(@sow)
+      }
+    end
+  end
+  
+  def accept
+    if @sow.accept
+      respond_to do |format|
+        format.html {
+          flash[:success] = "Statement of work has been accepted"
+          redirect_to root_path
+        }
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Error while trying to accept statement of work"
+          render :show
+        }
+      end
+    end
+  end
+  
+  def reject
+    if @sow.reject
+      respond_to do |format|
+        format.html {
+          flash[:success] = "Statement of work has been rejected"
+          redirect_to root_path
+        }
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Error while trying to reject statement of work"
+          render :show
+        }
+      end
+    end
   end
   
   def new

@@ -4,6 +4,9 @@ Atis::Application.routes.draw do
   resources :sows do 
     member do
       post 'submit'
+      post 'review'
+      post 'accept'
+      post 'reject'
     end
   end
 
