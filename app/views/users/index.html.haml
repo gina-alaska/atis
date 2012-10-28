@@ -3,11 +3,13 @@
   %thead
     %tr
       %th Name
+      %th Email
       %th Roles
       %th Actions
   %tbody
     - @users.each do |user|
       %tr
         %td= user.name
+        %td= user.email
         %td= user.roles.collect(&:name).join(', ')
         %td.span3= link_to 'Edit Permissions', edit_user_path(user), class: 'btn btn-block'

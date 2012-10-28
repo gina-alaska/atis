@@ -15,3 +15,8 @@
           = link_to new_sow_path do
             %i.icon-plus
             New Statement of Work
+        - if current_user.has_role? :admin
+          %li
+            = link_to users_path do
+              %i.icon-user
+              Users
