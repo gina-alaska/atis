@@ -1,4 +1,15 @@
 Atis::Application.routes.draw do
+  resources :roles
+
+  resources :sows do 
+    member do
+      post 'submit'
+      post 'review'
+      post 'accept'
+      post 'reject'
+    end
+  end
+
   resources :services, :only => [:index, :create, :destroy] do
     collection do
       get 'signout'
@@ -8,7 +19,7 @@ Atis::Application.routes.draw do
     end
   end
 
-  resources :users, :only => [:index] do
+  resources :users, :only => [:index, :edit, :update] do
     collection do
       get 'test'
     end

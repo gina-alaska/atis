@@ -1,0 +1,5 @@
+.hero-unit
+  %h2 Welcome to the ATIS: Award Tracking Information System
+  - if !user_signed_in?
+    %p In order to use the application you must be signed in.  Please click the button below to get started
+    = link_to 'Sign in', signin_path, class: 'btn btn-large btn-primary btn-block'

@@ -6,11 +6,19 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'rdiscount'
 gem 'haml'
 gem 'quiet_assets'
 gem 'bootstrap-sass'
 gem 'omniauth'
 gem 'omniauth-openid'
+
+gem 'state_machine'
+gem 'compass-rails'
+
+group :development do
+  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
+end
 
 # Gems used only for assets and not required
 # in production environments by default.

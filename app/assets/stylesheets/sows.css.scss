@@ -1,0 +1,41 @@
+// Place all the styles related to the Sows controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.sow_form {
+  label:not(.radio):after {
+    content: ': '
+  }
+}
+
+.sow_list {
+  .sow {
+    position: relative;
+    border: 1px solid #ddd;
+    @include border-radius(4px);
+    background-color: #eee;
+    padding: 0px 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #dfdfdf;
+      border-color: #dedede;
+    }
+  }
+
+  .sow .actions {
+    text-align: right;
+  }
+
+  .sow .status {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 7px 12px;
+    border: 1px solid #ddd;
+    @include border-radius(0);
+    @include border-bottom-left-radius(4px);
+    @include border-top-right-radius(4px);
+  }
+}

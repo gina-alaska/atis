@@ -1,0 +1,11 @@
+= form_for user do |f|
+  = f.fields_for :roles do |rf|
+    - Role.all.each do |role|
+      %label.checkbox
+        = rf.check_box role.name.to_sym, { checked: user.roles.include?(role) }
+        = role.name.humanize
+        
+  = link_to users_path, class: 'btn' do
+    %i.icon-arrow-left
+    Cancel
+  = f.submit class: 'btn btn-primary'

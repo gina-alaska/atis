@@ -1,2 +1,4 @@
-.hero-unit
-  %h2 Welcome to the ATIS: Award Tracking Information System
+- if user_signed_in?
+  = render 'dashboard'
+- else
+  = render 'welcome'
