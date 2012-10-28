@@ -1,8 +1,7 @@
 .sow_list
   - sows.each do |sow|
-    .sow
-      %h4 
-        =sow.project_title
+    .sow{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
+      %h4= sow.project_title
       .status.alert{class: sow_status_class(sow)}
         Status: 
         = sow.state.humanize
@@ -22,10 +21,10 @@
           %br/
           Telephone: 
           = sow.telephone
-      
-      %p
-        :markdown
-          #{sow.statement_of_work}
+      .collapse{id: "sow_body_#{sow.id}"}
+        %p
+          :markdown
+            #{sow.statement_of_work}
       
       %p.actions
         - if (sow.created? or sow.rejected?) and sow.user == current_user

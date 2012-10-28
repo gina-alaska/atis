@@ -16,6 +16,12 @@
     background-color: #eee;
     padding: 0px 5px;
     margin-bottom: 5px;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #dfdfdf;
+      border-color: #dedede;
+    }
   }
 
   .sow .actions {
