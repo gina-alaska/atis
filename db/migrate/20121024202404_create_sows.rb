@@ -5,9 +5,9 @@ class CreateSows < ActiveRecord::Migration
       t.string :last_name
       t.string :email
       t.string :telephone
-      t.string :uaid
-      t.integer :period
-      t.string :title
+      t.string :ua_number
+      t.string :period
+      t.string :project_title
       t.string :other_strategic_objective
 
       t.timestamps
