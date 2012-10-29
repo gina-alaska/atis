@@ -3,11 +3,25 @@
     = link_to root_url, class: 'brand' do
       ATIS: Award Tracking Information System
     %ul.nav.pull-right
+      - if user_signed_in? and current_user.has_role?(:reviewer)
+        %li.dropdown
+          = link_to '#', class: 'dropdown-toggle', "data-toggle"=>"dropdown" do
+            = "Dashboard (#{current_user.active_dashboard.humanize})"
+            %b.caret
+          %ul.dropdown-menu
+            %li= link_to 'Submitter', submit_dashboard_path
+            %li= link_to 'Reviewer', review_dashboard_path
       %li
         - if user_signed_in?
-          = link_to signout_path do
-            %i.icon-lock
-            Sign out
+          %li.user_button.dropdown
+            = link_to '#', class: 'dropdown-toggle', "data-toggle"=>"dropdown", style: "background-image: url(#{avatar_url(current_user, 40)});" do
+              %span.name= current_user.name
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                = link_to signout_path do
+                  %i.icon-lock
+                  Sign out
         - else
           = link_to signin_path do
             %i.icon-lock

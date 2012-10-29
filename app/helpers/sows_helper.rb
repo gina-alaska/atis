@@ -13,20 +13,28 @@ module SowsHelper
   end
   
   def sow_counts_for(user, state)
-    @sow_counts ||= []
-    @sow_counts[user.id] ||= {}
-    user_counts = @sow_counts[user.id]
+    if user.nil?
+      sow = Sow
+      user_counts = @sow_counts ||= {}
+    else
+      @sow_counts ||= []
+      @sow_counts[user.id] ||= {}
+      user_counts = @sow_counts[user.id]
+    
+      sow = Sow.owner(current_user) 
+    end
+    
     case state.to_sym
     when :active
-      user_counts[:active] ||= Sow.owner(current_user).count
+      user_counts[:active] ||= sow.count
     when :unsubmitted
-      user_counts[:unsubmitted] ||= Sow.owner(current_user).unsubmitted.count
+      user_counts[:unsubmitted] ||= sow.unsubmitted.count
     when :submitted
-      user_counts[:submitted] ||= Sow.owner(current_user).submitted.count
+      user_counts[:submitted] ||= sow.submitted.count
     when :accepted
-      user_counts[:accepted] ||= Sow.owner(current_user).accepted.count
+      user_counts[:accepted] ||= sow.accepted.count
     when :rejected
-      user_counts[:rejected] ||= Sow.owner(current_user).rejected.count
+      user_counts[:rejected] ||= sow.rejected.count
     end
   end
   
