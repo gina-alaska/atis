@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :services, :dependent => :destroy
   has_and_belongs_to_many :roles
   has_many :sows
+  has_many :activities, as: 'subject', :dependent => :destroy
   
   attr_accessible :email, :name
   
