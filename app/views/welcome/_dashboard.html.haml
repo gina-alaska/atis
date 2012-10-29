@@ -1,11 +1,11 @@
 .row
   .span8
+    %h4 Active statements of work
     - if Sow.owner(current_user).count > 0
-      %h4 Active statements of work
-      = render 'sows/list', sows: Sow.owner(current_user).active.all
+      = render 'sows/list', sows: Sow.owner(current_user).all
 
+    %h4 Pending review statements of work
     - if Sow.owner(current_user).pending_review.count > 0
-      %h4 Pending review statements of work
       = render 'sows/list', sows: Sow.owner(current_user).pending_review.all
   .span4
     .well.well-small
