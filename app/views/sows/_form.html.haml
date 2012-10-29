@@ -9,9 +9,10 @@
           %li= msg
 
   .row-fluid.form-inline
-    .span4
-      = label_tag :created_at, 'Created on'
-      = (sow.created_at || Time.now).strftime('%Y-%m-%d')
+    - if !sow.new_record?
+      .span4
+        = label_tag :created_at, 'Created on'
+        = (sow.created_at || Time.now).strftime('%Y-%m-%d')
     - if sow.submitted? or sow.accepted? or sow.rejected?
       .span4
         = label_tag :submitted_on

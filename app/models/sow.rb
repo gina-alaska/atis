@@ -48,8 +48,12 @@ class Sow < ActiveRecord::Base
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   scope :owner, lambda { |user| where(user_id: user) }
-  scope :pending_review, where(:state => :submitted)
+  scope :unsubmitted, where(:state => [:created])
+  scope :submitted, where(:state => [:submitted, :reviewing])
+  scope :accepted, where(:state => :accepted)
+  scope :rejected, where(:state => :rejected)
   scope :active, where(:state => [:created, :rejected])
+  default_scope order('created_at DESC')
   
   def touch_date(field)
     self.update_attribute(field, Time.now)

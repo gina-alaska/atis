@@ -1,13 +1,60 @@
 .row
   .span8
-    %h4 Active statements of work
-    - if Sow.owner(current_user).count > 0
-      = render 'sows/list', sows: Sow.owner(current_user).all
-
-    %h4 Pending review statements of work
-    - if Sow.owner(current_user).pending_review.count > 0
-      = render 'sows/list', sows: Sow.owner(current_user).pending_review.all
+    #sowtabs-content.tab-content
+      #active.tab-pane.active
+        %h2 All statements of work
+        - if sow_counts_for(current_user, :active) > 0
+          = render 'sows/list', sows: Sow.owner(current_user).all
+        - else
+          %h4 There are no active statements of work
+      #unsubmitted.tab-pane
+        %h2 Unsubmitted statements of work
+        - if sow_counts_for(current_user, :unsubmitted) > 0
+          = render 'sows/list', sows: Sow.owner(current_user).unsubmitted.all
+        - else
+          %h4 There are no un-submitted statements of work
+      #submitted.tab-pane
+        %h2 Pending review statements of work
+        - if sow_counts_for(current_user, :submitted) > 0
+          = render 'sows/list', sows: Sow.owner(current_user).submitted.all
+        - else
+          %h4 There are no submitted statements of work
+      #accepted.tab-pane
+        %h2 Accepted statements of work
+        - if sow_counts_for(current_user, :accepted) > 0
+          = render 'sows/list', sows: Sow.owner(current_user).accepted.all
+        - else
+          %h4 There are no accepted statements of work
+      #rejected.tab-pane
+        %h2 Rejected statements of work
+        - if sow_counts_for(current_user, :rejected) > 0
+          = render 'sows/list', sows: Sow.owner(current_user).rejected.all
+        - else
+          %h4 There are no rejected statements of work
   .span4
+    %ul#sowtabs.nav.nav-tabs.nav-stacked
+      %li.active
+        = link_to '#active', "data-toggle" => "tab" do
+          All
+          = sow_count_badge(sow_counts_for(current_user, :active))
+      %li
+        = link_to '#unsubmitted', "data-toggle" => "tab" do
+          Unsubmitted
+          = sow_count_badge(sow_counts_for(current_user, :unsubmitted))
+      %li
+        = link_to '#submitted', "data-toggle" => "tab" do
+          Pending
+          = sow_count_badge(sow_counts_for(current_user, :submitted))
+      %li
+        = link_to '#accepted', "data-toggle" => "tab" do
+          Accepted
+          = sow_count_badge(sow_counts_for(current_user, :accepted))
+      %li
+        = link_to '#rejected', "data-toggle" => "tab" do
+          Rejected
+          = sow_count_badge(sow_counts_for(current_user, :rejected))
+  
+  
     .well.well-small
       %ul.nav.nav-list
         %li.nav-header Menu

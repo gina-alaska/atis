@@ -4,7 +4,6 @@
       .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
         %h4= sow.project_title
         .status.alert{class: sow_status_class(sow)}
-          Status: 
           = sow.state.humanize
     
         .row-fluid
