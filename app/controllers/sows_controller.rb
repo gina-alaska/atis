@@ -102,7 +102,12 @@ class SowsController < ApplicationController
   end
   
   def edit
-    respond_with @sow
+    if @sow.edit(current_user)
+      respond_with @sow
+    else
+      flash[:error] = 'Unable to edit the statement of work at this time'
+      redirect_to root_path
+    end
   end
   
   def update

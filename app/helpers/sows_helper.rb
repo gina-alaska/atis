@@ -1,6 +1,8 @@
 module SowsHelper
   def sow_status_class(sow)
     case sow.state.to_sym
+    when :editing
+      'alert-info'
     when :created
       'alert-info'
     when :rejected

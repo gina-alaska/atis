@@ -24,12 +24,22 @@ class Sow < ActiveRecord::Base
       Activity.record(user, 'rejected', sow)
     end
     
+    after_transition :on => :edit do |sow, transition|
+      user = transition.args.first
+      sow.reviewed_by = user
+      Activity.record(user, 'edited', sow)
+    end
+    
+    event :edit do
+      transition [:created, :editing, :submitted, :rejected] => :editing
+    end
+    
     event :review do
       transition [:submitted, :accepted, :rejected] => :reviewing
     end
     
     event :submit do
-      transition [:created, :rejected] => :submitted
+      transition [:created, :editing, :rejected] => :submitted
     end
     
     event :accept do
@@ -48,7 +58,7 @@ class Sow < ActiveRecord::Base
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   scope :owner, lambda { |user| where(user_id: user) }
-  scope :unsubmitted, where(:state => [:created])
+  scope :unsubmitted, where(:state => [:created, :updated])
   scope :submitted, where(:state => [:submitted, :reviewing])
   scope :accepted, where(:state => :accepted)
   scope :rejected, where(:state => :rejected)
