@@ -1,7 +1,29 @@
 class Sow < ActiveRecord::Base
   belongs_to :user
+  has_many :activities, :as => :changed_item, :dependent => :destroy
   
   state_machine :initial => :created do
+    after_transition :on => :submit do |sow, transition, test|
+      sow.touch_date(:submitted_on)
+      user = transition.args.first
+      sow.submitted_by = user
+      Activity.record(user, 'submitted', sow)
+    end
+    
+    after_transition :on => :accept do |sow, transition|
+      sow.touch_date(:accepted_on)
+      user = transition.args.first
+      sow.reviewed_by = user
+      Activity.record(user, 'accepted', sow)
+    end
+    
+    after_transition :on => :reject do |sow, transition|
+      sow.touch_date(:rejected_on)
+      user = transition.args.first
+      sow.reviewed_by = user
+      Activity.record(user, 'rejected', sow)
+    end
+    
     event :review do
       transition [:submitted, :accepted, :rejected] => :reviewing
     end
@@ -28,6 +50,10 @@ class Sow < ActiveRecord::Base
   scope :owner, lambda { |user| where(user_id: user) }
   scope :pending_review, where(:state => :submitted)
   scope :active, where(:state => [:created, :rejected])
+  
+  def touch_date(field)
+    self.update_attribute(field, Time.now)
+  end
   
   def name
     self.project_title

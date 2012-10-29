@@ -13,13 +13,11 @@ class SowsController < ApplicationController
   end
   
   def submit
-    if @sow.submit
+    if @sow.submit(current_user)
       flash[:success] = 'Statement of work has been submitted for review'
     else
       flash[:error] = 'There was an error trying to submit statement of work for review'
-    end
-    Activity.record(current_user, 'submitted', @sow)
-    
+    end    
     
     respond_to do |format|
       format.html {
@@ -29,7 +27,7 @@ class SowsController < ApplicationController
   end
   
   def review
-    @sow.review    
+    @sow.review(current_user)
     respond_to do |format|
       format.html {
         redirect_to sow_path(@sow)
@@ -38,8 +36,7 @@ class SowsController < ApplicationController
   end
   
   def accept
-    if @sow.accept
-      Activity.record(current_user, 'accepted', @sow)
+    if @sow.accept(current_user)
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been accepted"
@@ -57,10 +54,8 @@ class SowsController < ApplicationController
   end
   
   def reject
-    if @sow.reject
+    if @sow.reject(current_user)
       respond_to do |format|
-        Activity.record(current_user, 'rejected', @sow)
-        
         format.html {
           flash[:success] = "Statement of work has been rejected"
           redirect_to root_path
@@ -90,7 +85,6 @@ class SowsController < ApplicationController
     @sow.user = current_user
     
     if @sow.save
-      Activity.record(current_user, 'started', @sow)
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been saved"
@@ -113,8 +107,6 @@ class SowsController < ApplicationController
   
   def update
     if @sow.update_attributes(params[:sow])
-      Activity.record(current_user, 'updated', @sow)
-      
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been saved"
