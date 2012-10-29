@@ -39,6 +39,7 @@ class SowsController < ApplicationController
   
   def accept
     if @sow.accept
+      Activity.record(current_user, 'accepted', @sow)
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been accepted"
@@ -58,6 +59,8 @@ class SowsController < ApplicationController
   def reject
     if @sow.reject
       respond_to do |format|
+        Activity.record(current_user, 'rejected', @sow)
+        
         format.html {
           flash[:success] = "Statement of work has been rejected"
           redirect_to root_path
@@ -87,6 +90,7 @@ class SowsController < ApplicationController
     @sow.user = current_user
     
     if @sow.save
+      Activity.record(current_user, 'started', @sow)
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been saved"
@@ -109,6 +113,8 @@ class SowsController < ApplicationController
   
   def update
     if @sow.update_attributes(params[:sow])
+      Activity.record(current_user, 'updated', @sow)
+      
       respond_to do |format|
         format.html {
           flash[:success] = "Statement of work has been saved"
