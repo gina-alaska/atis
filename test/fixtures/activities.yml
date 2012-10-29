@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  subject_id: 1
+  subject_type: MyString
+  changed_item_id: 1
+  changed_item_type: MyString
+  verb: MyString
+
+two:
+  subject_id: 1
+  subject_type: MyString
+  changed_item_id: 1
+  changed_item_type: MyString
+  verb: MyString

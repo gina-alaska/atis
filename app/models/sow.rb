@@ -28,4 +28,8 @@ class Sow < ActiveRecord::Base
   scope :owner, lambda { |user| where(user_id: user) }
   scope :pending_review, where(:state => :submitted)
   scope :active, where(:state => [:created, :rejected])
+  
+  def name
+    self.project_title
+  end
 end

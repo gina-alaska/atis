@@ -14,21 +14,27 @@
     border: 1px solid #ddd;
     @include border-radius(4px);
     background-color: #eee;
-    padding: 0px 5px;
     margin-bottom: 5px;
     cursor: pointer;
     
     &:hover {
-      background-color: #dfdfdf;
+      background-color: #efefef;
       border-color: #dedede;
     }
   }
+  
+  .sow .content {
+    padding: 0 5px 5px 5px;
+  }
 
   .sow .actions {
+    border-top: 1px solid #ddd;
+    padding: 10px;
     text-align: right;
   }
 
   .sow .status {
+    font-weight: bold;
     position: absolute;
     top: -1px;
     right: -1px;

@@ -18,6 +18,8 @@ class SowsController < ApplicationController
     else
       flash[:error] = 'There was an error trying to submit statement of work for review'
     end
+    Activity.record(current_user, 'submitted', @sow)
+    
     
     respond_to do |format|
       format.html {
