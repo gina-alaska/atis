@@ -9,12 +9,21 @@
           %li= msg
 
   .row-fluid.form-inline
-    .span12
-      .control-group
-        = label_tag :date, 'Date', class: 'span1 control-label'
-        .controls
-          = text_field_tag :date, Time.now.strftime('%Y-%m-%d'), :readonly => true
-  
+    .span4
+      = label_tag :created_at, 'Created on'
+      = (sow.created_at || Time.now).strftime('%Y-%m-%d')
+    - if sow.submitted? or sow.accepted? or sow.rejected?
+      .span4
+        = label_tag :submitted_on
+        = sow.submitted_on.strftime('%Y-%m-%d')
+    - if sow.accepted?
+      .span4
+        = label_tag :accepted_on
+        = sow.accepted_on.strftime('%Y-%m-%d')
+    - if sow.rejected?
+      .span4
+        = label_tag :rejected_on
+        = sow.rejected_on.strftime('%Y-%m-%d')
   %h4 Submitter information
   .row-fluid
     .span5
