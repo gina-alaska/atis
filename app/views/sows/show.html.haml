@@ -1,0 +1,73 @@
+.row
+  .span8
+    %h4= @sow.project_title
+    %dl
+      .dl-horizontal
+        %dt Status
+        %dd= @sow.state.humanize
+      
+        %dt Created on
+        %dd= @sow.created_at
+        - if @sow.submitted_on?
+          %dt Submitted on
+          %dd= @sow.submitted_on
+        - if @sow.accepted_on?
+          %dt Accepted on
+          %dd= @sow.accepted_on
+      
+        %br/
+      
+        %dt First name
+        %dd= @sow.first_name
+        %dt Last name
+        %dd= @sow.last_name
+        %dt Email
+        %dd= @sow.email
+        %dt UA #
+        %dd= @sow.ua_number
+        %dt Telephone
+        %dd= @sow.telephone
+      
+        %br/
+        
+        %dt Period
+        %dd
+          = @sow.period == 'other' ? "#{@sow.other_period}" : @sow.period
+          days
+        %dt Research period of performance
+        %dd= @sow.research_period_of_performance
+      
+      %br/
+      
+      %dt Project title
+      %dd
+        :markdown
+          #{@sow.project_title}
+      
+      %dt Statement of work
+      %dd
+        :markdown
+          #{@sow.statement_of_work}
+          
+      %dt Collaborators
+      %dd
+        :markdown
+          #{@sow.collaborators}
+
+      %dt Research milestones and outcomes
+      %dd
+        :markdown
+          #{@sow.research_milestones_and_outcomes}
+          
+      %dt Accomplished objectives
+      %dd
+        :markdown
+          #{@sow.accomplished_objectives}
+
+      %dt Budget justification
+      %dd
+        :markdown
+          #{@sow.budget_justification}
+          
+  .span4
+    = render 'layouts/activity_stream', activities: @sow.activities

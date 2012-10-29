@@ -27,11 +27,11 @@ class SowsController < ApplicationController
   end
   
   def review
-    @sow.review(current_user)
-    respond_to do |format|
-      format.html {
-        redirect_to sow_path(@sow)
-      }
+    if @sow.review(current_user)
+      redirect_to sow_path(@sow)
+    else
+      flash[:error] = "There was an error while trying to review statement of work"
+      redirect_to root_path
     end
   end
   
