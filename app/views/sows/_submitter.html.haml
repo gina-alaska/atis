@@ -1,0 +1,13 @@
+.row-fluid
+  .span6
+    %dt Name
+    %dd= "#{sow.first_name} #{sow.last_name}"
+    %dt Email
+    %dd= sow.email
+  .span6
+    %dt UA #
+    %dd= sow.ua_number
+    - if sow.telephone.present?
+      %dt Telephone
+      %dd= sow.telephone
+    
