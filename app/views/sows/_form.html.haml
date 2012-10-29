@@ -12,19 +12,19 @@
     - if !sow.new_record?
       .span4
         = label_tag :created_at, 'Created on'
-        = (sow.created_at || Time.now).strftime('%Y-%m-%d')
+        = (sow.created_at || Time.now).strftime('%F %r %Z')
     - if sow.submitted? or sow.accepted? or sow.rejected?
       .span4
         = label_tag :submitted_on
-        = sow.submitted_on.strftime('%Y-%m-%d')
+        = sow.submitted_on.strftime('%F %r %Z')
     - if sow.accepted?
       .span4
         = label_tag :accepted_on
-        = sow.accepted_on.strftime('%Y-%m-%d')
+        = sow.accepted_on.strftime('%F %r %Z')
     - if sow.rejected?
       .span4
         = label_tag :rejected_on
-        = sow.rejected_on.strftime('%Y-%m-%d')
+        = sow.rejected_on.strftime('%F %r %Z')
   %h4 Submitter information
   .row-fluid
     .span5
