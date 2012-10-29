@@ -72,7 +72,6 @@ class ServicesController < ApplicationController
     
     # continue only if hash and parameter exist
     if omniauth and params[:service]
-
       # map the returned hashes to our variables first - the hashes differs for every service
       
       # create a new hash
@@ -102,16 +101,16 @@ class ServicesController < ApplicationController
       if @authhash[:uid] != '' and @authhash[:provider] != ''
         
         auth = Service.find_by_provider_and_uid(@authhash[:provider], @authhash[:uid])
-
+      
         # if the user is currently signed in, he/she might want to add another account to signin
         if user_signed_in?
           if auth
             flash[:notice] = 'Your account at ' + @authhash[:provider].capitalize + ' is already connected with this site.'
-            redirect_to services_path
+            redirect_to root_url
           else
             current_user.services.create!(:provider => @authhash[:provider], :uid => @authhash[:uid], :uname => @authhash[:name], :uemail => @authhash[:email])
             flash[:notice] = 'Your ' + @authhash[:provider].capitalize + ' account has been added for signing in at this site.'
-            redirect_to services_path
+            redirect_to root_url
           end
         else
           if auth
@@ -123,9 +122,17 @@ class ServicesController < ApplicationController
             flash[:notice] = 'Signed in successfully via ' + @authhash[:provider].capitalize + '.'
             redirect_to root_url
           else
-            # this is a new user; show signup; @authhash is available to the view and stored in the sesssion for creation of a new user
-            session[:authhash] = @authhash
-            render signup_services_path
+            if user = User.where(email: @authhash[:email]).first
+              # user already exists with this email
+              # probably should just trust this but google sends a unique hash for different site urls
+              user.services.create!(:provider => @authhash[:provider], :uid => @authhash[:uid], :uname => @authhash[:name], :uemail => @authhash[:email])
+              flash[:notice] = 'Your ' + @authhash[:provider].capitalize + ' account has been added for signing in at this site.'
+              redirect_to root_url
+            else
+              # this is a new user; show signup; @authhash is available to the view and stored in the sesssion for creation of a new user
+              session[:authhash] = @authhash
+              render signup_services_path
+            end
           end
         end
       else
