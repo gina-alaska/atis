@@ -12,6 +12,7 @@ gem 'quiet_assets'
 gem 'bootstrap-sass'
 gem 'omniauth'
 gem 'omniauth-openid'
+gem 'pg'
 
 gem 'state_machine'
 gem 'compass-rails'
