@@ -1,0 +1,51 @@
+.row
+  .span8
+    #sowtabs-content.tab-content
+      #submitted.tab-pane.active
+        %h2 Pending review statements of work
+        - if sow_counts_for(nil, :submitted) > 0
+          = render 'sows/list', sows: Sow.submitted.all
+        - else
+          %h4 There are no submitted statements of work
+      #accepted.tab-pane
+        %h2 Accepted statements of work
+        - if sow_counts_for(nil, :accepted) > 0
+          = render 'sows/list', sows: Sow.accepted.all
+        - else
+          %h4 There are no accepted statements of work
+      #rejected.tab-pane
+        %h2 Rejected statements of work
+        - if sow_counts_for(nil, :rejected) > 0
+          = render 'sows/list', sows: Sow.rejected.all
+        - else
+          %h4 There are no rejected statements of work
+  .span4
+    %ul#sowtabs.nav.nav-tabs.nav-stacked
+      %li.active
+        = link_to '#submitted', "data-toggle" => "tab" do
+          Pending
+          = sow_count_badge(sow_counts_for(nil, :submitted))
+      %li
+        = link_to '#accepted', "data-toggle" => "tab" do
+          Accepted
+          = sow_count_badge(sow_counts_for(nil, :accepted))
+      %li
+        = link_to '#rejected', "data-toggle" => "tab" do
+          Rejected
+          = sow_count_badge(sow_counts_for(nil, :rejected))
+  
+  
+    .well.well-small
+      %ul.nav.nav-list
+        %li.nav-header Menu
+        %li
+          = link_to new_sow_path do
+            %i.icon-plus
+            New Statement of Work
+        - if current_user.has_role? :admin
+          %li
+            = link_to users_path do
+              %i.icon-user
+              Users
+    = render 'layouts/activity_stream'
+            

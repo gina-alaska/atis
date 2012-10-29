@@ -1,0 +1,38 @@
+.sow_list
+  - sows.each do |sow|
+    .sow
+      .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
+        %h4= sow.project_title
+        .status.alert{class: sow_status_class(sow)}
+          = sow.state.humanize
+    
+        %dl.dl-horizontal
+          %p.dates
+            = render 'sows/dates', sow: sow
+      
+          %p.submitter
+            = render 'sows/submitter', sow: sow
+            
+        
+        .collapse{id: "sow_body_#{sow.id}"}
+          %p.descriptions
+            %dl
+              %dt Statement of work
+              %dd
+                :markdown
+                  #{sow.statement_of_work}
+      
+      .actions
+        = link_to 'View', sow_path(sow), class: 'btn' 
+        - unless sow.accepted?
+          - if sow.created? or sow.editing?
+            = link_to 'Edit', edit_sow_path(sow), class: 'btn' 
+          - else
+            = link_to 'Edit', edit_sow_path(sow), class: 'btn', confirm: 'Are you sure? Editing this statement of work will remove it from the review queue'
+            
+        - if sow.can_submit?
+          = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
+            
+        - if sow.can_review? and current_user.has_role?(:reviewer)
+          = link_to 'Review', review_sow_path(sow), method: 'POST', class: 'btn btn-primary'
+        

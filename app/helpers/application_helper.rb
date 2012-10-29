@@ -9,4 +9,10 @@ module ApplicationHelper
     end
     output.html_safe
   end
+  
+  def avatar_url(user, size=48)
+    default_url = "mm"
+    gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}&d=#{CGI.escape(default_url)}"
+  end
 end

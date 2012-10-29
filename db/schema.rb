@@ -11,7 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024180429) do
+ActiveRecord::Schema.define(:version => 20121029191452) do
+
+  create_table "activities", :force => true do |t|
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.integer  "changed_item_id"
+    t.string   "changed_item_type"
+    t.string   "verb"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "roles_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+  end
 
   create_table "services", :force => true do |t|
     t.integer  "user_id"
@@ -23,11 +44,40 @@ ActiveRecord::Schema.define(:version => 20121024180429) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sows", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "telephone"
+    t.string   "ua_number"
+    t.string   "period"
+    t.string   "project_title"
+    t.string   "other_strategic_objective"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.text     "statement_of_work"
+    t.text     "collaborators"
+    t.text     "research_milestones_and_outcomes"
+    t.text     "accomplished_objectives"
+    t.text     "budget_justification"
+    t.string   "research_period_of_performance"
+    t.integer  "other_period"
+    t.integer  "user_id"
+    t.string   "state"
+    t.integer  "created_by"
+    t.datetime "submitted_on"
+    t.integer  "submitted_by"
+    t.integer  "reviewed_by"
+    t.datetime "accepted_on"
+    t.datetime "rejected_on"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.string   "active_dashboard", :default => "submitter"
   end
 
 end

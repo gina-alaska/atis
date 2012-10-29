@@ -1,0 +1,6 @@
+%h2 Edit statement of work
+.row
+  .span8
+    = render 'form', sow: @sow
+  .span4
+    = render 'layouts/activity_stream', activities: @sow.activities

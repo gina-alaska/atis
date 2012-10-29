@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :user_signed_in?
 
-  private  
+  protected
+    
     def current_user  
       @current_user ||= User.find_by_id(session[:user_id]) if session[:user_id]  
     end
@@ -16,7 +17,14 @@ class ApplicationController < ActionController::Base
     def authenticate_user!
       if !current_user
         flash[:error] = 'You need to sign in before accessing this page!'
-        redirect_to signin_services_path
+        redirect_to signin_path
+      end
+    end
+    
+    def authenticate_admin!
+      if !current_user or !current_user.has_role?(:admin)
+        flash[:error] = "You don't have permission to view this page"
+        redirect_to root_url
       end
     end  
 end
