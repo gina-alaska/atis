@@ -5,3 +5,24 @@
 #header {
  margin-bottom: 5px;
 }
+
+.activity_list {
+  .activity {
+    position: relative;
+    margin-bottom: 5px;
+    padding: 0;
+    padding-left: 52px;
+    min-height: 48px;
+    border: 1px solid #ddd;
+    @include border-radius(4px);
+    background: #eee no-repeat;
+    
+    .avatar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      
+      img { width: 48px; height: 48px; }
+    }
+  }
+}

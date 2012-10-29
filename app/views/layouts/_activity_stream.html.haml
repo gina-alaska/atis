@@ -1,0 +1,5 @@
+%h4 Activity Stream
+.activity_list
+  - Activity.order('created_at DESC').all.each do |a|
+    .activity{style:"background-image: url(#{avatar_url(a.subject, 48)});"}
+      = "#{a.full_message} #{time_ago_in_words a.created_at} ago"
