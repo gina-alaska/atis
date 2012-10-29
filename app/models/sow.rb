@@ -7,7 +7,7 @@ class Sow < ActiveRecord::Base
       sow.touch_date(:submitted_on)
       user = transition.args.first
       sow.submitted_by = user
-      Activity.record(user, 'submitted', sow)
+      Activity.record(user, 'submitted for review', sow)
     end
     
     after_transition :on => :accept do |sow, transition|
@@ -34,11 +34,11 @@ class Sow < ActiveRecord::Base
     end
     
     event :review do
-      transition [:submitted, :accepted, :rejected] => :reviewing
+      transition [:submitted, :reviewing] => :reviewing
     end
     
     event :submit do
-      transition [:created, :editing, :rejected] => :submitted
+      transition [:created, :editing] => :submitted
     end
     
     event :accept do
@@ -65,7 +65,7 @@ class Sow < ActiveRecord::Base
   default_scope order('created_at DESC')
   
   def touch_date(field)
-    self.update_attribute(field, Time.now)
+    self.update_attribute(field, Time.zone.now)
   end
   
   def name
