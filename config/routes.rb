@@ -1,4 +1,6 @@
 Atis::Application.routes.draw do
+  resources :disciplines
+
   resources :roles
 
   resources :sows do 
@@ -33,6 +35,7 @@ Atis::Application.routes.draw do
   
   match '/submit' => 'welcome#submit', as: 'submit_dashboard'
   match '/review' => 'welcome#review', as: 'review_dashboard'
+  match '/admin' => 'welcome#admin', as: 'admin_dashboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

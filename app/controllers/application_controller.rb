@@ -3,7 +3,9 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user
   helper_method :user_signed_in?
-
+  
+  before_filter :authenticate_user!
+  
   protected
     
     def current_user  

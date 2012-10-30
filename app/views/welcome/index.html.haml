@@ -1,7 +1,9 @@
 - if user_signed_in?
   - if current_user.has_role?(:reviewer) and current_user.active_dashboard.to_sym == :review
     = render 'review_dashboard'
-  - else current_user.active_dashboard.to_sym == :submitter
+  - elsif current_user.has_role?(:admin) and current_user.active_dashboard.to_sym == :admin 
+    = render 'admin_dashboard'
+  - else
     = render 'dashboard'
     
 - else

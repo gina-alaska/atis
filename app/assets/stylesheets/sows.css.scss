@@ -3,8 +3,13 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .sow_form {
-  label:not(.radio):after {
+  label:not(.radio):not(.checkbox):after {
     content: ': '
+  }
+  
+  .select2-container-multi .select2-choices {
+    border-color: #ccc;
+    @include border-radius(4px);
   }
 }
 

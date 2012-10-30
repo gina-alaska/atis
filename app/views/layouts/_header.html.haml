@@ -4,19 +4,21 @@
       ATIS: Award Tracking Information System
     %ul.nav.pull-right
       - if user_signed_in? 
-        - if current_user.has_role?(:reviewer)
+        - if current_user.roles.count > 0
           %li.dropdown{class: current_page?(root_path) ? 'active' : ''}
             = link_to '#', class: 'dropdown-toggle', "data-toggle"=>"dropdown" do
               = "Dashboard (#{current_user.active_dashboard.humanize})"
               %b.caret
             %ul.dropdown-menu
               %li= link_to 'Submitter', submit_dashboard_path
-              %li= link_to 'Reviewer', review_dashboard_path
+              %li= link_to 'Reviewer', review_dashboard_path if current_user.has_role?(:reviewer)
+              %li= link_to 'Admin', admin_dashboard_path if current_user.has_role?(:admin)
         - else
           %li{class: current_page?(root_path) ? 'active' : ''}= link_to 'Dashboard', root_path
           
         - if current_user.has_role?(:admin)
           %li{class: params[:controller] == 'users' ? 'active' : ''}= link_to 'Users', users_path
+          %li{class: params[:controller] == 'disciplines' ? 'active' : ''}= link_to 'Disciplines', disciplines_path
           
         %li.divider-vertical
         %li.user_button.dropdown

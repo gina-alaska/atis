@@ -10,21 +10,22 @@
 
   .row-fluid.form-inline
     - if !sow.new_record?
-      .span4
+      .span6
         = label_tag :created_at, 'Created on'
-        = (sow.created_at || Time.now).strftime('%F %r %Z')
+        = (sow.created_at || Time.now).strftime('%F %r')
     - if sow.submitted? or sow.accepted? or sow.rejected?
-      .span4
+      .span6
         = label_tag :submitted_on
-        = sow.submitted_on.strftime('%F %r %Z')
+        = sow.submitted_on.strftime('%F %r')
+  .row-fluid.form-inline
     - if sow.accepted?
-      .span4
+      .span6
         = label_tag :accepted_on
-        = sow.accepted_on.strftime('%F %r %Z')
+        = sow.accepted_on.strftime('%F %r')
     - if sow.rejected?
-      .span4
+      .span6
         = label_tag :rejected_on
-        = sow.rejected_on.strftime('%F %r %Z')
+        = sow.rejected_on.strftime('%F %r')
   %h4 Submitter information
   .row-fluid
     .span5
@@ -48,14 +49,8 @@
       .control-group
         = f.label :telephone
         = f.telephone_field :telephone, class: 'span12'
-  
-  %h4 Project information
-  .row-fluid
-    .span12
-      .control-group
-        = f.label :project_title
-        = f.text_field :project_title, class: 'span12'    
-    
+
+  %h4 Dates/Work periods
   .control-group
     .row-fluid
       .span1
@@ -73,7 +68,7 @@
           = f.radio_button :period, '120'
           120 days
       .span4.form-inline
-        %label.radio.span3
+        %label.radio.span4
           = f.radio_button :period, 'other'
           Other
         &nbsp;
@@ -83,8 +78,42 @@
       .control-group
         = f.label :research_period_of_performance
         = f.text_field :research_period_of_performance, class: 'span12'
-
-  %h4 Additional information
+        
+  %h4 Other information
+  .control-group
+    %label.control-label Faculty Discipline
+    .controls
+      = f.select :disciplines, options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
+    
+  .control-group
+    %label.control-label Indicate Strategic Objectives
+    .row-fluid
+      .span4
+        %label.checkbox
+          = f.check_box :climate_glacier_dynamics
+          Climate/Glacier Dynamics
+      .span4
+        %label.checkbox
+          = f.check_box :ecosystem_variability
+          Ecosystem Variability
+      .span4
+        %label.checkbox
+          = f.check_box :resource_management
+          Resource Management
+    .row-fluid
+      .span12
+        %label.checkbox.span2
+          = f.check_box :other_strategic_objectives
+          Other
+        = f.text_field :other_strategic_objectives_text, class: 'span6'
+  
+  %h4 Project information
+  .row-fluid
+    .span12
+      .control-group
+        = f.label :project_title
+        = f.text_field :project_title, class: 'span12'    
+    
   .row-fluid
     .span12
       .control-group

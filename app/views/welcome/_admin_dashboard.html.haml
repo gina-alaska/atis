@@ -1,0 +1,79 @@
+.row
+  .span8
+    #sowtabs-content.tab-content
+      #active.tab-pane.active
+        %h2 All statements of work
+        - if sow_counts_for(nil, :active) > 0
+          = render 'sows/list', sows: Sow.all
+        - else
+          .hero-unit
+            %h3 No active statements of work found
+            %p Start a new statement of work by clicking the 'New statement of work' link to the right or use the button below
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+      #unsubmitted.tab-pane
+        %h2 Un-submitted statements of work
+        - if sow_counts_for(nil, :unsubmitted) > 0
+          = render 'sows/list', sows: Sow.unsubmitted.all
+        - else
+          .hero-unit
+            %h3 No un-submitted statements of work found
+            %p Start a new statement of work by clicking the 'New statement of work' link to the right or use the button below
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+      #submitted.tab-pane
+        %h2 Statements of work pending review 
+        - if sow_counts_for(nil, :submitted) > 0
+          = render 'sows/list', sows: Sow.submitted.all
+        - else
+          .hero-unit
+            %h3 No submitted statements of work found
+            %p If you have created a statement of work click the 'Un-submitted' link to the right and then click the 'Submit for review' button.
+            %p or
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
+      #accepted.tab-pane
+        %h2 Accepted statements of work
+        - if sow_counts_for(nil, :accepted) > 0
+          = render 'sows/list', sows: Sow.accepted.all
+        - else
+          .hero-unit
+            %h3 No accepted statements of work found
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
+      #rejected.tab-pane
+        %h2 Rejected statements of work
+        - if sow_counts_for(nil, :rejected) > 0
+          = render 'sows/list', sows: Sow.rejected.all
+        - else
+          .hero-unit
+            %h3 No rejected statements of work
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
+  .span4
+    %ul#sowtabs.nav.nav-tabs.nav-stacked
+      %li.active
+        = link_to '#active', "data-toggle" => "tab" do
+          All
+          = sow_count_badge(sow_counts_for(nil, :active))
+      %li
+        = link_to '#unsubmitted', "data-toggle" => "tab" do
+          Un-submitted
+          = sow_count_badge(sow_counts_for(nil, :unsubmitted))
+      %li
+        = link_to '#submitted', "data-toggle" => "tab" do
+          Pending review
+          = sow_count_badge(sow_counts_for(nil, :submitted))
+      %li
+        = link_to '#accepted', "data-toggle" => "tab" do
+          Accepted
+          = sow_count_badge(sow_counts_for(nil, :accepted))
+      %li
+        = link_to '#rejected', "data-toggle" => "tab" do
+          Rejected
+          = sow_count_badge(sow_counts_for(nil, :rejected))
+  
+  
+    = link_to new_sow_path, class: 'btn btn-success btn-block btn-large' do
+      New Statement of Work
+
+    = render 'layouts/activity_stream'
+            
