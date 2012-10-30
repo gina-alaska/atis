@@ -1,4 +1,4 @@
-- activities ||= Activity
+- activities ||= Activity.where(:owner_id => [nil, current_user])
 - activities = activities.order('created_at DESC').limit(20)
 %h4 Activity Stream
 .activity_list
