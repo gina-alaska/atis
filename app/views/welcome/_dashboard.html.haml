@@ -60,7 +60,7 @@
           = sow_count_badge(sow_counts_for(current_user, :unsubmitted))
       %li
         = link_to '#submitted', "data-toggle" => "tab" do
-          Pending
+          Pending review
           = sow_count_badge(sow_counts_for(current_user, :submitted))
       %li
         = link_to '#accepted', "data-toggle" => "tab" do
