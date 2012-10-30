@@ -72,17 +72,8 @@
           = sow_count_badge(sow_counts_for(current_user, :rejected))
   
   
-    .well.well-small
-      %ul.nav.nav-list
-        %li.nav-header Menu
-        %li
-          = link_to new_sow_path do
-            %i.icon-plus
-            New Statement of Work
-        - if current_user.has_role? :admin
-          %li
-            = link_to users_path do
-              %i.icon-user
-              Users
+    = link_to new_sow_path, class: 'btn btn-success btn-block btn-large' do
+      New Statement of Work
+
     = render 'layouts/activity_stream'
             
