@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030013043) do
+ActiveRecord::Schema.define(:version => 20121030164650) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -71,6 +71,11 @@ ActiveRecord::Schema.define(:version => 20121030013043) do
     t.integer  "reviewed_by"
     t.datetime "accepted_on"
     t.datetime "rejected_on"
+    t.boolean  "climate_glacier_dynamics"
+    t.boolean  "ecosystem_variability"
+    t.boolean  "resource_management"
+    t.boolean  "other_strategic_objectives"
+    t.string   "other_strategic_objectives_text"
   end
 
   create_table "users", :force => true do |t|

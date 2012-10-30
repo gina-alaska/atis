@@ -56,8 +56,10 @@ class Sow < ActiveRecord::Base
     end
   end
 
-  attr_accessible :email, :first_name, :last_name, :other_strategic_objective, :period, :other_period, :telephone, :project_title, :ua_number, :statement_of_work,
-  :collaborators, :research_milestones_and_outcomes, :accomplished_objectives, :budget_justification, :research_period_of_performance
+  attr_accessible :email, :first_name, :last_name, :other_strategic_objective, :period, :other_period, :telephone, 
+    :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
+    :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
+    :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number, :user
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
@@ -70,12 +72,25 @@ class Sow < ActiveRecord::Base
   scope :active, where(:state => [:created, :rejected])
   default_scope order('created_at DESC')
   
+  STRATEGIC_OBJECTIVES = { 
+    :climate_glacier_dynamics => "Climate/Glacier Dynamics", 
+    :ecosystem_variability => "Ecosystem Variability", 
+    :resource_management => "Resource Management",
+    :other_strategic_objectives => "Other"
+  }
+  
   def to_param
     "#{id}-#{self.project_title.parameterize}"
   end
   
   def touch_date(field)
     self.update_attribute(field, Time.zone.now)
+  end
+  
+  def strategic_objectives
+    Sow::STRATEGIC_OBJECTIVES.collect do |k,v| 
+      k == :other_strategic_objectives ? self.other_strategic_objectives_text : v
+    end
   end
   
   def name

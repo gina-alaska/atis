@@ -15,6 +15,9 @@
           
         %p.time_info
           = render 'period', sow: @sow
+        
+      %p.strategic_objectives
+        = render 'strategic_objectives', sow: @sow
             
       %p.project_info
         %dt Project title
@@ -22,7 +25,6 @@
           :markdown
             #{@sow.project_title}
       
-      %p.descriptions
         %dt Statement of work
         %dd
           :markdown

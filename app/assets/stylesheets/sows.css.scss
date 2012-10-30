@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .sow_form {
-  label:not(.radio):after {
+  label:not(.radio):not(.checkbox):after {
     content: ': '
   }
 }
