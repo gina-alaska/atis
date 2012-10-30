@@ -7,26 +7,32 @@ class Sow < ActiveRecord::Base
       sow.touch_date(:submitted_on)
       user = transition.args.first
       sow.submitted_by = user
-      Activity.record(user, 'submitted for review', sow)
+      Activity.record(user, 'submitted for review', sow, user)
+      Activity.record(user, 'submitted for review', sow, sow.user) if sow.user != user
     end
     
     after_transition :on => :accept do |sow, transition|
       sow.touch_date(:accepted_on)
       user = transition.args.first
       sow.reviewed_by = user
-      Activity.record(user, 'accepted', sow)
+      Activity.record(user, 'accepted', sow, user)
+      Activity.record(user, 'accepted', sow, sow.user) if sow.user != user
     end
     
     after_transition :on => :reject do |sow, transition|
       sow.touch_date(:rejected_on)
       user = transition.args.first
       sow.reviewed_by = user
-      Activity.record(user, 'rejected', sow)
+      Activity.record(user, 'rejected', sow, user)
+      Activity.record(user, 'rejected', sow, sow.user) if sow.user != user
     end
     
     before_transition :on => :edit do |sow, transition|
       user = transition.args.first
-      Activity.record(user, 'edited', sow) unless sow.editing?
+      unless sow.editing?
+        Activity.record(user, 'edited', sow, user)
+        Activity.record(user, 'edited', sow, sow.user) if sow.user != user
+      end
     end
     
     event :edit do
