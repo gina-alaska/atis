@@ -64,6 +64,10 @@ class Sow < ActiveRecord::Base
   scope :active, where(:state => [:created, :rejected])
   default_scope order('created_at DESC')
   
+  def to_param
+    "#{id}-#{self.project_title.parameterize}"
+  end
+  
   def touch_date(field)
     self.update_attribute(field, Time.zone.now)
   end
