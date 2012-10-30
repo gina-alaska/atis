@@ -1,4 +1,4 @@
-= form_for(@discipline) do |f|
+= form_for(@discipline, html: { class: 'form-horizontal' }) do |f|
   - if @discipline.errors.any?
     #error_explanation
       %h2
@@ -7,9 +7,12 @@
       %ul
         - @discipline.errors.full_messages.each do |msg|
           %li= msg
-  .field
-    = f.label :name
-    %br/
-    = f.text_field :name
-  .actions
-    = f.submit
+  .control-group
+    = f.label :name, class: 'control-label'
+    .controls
+      = f.text_field :name, class: 'span12'
+  .actions.pull-right
+    = link_to disciplines_path, class: 'btn' do
+      %i.icon-arrow-left
+      Back to list
+    = f.submit class: 'btn btn-primary'

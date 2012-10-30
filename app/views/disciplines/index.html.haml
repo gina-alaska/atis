@@ -1,15 +1,18 @@
-%h1 Listing disciplines
-%table
-  %tr
-    %th Name
-    %th
-    %th
-    %th
-  - @disciplines.each do |discipline|
-    %tr
-      %td= discipline.name
-      %td= link_to 'Show', discipline
-      %td= link_to 'Edit', edit_discipline_path(discipline)
-      %td= link_to 'Destroy', discipline, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Discipline', new_discipline_path
+.row
+  .span10
+    %h3 Listing disciplines
+    %table.table.table-bordered.table-stripped.table-condensed
+      %thead
+        %tr
+          %th.span6 Name
+          %th{style:"text-align:right"} Actions
+      %tbody
+        - @disciplines.each do |discipline|
+          %tr
+            %td= discipline.name
+            %td{style:"text-align:right"}
+              = link_to 'Edit', edit_discipline_path(discipline), class: 'btn'
+              = link_to 'Destroy', discipline, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+  .span2
+    %h3 Menu
+    = link_to 'New Discipline', new_discipline_path, class: 'btn btn-success btn-block btn-large'

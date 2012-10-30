@@ -1,7 +1,13 @@
-%p#notice= notice
-%p
-  %b Name:
-  = @discipline.name
-= link_to 'Edit', edit_discipline_path(@discipline)
-|
-\#{link_to 'Back', disciplines_path}
+%h3 Show discipline
+.row-fluid
+  .span9
+    %p
+      %b Name:
+      = @discipline.name
+  .span3
+    = link_to edit_discipline_path(@discipline), class: 'btn btn-block' do
+      %i.icon-edit
+      Edit
+    = link_to disciplines_path, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back

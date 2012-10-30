@@ -1,4 +1,6 @@
 class DisciplinesController < ApplicationController
+  before_filter :authenticate_admin!
+  
   # GET /disciplines
   # GET /disciplines.json
   def index
@@ -44,7 +46,7 @@ class DisciplinesController < ApplicationController
 
     respond_to do |format|
       if @discipline.save
-        format.html { redirect_to @discipline, notice: 'Discipline was successfully created.' }
+        format.html { redirect_to disciplines_path, notice: 'Discipline was successfully created.' }
         format.json { render json: @discipline, status: :created, location: @discipline }
       else
         format.html { render action: "new" }
@@ -60,7 +62,7 @@ class DisciplinesController < ApplicationController
 
     respond_to do |format|
       if @discipline.update_attributes(params[:discipline])
-        format.html { redirect_to @discipline, notice: 'Discipline was successfully updated.' }
+        format.html { redirect_to disciplines_path, notice: 'Discipline was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

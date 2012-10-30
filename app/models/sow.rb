@@ -1,6 +1,7 @@
 class Sow < ActiveRecord::Base
   belongs_to :user
   has_many :activities, :as => :changed_item, :dependent => :destroy
+  has_and_belongs_to_many :disciplines
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -59,10 +60,12 @@ class Sow < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :other_strategic_objective, :period, :other_period, :telephone, 
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
-    :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text
+    :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
+    :disciplines
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number, :user
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
+  
   
   scope :owner, lambda { |user| where(user_id: user) }
   scope :unsubmitted, where(:state => [:created, :editing])
