@@ -91,9 +91,14 @@ class Sow < ActiveRecord::Base
   end
   
   def strategic_objectives
-    Sow::STRATEGIC_OBJECTIVES.collect do |k,v| 
-      k == :other_strategic_objectives ? self.other_strategic_objectives_text : v
+    active = []
+    Sow::STRATEGIC_OBJECTIVES.each do |k,v| 
+      if self.send(k)
+        active << (k == :other_strategic_objectives ? self.other_strategic_objectives_text : v)
+      end
     end
+    
+    active
   end
   
   def name
