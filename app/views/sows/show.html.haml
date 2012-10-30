@@ -53,12 +53,18 @@
     = link_to root_url, class: 'btn btn-block' do
       %i.icon-arrow-left
       Back to dashboard
-    - if @sow.can_edit? and @sow.user == current_user  
-      = link_to edit_sow_path(@sow), class: 'btn btn-block' do
-        %i.icon-edit
-        Edit
+    - unless @sow.accepted? or @sow.user != current_user  
+      - if @sow.created? or @sow.editing?
+        = link_to edit_sow_path(@sow), class: 'btn btn-block' do
+          %i.icon-edit
+          Edit
+      - else
+        = link_to edit_sow_path(@sow), class: 'btn btn-block', confirm: 'Are you sure? Editing this statement of work will remove it from the review queue' do
+          %i.icon-edit
+          Edit
+      
     - if @sow.can_submit? and @sow.user == current_user
-      = link_to submit_sow_path(@sow), class: 'btn btn-block btn-primary' do
+      = link_to submit_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Submit for review
     - if current_user.has_role?(:reviewer) and @sow.can_review? and !@sow.reviewing?
       = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do

@@ -3,4 +3,9 @@
   .span8
     = render 'form', sow: @sow
   .span4
+    %h4 Action
+    = link_to root_url, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back to dashboard
+  
     = render 'layouts/activity_stream', activities: @sow.activities
