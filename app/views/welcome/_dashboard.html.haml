@@ -6,31 +6,48 @@
         - if sow_counts_for(current_user, :active) > 0
           = render 'sows/list', sows: Sow.owner(current_user).all
         - else
-          %h4 There are no active statements of work
+          .hero-unit
+            %h3 No active statements of work found
+            %p Start a new statement of work by clicking the 'New statement of work' link to the right or use the button below
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #unsubmitted.tab-pane
         %h2 Un-submitted statements of work
         - if sow_counts_for(current_user, :unsubmitted) > 0
           = render 'sows/list', sows: Sow.owner(current_user).unsubmitted.all
         - else
-          %h4 There are no un-submitted statements of work
+          .hero-unit
+            %h3 No un-submitted statements of work found
+            %p Start a new statement of work by clicking the 'New statement of work' link to the right or use the button below
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #submitted.tab-pane
         %h2 Statements of work pending review 
         - if sow_counts_for(current_user, :submitted) > 0
           = render 'sows/list', sows: Sow.owner(current_user).submitted.all
         - else
-          %h4 There are no submitted statements of work
+          .hero-unit
+            %h3 No submitted statements of work found
+            %p If you have created a statement of work click the 'Un-submitted' link to the right and then click the 'Submit for review' button.
+            %p or
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
       #accepted.tab-pane
         %h2 Accepted statements of work
         - if sow_counts_for(current_user, :accepted) > 0
           = render 'sows/list', sows: Sow.owner(current_user).accepted.all
         - else
-          %h4 There are no accepted statements of work
+          .hero-unit
+            %h3 No accepted statements of work found
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
       #rejected.tab-pane
         %h2 Rejected statements of work
         - if sow_counts_for(current_user, :rejected) > 0
           = render 'sows/list', sows: Sow.owner(current_user).rejected.all
         - else
-          %h4 There are no rejected statements of work
+          .hero-unit
+            %h3 No rejected statements of work
+            = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
+            
   .span4
     %ul#sowtabs.nav.nav-tabs.nav-stacked
       %li.active
