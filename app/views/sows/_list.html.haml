@@ -7,12 +7,14 @@
           = sow.state.humanize
     
         %dl.dl-horizontal
-          %p.dates
+          .dates
             = render 'sows/dates', sow: sow
       
-          %p.submitter
+          .submitter
             = render 'sows/submitter', sow: sow
             
+        .ellipsis 
+          %i.icon-chevron-down
         
         .collapse{id: "sow_body_#{sow.id}"}
           %p.descriptions
