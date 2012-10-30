@@ -6,6 +6,11 @@
   label:not(.radio):not(.checkbox):after {
     content: ': '
   }
+  
+  .select2-container-multi .select2-choices {
+    border-color: #ccc;
+    @include border-radius(4px);
+  }
 }
 
 .sow_list {
