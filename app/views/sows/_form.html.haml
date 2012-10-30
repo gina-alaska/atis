@@ -81,6 +81,11 @@
         
   %h4 Other information
   .control-group
+    %label.control-label Faculty Discipline
+    .controls
+      = f.select :disciplines, options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
+    
+  .control-group
     %label.control-label Indicate Strategic Objectives
     .row-fluid
       .span4

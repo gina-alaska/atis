@@ -61,7 +61,7 @@ class SowsController < ApplicationController
   end
   
   def create
-    @sow = Sow.new(params[:sow])
+    @sow = Sow.new(sow_params)
     @sow.user = current_user
     
     if @sow.save
@@ -83,7 +83,7 @@ class SowsController < ApplicationController
   end
   
   def update
-    if @sow.update_attributes(params[:sow])
+    if @sow.update_attributes(sow_params)
       flash[:success] = "Statement of work has been saved"
       redirect_to @sow
     else
@@ -93,6 +93,25 @@ class SowsController < ApplicationController
   end
   
   protected
+  
+  def sow_params
+    p = params[:sow]
+    
+    if p[:disciplines].present?
+      discs = p.delete(:disciplines)
+      p[:disciplines] ||= [] 
+      discs.each do |id|
+        next if id.to_i == 0
+        d = Discipline.find(id.to_i) 
+        p[:disciplines] << d unless d.nil?
+      end
+    end
+    
+    logger.info '************'
+    logger.info p.inspect
+    
+    p
+  end
   
   def fetch_sow
     @sow = Sow.find(params[:id]) if params[:id].present?
