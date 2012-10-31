@@ -1,6 +1,11 @@
 class Sow < ActiveRecord::Base
   belongs_to :user
-  has_many :activities, :as => :changed_item, :dependent => :destroy
+  has_many :activities, :as => :changed_item, :dependent => :destroy do
+    def for(user)
+      where(:owner_id => [nil, user])
+    end
+  end
+  
   has_and_belongs_to_many :disciplines
   
   state_machine :initial => :created do
