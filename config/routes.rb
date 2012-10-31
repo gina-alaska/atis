@@ -1,4 +1,6 @@
 Atis::Application.routes.draw do
+  resources :attachments
+
   resources :disciplines
 
   resources :roles

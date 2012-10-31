@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030173405) do
+ActiveRecord::Schema.define(:version => 20121031223746) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20121030173405) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.integer  "owner_id"
+  end
+
+  create_table "attachments", :force => true do |t|
+    t.string   "file_uid"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "disciplines", :force => true do |t|
