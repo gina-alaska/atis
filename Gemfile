@@ -13,6 +13,8 @@ gem 'bootstrap-sass'
 gem 'omniauth'
 gem 'omniauth-openid'
 gem 'pg'
+gem 'rack-cache'
+gem 'dragonfly', '~>0.9.12'
 
 gem 'state_machine'
 gem 'compass-rails'
