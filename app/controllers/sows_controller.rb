@@ -66,7 +66,11 @@ class SowsController < ApplicationController
     
     if @sow.save
       flash[:success] = "Statement of work has been saved"
-      redirect_to @sow
+      if params[:continue].to_i == 1
+        redirect_to edit_sow_path(@sow)
+      else
+        redirect_to @sow
+      end
     else
       flash[:error] = "There was an error while trying to save your statement of work"
       render :action => :new
@@ -85,7 +89,11 @@ class SowsController < ApplicationController
   def update
     if @sow.update_attributes(sow_params)
       flash[:success] = "Statement of work has been saved"
-      redirect_to @sow
+      if params[:continue].to_i == 1
+        redirect_to edit_sow_path(@sow)
+      else
+        redirect_to @sow
+      end
     else
       flash[:error] = "There was an error while trying to save your statement of work"
       render :action => :edit

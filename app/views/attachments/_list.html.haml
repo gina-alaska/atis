@@ -1,0 +1,10 @@
+%ul.thumbnails
+  - attachments.each do |attachment|
+    %li.span2{style:"text-align:center; max-width: 100%;"}
+      = link_to attachment.file.url, target: '_blank' do
+        - if attachment.file.image?
+          = image_tag(attachment.file.thumb('50x50#').url)
+        - else
+          = image_tag('document.svg', style:"height:50px;")
+        %p= attachment.file.name
+

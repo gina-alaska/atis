@@ -11,11 +11,11 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery-file-upload/jquery.ui.widget.js
-//# require jquery-file-upload/tmpl.min.js
+//= require jquery-file-upload/tmpl.min.js
 //# require jquery-file-upload/load-image.min.js
 //# require jquery-file-upload/canvas-to-blob.min.js
 //= require jquery-file-upload/jquery.iframe-transport.js
 //= require jquery-file-upload/jquery.fileupload.js
-//= require jquery-file-upload/jquery.fileupload-fp.js
+//# require jquery-file-upload/jquery.fileupload-fp.js
 //# require jquery-file-upload/locale.js
-//= require jquery-file-upload/main.js
+//# require jquery-file-upload/main.js

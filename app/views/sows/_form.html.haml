@@ -8,6 +8,7 @@
         - sow.errors.full_messages.each do |msg|
           %li= msg
 
+  = hidden_field_tag :continue, 0
   .row-fluid.form-inline
     - if !sow.new_record?
       .span6
@@ -106,7 +107,7 @@
           = f.check_box :other_strategic_objectives
           Other
         = f.text_field :other_strategic_objectives_text, class: 'span6'
-  
+    
   %h4 Project information
   .row-fluid
     .span12

@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20121031223746) do
   end
 
   create_table "attachments", :force => true do |t|
+    t.string   "name"
     t.string   "file_uid"
     t.integer  "parent_id"
     t.string   "parent_type"

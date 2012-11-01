@@ -4,4 +4,12 @@ class Attachment < ActiveRecord::Base
   belongs_to :parent, :polymorphic => true
   
   file_accessor :file
+  
+  #one convenient method to pass jq_upload the necessary information
+  def to_jq_upload
+    {
+      "name" => read_attribute(:file),
+      "url" => file.url
+    }
+  end
 end

@@ -1,11 +1,11 @@
 Atis::Application.routes.draw do
-  resources :attachments
-
   resources :disciplines
 
   resources :roles
 
   resources :sows do 
+    resources :attachments
+    
     member do
       post 'submit'
       post 'review'
