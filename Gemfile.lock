@@ -45,6 +45,8 @@ GEM
       sass (~> 3.1)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
+    dragonfly (0.9.12)
+      rack
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -136,12 +138,14 @@ DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 3.2.1)
   compass-rails
+  dragonfly (~> 0.9.12)
   haml
   jquery-rails
   omniauth
   omniauth-openid
   pg
   quiet_assets
+  rack-cache
   rails (= 3.2.8)
   rdiscount
   ruby-graphviz

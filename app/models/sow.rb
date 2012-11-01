@@ -7,6 +7,7 @@ class Sow < ActiveRecord::Base
   end
   
   has_and_belongs_to_many :disciplines
+  has_many :attachments, :as => :parent, :dependent => :destroy
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
