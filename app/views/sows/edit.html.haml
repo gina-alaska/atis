@@ -8,6 +8,5 @@
       %i.icon-arrow-left
       Back to dashboard
     = link_to 'Save statement of work', '#', "data-submit" => "form.sow_form", class: 'btn btn-primary btn-block'
-    = link_to 'Save and continue editing', '#', "data-submit" => "form.sow_form", "data-continue" => '#continue', class: 'btn btn-primary btn-block'
       
     = render 'layouts/activity_stream', activities: @sow.activities
