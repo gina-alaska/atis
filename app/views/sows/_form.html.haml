@@ -9,6 +9,7 @@
           %li= msg
 
   = hidden_field_tag :continue, 0
+  
   .row-fluid.form-inline
     - if !sow.new_record?
       .span6
@@ -27,6 +28,12 @@
       .span6
         = label_tag :rejected_on
         = sow.rejected_on.strftime('%F %r')
+        
+  .row-fluid
+    .span6
+      = f.label :group_id, 'Award group'
+      = f.select :group_id, award_group_options(sow), { prompt: "Select one" }
+      
   %h4 Submitter information
   .row-fluid
     .span5
