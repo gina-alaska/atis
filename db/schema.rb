@@ -44,6 +44,17 @@ ActiveRecord::Schema.define(:version => 20121031223746) do
     t.integer "discipline_id"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.string   "acronym"
+    t.integer  "fiscal_coordinator_id"
+    t.integer  "director_id"
+    t.integer  "parent_id"
+    t.integer  "top_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false

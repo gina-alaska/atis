@@ -5,6 +5,8 @@ class CreateGroups < ActiveRecord::Migration
       t.string :acronym
       t.integer :fiscal_coordinator_id
       t.integer :director_id
+      t.integer :parent_id
+      t.integer :top_id
 
       t.timestamps
     end
