@@ -5,7 +5,7 @@
       .dl-horizontal
         %p.status
           %dt Award Group
-          %dd= @sow.group.name_path
+          %dd= @sow.group.present? ? @sow.group.try(:name_path) : '&nbsp;'.html_safe
           %dt Status
           %dd= @sow.state.humanize
         

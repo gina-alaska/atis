@@ -71,6 +71,7 @@ class Sow < ActiveRecord::Base
     :disciplines, :group_id
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number, :user
+  validates_presence_of :group_id
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   
