@@ -7,6 +7,9 @@ class Group < ActiveRecord::Base
   has_many :children, class_name: 'Group', foreign_key: 'parent_id', dependent: :destroy
   has_many :all_children, class_name: 'Group', foreign_key: 'top_id'
   
+  belongs_to :fiscal_coordinator, class_name: 'User'
+  belongs_to :director, class_name: 'User'
+  
   before_save :assign_top_group
   
   scope :top, where(:parent_id => nil)

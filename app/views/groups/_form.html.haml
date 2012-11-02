@@ -35,5 +35,3 @@
         = f.label :director_id, 'Dean/Director', class: 'control-label'
         .controls
           = f.select :director_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
-  .pull-right
-    = f.submit class: 'btn btn-primary'

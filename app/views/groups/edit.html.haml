@@ -1,5 +1,11 @@
-%h1 Editing group
-= render 'form'
-= link_to 'Show', @group
-|
-\#{link_to 'Back', groups_path}
+%h3 Editing group
+.row-fluid
+  .span9
+    = render 'form'
+  .span3
+    = link_to groups_path, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back to group list
+    = link_to 'Show', @group, class: 'btn btn-block'
+    
+    = link_to 'Update group', '#', "data-submit" => "form.group_form", class: 'btn btn-block btn-primary'
