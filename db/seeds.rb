@@ -8,3 +8,5 @@
 
 Role.create(name: 'admin')
 Role.create(name: 'reviewer')
+
+Group.create(name: 'EPSCoR', acronym: 'EP')

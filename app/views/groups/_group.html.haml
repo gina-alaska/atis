@@ -1,0 +1,9 @@
+.group{style:"margin-left:#{depth * 30}px;"}
+  .row-fluid
+    .span10.name
+      = link_to group do
+        = group.name
+        = "(#{group.acronym})" if group.acronym.present?
+    .span2.actions= link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }
+- group.children.each do |child|
+  = render child, depth: depth+1

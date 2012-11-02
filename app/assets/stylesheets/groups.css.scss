@@ -1,0 +1,33 @@
+// Place all the styles related to the Groups controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.group_form {
+  label:not(.radio):not(.checkbox):after {
+    content: ': '
+  }
+}
+
+.groups {
+  .group {
+    border: 1px solid #ddd;
+    @include border-radius(4px);
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .group:nth-child(even) {
+    background-color: #efefef;
+  }
+  
+  .group:hover {
+    background-color: #ffe;
+  }
+  
+  .group .actions {
+    text-align:right;
+  }
+  
+  .group .row-fluid [class*="span"] {
+    min-height: 0;
+  }
+}

@@ -1,0 +1,39 @@
+= form_for(@group, html: { class: 'group_form form-horizontal' }) do |f|
+  - if @group.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@group.errors.count, "error")
+        prohibited this group from being saved:
+      %ul
+        - @group.errors.full_messages.each do |msg|
+          %li= msg
+  .row-fluid
+    .span12
+      .control-group
+        = f.label :name, class: 'control-label'
+        .controls
+          = f.text_field :name, class: 'span12'
+  .row-fluid
+    .span6
+      .control-group
+        = f.label :parent_id, "Parent award group", class: 'control-label'
+        .controls
+          = f.select :parent_id, parent_group_options(@group), { prompt: "Select one" }, class: 'span12'
+    .span6
+      .control-group
+        = f.label :acronym, 'Award token', class: 'control-label'
+        .controls
+          = f.text_field :acronym, class: 'span12'
+  .row-fluid
+    .span6
+      .control-group
+        = f.label :fiscal_coordinator_id, class: 'control-label'
+        .controls
+          = f.select :fiscal_coordinator_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
+    .span6
+      .control-group
+        = f.label :director_id, 'Dean/Director', class: 'control-label'
+        .controls
+          = f.select :director_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
+  .pull-right
+    = f.submit class: 'btn btn-primary'

@@ -7,6 +7,10 @@
           = sow.state.humanize
     
         %dl.dl-horizontal
+          .group
+            %dt Award Group
+            %dd= sow.group.present? ? sow.group.name_path : '&nbsp;'.html_safe
+        
           .dates
             = render 'sows/dates', sow: sow
       
