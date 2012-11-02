@@ -21,4 +21,8 @@ class User < ActiveRecord::Base
   def last_name
     self.name.split(' ').last
   end
+  
+  def name_email
+    "#{self.name} <#{self.email}>"
+  end
 end

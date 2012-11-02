@@ -1,0 +1,12 @@
+.navbar
+  .navbar-inner
+    %p.brand Award group list
+    
+    .pull-right
+      = link_to new_group_path, class: 'btn btn-success' do
+        %i.icon-plus.icon-white
+        New Group
+
+.groups
+  - @groups.each do |group|
+    = render group, depth: 0

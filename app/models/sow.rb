@@ -1,7 +1,14 @@
 class Sow < ActiveRecord::Base
   belongs_to :user
-  has_many :activities, :as => :changed_item, :dependent => :destroy
+  has_many :activities, :as => :changed_item, :dependent => :destroy do
+    def for(user)
+      where(:owner_id => [nil, user])
+    end
+  end
+  
   has_and_belongs_to_many :disciplines
+  has_many :attachments, :as => :parent, :dependent => :destroy
+  belongs_to :group
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -61,9 +68,10 @@ class Sow < ActiveRecord::Base
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
     :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
-    :disciplines
+    :disciplines, :group_id
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number, :user
+  validates_presence_of :group_id
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   

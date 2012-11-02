@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030173405) do
+ActiveRecord::Schema.define(:version => 20121102173008) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(:version => 20121030173405) do
     t.integer  "owner_id"
   end
 
+  create_table "attachments", :force => true do |t|
+    t.string   "name"
+    t.string   "file_uid"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "disciplines", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -33,6 +42,17 @@ ActiveRecord::Schema.define(:version => 20121030173405) do
   create_table "disciplines_sows", :id => false, :force => true do |t|
     t.integer "sow_id"
     t.integer "discipline_id"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.string   "acronym"
+    t.integer  "fiscal_coordinator_id"
+    t.integer  "director_id"
+    t.integer  "parent_id"
+    t.integer  "top_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "roles", :force => true do |t|
@@ -87,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20121030173405) do
     t.boolean  "resource_management"
     t.boolean  "other_strategic_objectives"
     t.string   "other_strategic_objectives_text"
+    t.integer  "group_id"
   end
 
   create_table "users", :force => true do |t|

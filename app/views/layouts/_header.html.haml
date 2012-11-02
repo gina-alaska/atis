@@ -7,7 +7,7 @@
         - if current_user.roles.count > 0
           %li.dropdown{class: current_page?(root_path) ? 'active' : ''}
             = link_to '#', class: 'dropdown-toggle', "data-toggle"=>"dropdown" do
-              = "Dashboard (#{current_user.active_dashboard.humanize})"
+              = "Statements of Work (#{current_user.active_dashboard.humanize})"
               %b.caret
             %ul.dropdown-menu
               %li= link_to 'Submitter', submit_dashboard_path
@@ -17,8 +17,14 @@
           %li{class: current_page?(root_path) ? 'active' : ''}= link_to 'Dashboard', root_path
           
         - if current_user.has_role?(:admin)
-          %li{class: params[:controller] == 'users' ? 'active' : ''}= link_to 'Users', users_path
-          %li{class: params[:controller] == 'disciplines' ? 'active' : ''}= link_to 'Disciplines', disciplines_path
+          %li.dropdown
+            = link_to '#', class: "dropdown-toggle", "data-toggle" => "dropdown" do
+              Admin
+              %b.caret
+            %ul.dropdown-menu
+              %li{class: params[:controller] == 'users' ? 'active' : ''}= link_to 'Users', users_path
+              %li{class: params[:controller] == 'disciplines' ? 'active' : ''}= link_to 'Disciplines', disciplines_path
+              %li{class: params[:controller] == 'groups' ? 'active' : ''}= link_to 'Award Groups', groups_path
           
         %li.divider-vertical
         %li.user_button.dropdown

@@ -1,0 +1,10 @@
+%h3 New group
+.row-fluid
+  .span9
+    = render 'form'
+  .span3
+    = link_to groups_path, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back
+    = link_to '#', "data-submit" => "form.group_form", class: 'btn btn-block btn-primary' do
+      Create Group

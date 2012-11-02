@@ -47,4 +47,10 @@ module SowsHelper
       content_tag(:span, count, class: 'badge pull-right')
     end
   end
+  
+  def award_group_options(sow)
+    # groups = sorted_group_list(Group.top)
+    # groups = groups.reject { |g| g.parent.nil? }
+    option_groups_from_collection_for_select(Group.top, :all_children, :name, :id, :name_path, { selected: sow.group.try(:id) })
+  end
 end

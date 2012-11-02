@@ -1,0 +1,24 @@
+.row
+  .span9
+    %h3
+      Award group: 
+      = @group.name
+    %dl
+      %dt Parent group:
+      %dd= @group.parent.try(:name_path)
+      
+      %dt Award Token:
+      %dd= @group.acronym
+  
+      %dt Fiscal coordinator:
+      %dd= @group.fiscal_coordinator.try(:name_email)
+
+      %dt Dean/Director:
+      %dd= @group.director.try(:name_email)
+  .span3
+    = link_to groups_path, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back
+    = link_to edit_group_path(@group), class: 'btn btn-block' do
+      %i.icon-edit
+      Edit
