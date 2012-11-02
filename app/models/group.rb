@@ -4,13 +4,17 @@ class Group < ActiveRecord::Base
   belongs_to :parent, class_name: 'Group'
   belongs_to :top, class_name: 'Group'
   
-  has_many :children, class_name: 'Group', foreign_key: 'parent_id'
+  has_many :children, class_name: 'Group', foreign_key: 'parent_id', dependent: :destroy
   
   before_save :assign_top_group
   
   def assign_top_group
-    if self.top.nil? and self.parent.try(:top)
-      self.top = self.parent.top
+    if self.top.nil?
+      if self.parent and self.parent.try(:top)
+        self.top = self.parent.top
+      else
+        self.top = self.parent
+      end
     end
   end
 end

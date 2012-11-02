@@ -1,0 +1,5 @@
+.group{style:"margin-left:#{depth * 30}px;"}
+  .name= link_to group.name, group
+  .pull-right= link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }
+  - group.children.each do |child|
+    = render child, depth: depth+1
