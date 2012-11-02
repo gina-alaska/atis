@@ -40,7 +40,7 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
-    @group = Group.new(params[:group])
+    @group = Group.new(group_params)
 
     respond_to do |format|
       if @group.save
@@ -79,5 +79,12 @@ class GroupsController < ApplicationController
       format.html { redirect_to groups_url }
       format.json { head :no_content }
     end
+  end
+  
+  protected
+  
+  def group_params
+    p = params[:group].slice(:name, :parent_id, :acronym, :fiscal_coordinator_id, :director_id)
+    p
   end
 end

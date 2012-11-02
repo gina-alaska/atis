@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent, :top
+  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top
   
   belongs_to :parent, class_name: 'Group'
   belongs_to :top, class_name: 'Group'
@@ -7,6 +7,8 @@ class Group < ActiveRecord::Base
   has_many :children, class_name: 'Group', foreign_key: 'parent_id', dependent: :destroy
   
   before_save :assign_top_group
+  
+  scope :top, where(:parent_id => nil)
   
   def assign_top_group
     if self.top.nil?
