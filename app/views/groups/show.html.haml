@@ -1,0 +1,16 @@
+%p#notice= notice
+%p
+  %b Name:
+  = @group.name
+%p
+  %b Acronym:
+  = @group.acronym
+%p
+  %b Fiscal coordinator:
+  = @group.fiscal_coordinator_id
+%p
+  %b Director:
+  = @group.director_id
+= link_to 'Edit', edit_group_path(@group)
+|
+\#{link_to 'Back', groups_path}
