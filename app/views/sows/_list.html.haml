@@ -30,11 +30,6 @@
       
       .actions
         = link_to 'View', sow_path(sow), class: 'btn' 
-        - unless sow.accepted?
-          - if sow.created? or sow.editing?
-            = link_to 'Edit', edit_sow_path(sow), class: 'btn' 
-          - else
-            = link_to 'Edit', edit_sow_path(sow), class: 'btn', confirm: 'Are you sure? Editing this statement of work will remove it from the review queue'
             
         - if sow.can_submit?
           = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
