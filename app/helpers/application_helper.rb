@@ -17,7 +17,7 @@ module ApplicationHelper
   end
   
   def active_dashboard_class(dashboard)
-    'active' if current_page?(root_url) and current_user.active_dashboard.to_sym == dashboard.to_sym
+    'active' if params[:controller] == 'sows' and current_user.active_dashboard.to_sym == dashboard.to_sym
   end
   
   def active_admin_class
