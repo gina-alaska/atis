@@ -53,7 +53,7 @@ class Sow < ActiveRecord::Base
     end
     
     event :review do
-      transition [:submitted, :reviewing] => :reviewing
+      transition [:submitted, :reviewing, :accepted] => :reviewing
     end
     
     event :submit do

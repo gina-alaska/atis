@@ -32,7 +32,7 @@
             
         - if sow.can_submit?
           = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
-            
-        - if sow.can_review? and current_user.has_role?(:reviewer)
+          
+        - if sow.can_review? and current_user.has_role?(:reviewer) and !sow.accepted?
           = link_to 'Review', review_sow_path(sow), method: 'POST', class: 'btn btn-primary'
         
