@@ -1,4 +1,6 @@
 Atis::Application.routes.draw do
+  resources :awards
+
   resources :groups
 
   resources :disciplines
@@ -11,8 +13,10 @@ Atis::Application.routes.draw do
     member do
       post 'submit'
       post 'review'
-      post 'accept'
+      post 'pi_approve'
+      post 'group_approve'
       post 'reject'
+      post 'accept'
     end
   end
 

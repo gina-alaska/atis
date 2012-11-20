@@ -1,0 +1,24 @@
+.row-fluid
+  .span12
+    %dt Award Group
+    %dd= sow.group.present? ? sow.group.try(:name_path) : '&nbsp;'.html_safe
+    %dt Status
+    %dd= sow.state.humanize
+.row-fluid
+  .span6
+    %dt
+      PI Approval
+    - if sow.pi_approval
+      %dd
+        Yes
+        = " (#{sow.pi_approval.name})"
+    - else
+      %dd No
+  .span6
+    %dt GL Approval
+    - if sow.group_leader_approval
+      %dd
+        Yes
+        = " (#{sow.group_leader_approval.name})"
+    - else
+      %dd No
