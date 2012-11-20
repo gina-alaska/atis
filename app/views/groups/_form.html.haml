@@ -24,14 +24,14 @@
         = f.label :acronym, 'Award token', class: 'control-label'
         .controls
           = f.text_field :acronym, class: 'span12'
-  .row-fluid
-    .span6
-      .control-group
-        = f.label :fiscal_coordinator_id, class: 'control-label'
-        .controls
-          = f.select :fiscal_coordinator_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
-    .span6
-      .control-group
-        = f.label :director_id, 'Dean/Director', class: 'control-label'
-        .controls
-          = f.select :director_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
+  / .row-fluid
+  /   .span6
+  /     .control-group
+  /       = f.label :fiscal_coordinator_id, class: 'control-label'
+  /       .controls
+  /         = f.select :fiscal_coordinator_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
+  /   .span6
+  /     .control-group
+  /       = f.label :director_id, 'Dean/Director', class: 'control-label'
+  /       .controls
+  /         = f.select :director_id, options_from_collection_for_select(User.all, :id, :name_email), { prompt: "Select one" }, class: 'span12'
