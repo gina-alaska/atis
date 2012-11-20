@@ -4,10 +4,7 @@
     %dl
       .dl-horizontal
         %p.status
-          %dt Award Group
-          %dd= @sow.group.present? ? @sow.group.try(:name_path) : '&nbsp;'.html_safe
-          %dt Status
-          %dd= @sow.state.humanize
+          = render 'status', sow: @sow
         
         %p.dates
           = render 'dates', sow: @sow
@@ -15,8 +12,8 @@
         %p.submitter
           = render 'submitter', sow: @sow
           
-        %p.time_info
-          = render 'period', sow: @sow
+      %p.time_info
+        = render 'period', sow: @sow
         
       %p.strategic_objectives
         = render 'strategic_objectives', sow: @sow
@@ -66,7 +63,7 @@
         = link_to edit_sow_path(@sow), class: 'btn btn-block' do
           %i.icon-edit
           Edit
-      - else
+      - elsif !@sow.reviewing?
         = link_to edit_sow_path(@sow), class: 'btn btn-block', confirm: 'Are you sure? Editing this statement of work will remove it from the review queue' do
           %i.icon-edit
           Edit
@@ -79,13 +76,15 @@
     - if current_user.has_role?(:reviewer) and @sow.can_review? and !@sow.reviewing?
       = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Review
-    - if current_user.has_role?(:reviewer) and @sow.can_accept?
-      = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-success' do
-        %i.icon-ok
-        Accept
-    - if current_user.has_role?(:reviewer) and @sow.can_reject?
+    - if current_user.has_role?(:reviewer) and @sow.reviewing?
+      = sow_approval_buttons(@sow)
+    
       = link_to reject_sow_path(@sow), method: :post, class: 'btn btn-block btn-danger' do
-        %i.icon-remove
+        %i.icon-thumbs-down.icon-white
         Reject
-      
+    - if current_user.has_role?(:reviewer) and @sow.can_accept?
+      = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
+        %i.icon-ok.icon-white
+        Accept
+    
     = render 'layouts/activity_stream', activities: @sow.activities.for(current_user)

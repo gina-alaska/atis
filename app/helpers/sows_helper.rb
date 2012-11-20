@@ -48,6 +48,31 @@ module SowsHelper
     end
   end
   
+  def sow_approval_buttons(sow)
+    output = ""
+    if sow.pi_approval.nil?
+      output << link_to(pi_approve_sow_path(@sow), method: :post, class: "btn btn-block btn-warning") do
+        raw '<i class="icon-thumbs-up icon-white"></i> PI approval' + sow.pi_approval_id.to_s
+      end
+    else
+      output << link_to(pi_approve_sow_path(@sow), method: :post, class: "btn btn-block btn-success") do
+        raw "<i class=\"icon-ok icon-white\"></i> PI approval by #{sow.pi_approval.name}"
+      end
+    end
+    
+    if sow.group_leader_approval.nil?
+      output << link_to(group_approve_sow_path(@sow), method: :post, class: "btn btn-block btn-warning") do
+        raw '<i class="icon-thumbs-up icon-white"></i> Group leader approval'
+      end
+    else
+      output << link_to(group_approve_sow_path(@sow), method: :post, class: "btn btn-block btn-success") do
+        raw "<i class=\"icon-ok icon-white\"></i> Group leader approval by #{sow.group_leader_approval.name}"
+      end
+    end
+    
+    output.html_safe
+  end
+  
   def award_group_options(sow)
     # groups = sorted_group_list(Group.top)
     # groups = groups.reject { |g| g.parent.nil? }

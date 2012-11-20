@@ -8,8 +8,7 @@
     
         %dl.dl-horizontal
           .group
-            %dt Award Group
-            %dd= sow.group.present? ? sow.group.name_path : '&nbsp;'.html_safe
+            = render 'sows/status', sow: sow
         
           .dates
             = render 'sows/dates', sow: sow

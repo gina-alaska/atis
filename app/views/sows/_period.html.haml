@@ -1,8 +1,9 @@
 .row-fluid
   .span12
-    %dt Period
-    %dd
-      = @sow.period == 'other' ? "#{@sow.other_period}" : @sow.period
-      days
+    .dl-horizontal
+      %dt Period
+      %dd
+        = @sow.period == 'other' ? "#{@sow.other_period}" : @sow.period
+        days
     %dt Research period of performance
     %dd= @sow.research_period_of_performance

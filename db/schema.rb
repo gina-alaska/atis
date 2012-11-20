@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121102173008) do
+ActiveRecord::Schema.define(:version => 20121120211303) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -108,6 +108,9 @@ ActiveRecord::Schema.define(:version => 20121102173008) do
     t.boolean  "other_strategic_objectives"
     t.string   "other_strategic_objectives_text"
     t.integer  "group_id"
+    t.integer  "pi_approval_id"
+    t.integer  "group_leader_approval_id"
+    t.text     "rejection_reason"
   end
 
   create_table "users", :force => true do |t|

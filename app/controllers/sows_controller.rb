@@ -31,6 +31,40 @@ class SowsController < ApplicationController
     end
   end
   
+  def group_approve
+    if @sow.group_leader_approval.nil?
+      flash[:success] = "Statement of work has been approved by #{current_user.name}"
+      @sow.group_leader_approval = current_user
+    else
+      flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
+      @sow.group_leader_approval = nil
+    end
+    
+    if @sow.save
+      redirect_to @sow
+    else
+      flash[:error] = "Error while trying to approve statement of work"
+      redirect_to root_path
+    end
+  end
+  
+  def pi_approve
+    if @sow.pi_approval.nil?
+      flash[:success] = "Statement of work has been approved by #{current_user.name}"
+      @sow.pi_approval = current_user
+    else
+      flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
+      @sow.pi_approval = nil
+    end
+    
+    if @sow.save
+      redirect_to @sow
+    else
+      flash[:error] = "Error while trying to approve statement of work"
+      redirect_to root_path
+    end
+  end
+  
   def accept
     if @sow.accept(current_user)
       flash[:success] = "Statement of work has been accepted"

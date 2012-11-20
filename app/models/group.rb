@@ -14,6 +14,8 @@ class Group < ActiveRecord::Base
   
   scope :top, where(:parent_id => nil)
   
+  validates_uniqueness_of :acronym, :scope => :parent_id
+  
   def assign_top_group
     if self.top.nil?
       if self.parent and self.parent.try(:top)

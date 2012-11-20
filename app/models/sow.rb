@@ -9,6 +9,8 @@ class Sow < ActiveRecord::Base
   has_and_belongs_to_many :disciplines
   has_many :attachments, :as => :parent, :dependent => :destroy
   belongs_to :group
+  belongs_to :pi_approval, :class_name => 'User'
+  belongs_to :group_leader_approval, :class_name => 'User'
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -36,6 +38,9 @@ class Sow < ActiveRecord::Base
     end
     
     before_transition :on => :edit do |sow, transition|
+      sow.pi_approval = nil
+      sow.group_leader_approval = nil
+      
       user = transition.args.first
       unless sow.editing?
         Activity.record(user, 'edited', sow, user)
@@ -56,7 +61,7 @@ class Sow < ActiveRecord::Base
     end
     
     event :accept do
-      transition :reviewing => :accepted
+      transition :reviewing => :accepted, :if => lambda { |sow| sow.pi_approval and sow.group_leader_approval }
     end
     
     event :reject do
