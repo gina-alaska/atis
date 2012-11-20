@@ -1,4 +1,11 @@
 @import 'compass';
+
+$navbarInverseBackground: #0055bd;
+$navbarInverseBackgroundHighlight: lighten($navbarInverseBackground, 10%);
+$navbarInverseText: white;
+$navbarInverseLinkColor: white;
+$navbarInverseBrand: white;
+
 @import 'bootstrap';
 @import 'sows';
 @import 'groups';
