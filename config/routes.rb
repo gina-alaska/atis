@@ -41,9 +41,9 @@ Atis::Application.routes.draw do
   match '/auth/:service/callback' => 'services#create', as: 'auth_signin'
   match '/auth/failure' => 'services#failure'
   
-  match '/submit' => 'welcome#submit', as: 'submit_dashboard'
-  match '/review' => 'welcome#review', as: 'review_dashboard'
-  match '/admin' => 'welcome#admin', as: 'admin_dashboard'
+  match '/submit' => 'sows#submit_dashboard', as: 'submit_dashboard'
+  match '/review' => 'sows#review_dashboard', as: 'review_dashboard'
+  match '/admin' => 'sows#admin_dashboard', as: 'admin_dashboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

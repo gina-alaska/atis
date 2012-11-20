@@ -4,6 +4,8 @@
       ATIS: Award Tracking Information System
     %ul.nav.pull-right
       - if user_signed_in? 
+        %li{class: params[:controller] == 'awards' ? 'active' : '' }
+          = link_to 'Awards', awards_path
         %li{class: active_dashboard_class(:submitter) }= link_to 'Statements of work', submit_dashboard_path
         - if current_user.has_role?(:reviewer)
           %li{class: active_dashboard_class(:review)  }= link_to 'Review', review_dashboard_path         

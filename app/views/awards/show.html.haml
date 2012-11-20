@@ -1,0 +1,19 @@
+%p#notice= notice
+%p
+  %b Slug:
+  = @award.slug
+%p
+  %b Title:
+  = @award.title
+%p
+  %b Description:
+  = @award.description
+%p
+  %b Group:
+  = @award.group_id
+%p
+  %b Pi:
+  = @award.pi_id
+= link_to 'Edit', edit_award_path(@award)
+|
+\#{link_to 'Back', awards_path}

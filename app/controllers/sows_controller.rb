@@ -4,13 +4,27 @@ class SowsController < ApplicationController
   before_filter :fetch_sow, :except => [:index, :new, :create]
   
   def index
-    @sows = Sow.owner(current_user).created.all
-    @pending_review = Sow.owner(current_user).pending_review.all
   end
   
   def show
     respond_with @sow
   end
+  
+  def submit_dashboard
+    current_user.update_attribute(:active_dashboard, 'submitter')
+    redirect_to sows_path
+  end
+  
+  def review_dashboard
+    current_user.update_attribute(:active_dashboard, 'review')
+    redirect_to sows_path
+  end
+  
+  def admin_dashboard
+    current_user.update_attribute(:active_dashboard, 'admin')
+    redirect_to sows_path
+  end
+  
   
   def submit
     if @sow.submit(current_user)
@@ -18,7 +32,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = 'There was an error trying to submit statement of work for review'
-      redirect_to root_path
+      redirect_to sows_path
     end    
   end
   
@@ -27,7 +41,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_message})"
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -44,7 +58,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = "Error while trying to approve statement of work"
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -61,7 +75,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = "Error while trying to approve statement of work"
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -71,7 +85,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = "Error while trying to accept statement of work"
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -81,7 +95,7 @@ class SowsController < ApplicationController
       redirect_to @sow
     else
       flash[:error] = "Error while trying to reject statement of work"
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -116,7 +130,7 @@ class SowsController < ApplicationController
       respond_with @sow
     else
       flash[:error] = 'Unable to edit the statement of work at this time'
-      redirect_to root_path
+      redirect_to sows_path
     end
   end
   
@@ -148,9 +162,6 @@ class SowsController < ApplicationController
         p[:disciplines] << d unless d.nil?
       end
     end
-    
-    logger.info '************'
-    logger.info p.inspect
     
     p
   end
