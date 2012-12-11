@@ -90,7 +90,9 @@ class SowsController < ApplicationController
   end
   
   def reject
-    if @sow.reject(current_user)
+    notes = @sow.review_notes + "\n\n#{sow_params[:review_notes]} - _#{current_user.name_email} @ #{Time.zone.now.strftime('%F')}_"
+    
+    if @sow.reject(current_user, notes)
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow
     else
@@ -135,27 +137,36 @@ class SowsController < ApplicationController
   end
   
   def update
-    if @sow.update_attributes(sow_params)
-      flash[:success] = "Statement of work has been saved"
-      if params[:continue].to_i == 1
-        redirect_to edit_sow_path(@sow)
-      else
-        redirect_to @sow
-      end
+    if sow_params.delete(:rejected)
+      reject
     else
-      flash[:error] = "There was an error while trying to save your statement of work"
-      render :action => :edit
+      logger.info '*******'
+      logger.info sow_params.inspect
+      logger.info '*******'
+
+      if @sow.update_attributes(sow_params)
+        flash[:success] = "Statement of work has been saved"
+        if params[:continue].to_i == 1
+          redirect_to edit_sow_path(@sow)
+        else
+          redirect_to @sow
+        end
+      else
+        flash[:error] = "There was an error while trying to save your statement of work"
+        render :action => :edit
+      end
     end
   end
   
   protected
   
   def sow_params
-    p = params[:sow]
+    p = params[:sow].dup
     
     if p[:disciplines].present?
       discs = p.delete(:disciplines)
-      p[:disciplines] ||= [] 
+      p[:disciplines] = [] 
+      
       discs.each do |id|
         next if id.to_i == 0
         d = Discipline.find(id.to_i) 

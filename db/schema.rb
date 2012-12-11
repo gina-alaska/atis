@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120225105) do
+ActiveRecord::Schema.define(:version => 20121211221812) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -108,8 +108,8 @@ ActiveRecord::Schema.define(:version => 20121120225105) do
     t.string   "state"
     t.integer  "created_by"
     t.datetime "submitted_on"
-    t.integer  "submitted_by"
-    t.integer  "reviewed_by"
+    t.integer  "submitted_by_id"
+    t.integer  "reviewed_by_id"
     t.datetime "accepted_on"
     t.datetime "rejected_on"
     t.boolean  "climate_glacier_dynamics"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(:version => 20121120225105) do
     t.integer  "group_id"
     t.integer  "pi_approval_id"
     t.integer  "group_leader_approval_id"
-    t.text     "rejection_reason"
+    t.text     "review_notes"
   end
 
   create_table "users", :force => true do |t|

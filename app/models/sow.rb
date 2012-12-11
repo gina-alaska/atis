@@ -11,6 +11,8 @@ class Sow < ActiveRecord::Base
   belongs_to :group
   belongs_to :pi_approval, :class_name => 'User'
   belongs_to :group_leader_approval, :class_name => 'User'
+  belongs_to :submitted_by, :class_name => 'User'
+  belongs_to :reviewed_by, :class_name => 'User'
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -24,15 +26,17 @@ class Sow < ActiveRecord::Base
     after_transition :on => :accept do |sow, transition|
       sow.touch_date(:accepted_on)
       user = transition.args.first
-      sow.reviewed_by = user
+      sow.reviewed_by = user.id
       Activity.record(user, 'accepted', sow, user)
       Activity.record(user, 'accepted', sow, sow.user) if sow.user != user
     end
     
     after_transition :on => :reject do |sow, transition|
+      user = transition.args.shift
+      msg = transition.args.shift
+      sow.update_attributes(:reviewed_by => user, :review_notes => msg)
       sow.touch_date(:rejected_on)
-      user = transition.args.first
-      sow.reviewed_by = user
+      
       Activity.record(user, 'rejected', sow, user)
       Activity.record(user, 'rejected', sow, sow.user) if sow.user != user
     end
@@ -73,7 +77,7 @@ class Sow < ActiveRecord::Base
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
     :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
-    :disciplines, :group_id
+    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number, :user
   validates_presence_of :group_id

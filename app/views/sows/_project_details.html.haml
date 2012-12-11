@@ -1,0 +1,39 @@
+%dt Project title
+%dd
+  :markdown
+    #{sow.project_title}
+      
+%dt Statement of work
+%dd
+  :markdown
+    #{sow.statement_of_work}
+
+- if sow.collaborators.present?
+  %dt Collaborators
+  %dd
+    :markdown
+      #{sow.collaborators}
+      
+- if sow.research_milestones_and_outcomes.present?
+  %dt Milestones and outcomes
+  %dd
+    :markdown
+      #{sow.research_milestones_and_outcomes}
+  
+- if sow.accomplished_objectives.present?        
+  %dt Accomplished objectives
+  %dd
+    :markdown
+      #{sow.accomplished_objectives}
+
+- if sow.budget_justification.present?
+  %dt Budget justification
+  %dd
+    :markdown
+      #{sow.budget_justification}
+
+- if sow.review_notes.present?
+  %dt Reviewer Notes
+  %dd
+    :markdown
+      #{sow.review_notes}

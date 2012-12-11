@@ -1,17 +1,16 @@
 .row
   .span8
     %h4= @sow.project_title
-    %dl
-      .dl-horizontal
-        %p.submitter
-          = render 'submitter', sow: @sow
+    %dl.dl-horizontal
+      %p.submitter
+        = render 'submitter', sow: @sow
           
-        %p.status
-          = render 'status', sow: @sow
+      %p.status.dl-horizontal
+        = render 'status', sow: @sow
         
-        %p.dates
-          = render 'dates', sow: @sow
-      
+      %p.dates.dl-horizontal
+        = render 'dates', sow: @sow
+        
       %p.time_info
         = render 'period', sow: @sow
         
@@ -19,35 +18,7 @@
         = render 'strategic_objectives', sow: @sow
             
       %p.project_info
-        %dt Project title
-        %dd
-          :markdown
-            #{@sow.project_title}
-      
-        %dt Statement of work
-        %dd
-          :markdown
-            #{@sow.statement_of_work}
-          
-        %dt Collaborators
-        %dd
-          :markdown
-            #{@sow.collaborators}
-
-        %dt Research milestones and outcomes
-        %dd
-          :markdown
-            #{@sow.research_milestones_and_outcomes}
-          
-        %dt Accomplished objectives
-        %dd
-          :markdown
-            #{@sow.accomplished_objectives}
-
-        %dt Budget justification
-        %dd
-          :markdown
-            #{@sow.budget_justification}
+        = render 'project_details', sow: @sow
     
     #attachment_list
       %h5 Attachments
@@ -83,7 +54,7 @@
     - if current_user.has_role?(:reviewer) and @sow.reviewing?
       = sow_approval_buttons(@sow)
     
-      = link_to reject_sow_path(@sow), method: :post, class: 'btn btn-block btn-danger' do
+      = link_to '#', data: { toggle: 'modal', target: '#rejection_modal' }, class: 'btn btn-block btn-danger' do
         %i.icon-thumbs-down.icon-white
         Reject
     - if current_user.has_role?(:reviewer) and @sow.can_accept?
@@ -92,5 +63,16 @@
       = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Attach to existing award
     = render 'layouts/activity_stream', activities: @sow.activities.for(current_user)
-#rejection_modal.hide
+#rejection_modal.modal.hide.fade
+  = form_for @sow, html: { style: 'margin: 0;' } do |f|
+    = f.hidden_field :rejected, value: true
+    .modal-header
+      %button.close{data:{dismiss:"modal"}} &times;
+      %h3 Reason for rejection
+    .modal-body
+      .row-fluid
+        = f.text_area :review_notes, value: '', rows: 8, class: 'span12'
+    .modal-footer
+      = link_to 'Close', '#', class: 'btn', data: { dismiss: 'modal' }
+      = f.submit class: 'btn btn-primary'
   
