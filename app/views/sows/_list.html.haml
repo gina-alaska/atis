@@ -7,19 +7,15 @@
           = sow.state.humanize
     
         %dl.dl-horizontal
+          .submitter
+            = render 'sows/submitter', sow: sow
           .group
             = render 'sows/status', sow: sow
         
-          .dates
+        .collapse{id: "sow_body_#{sow.id}"}
+          .dates.dl-horizontal
             = render 'sows/dates', sow: sow
       
-          .submitter
-            = render 'sows/submitter', sow: sow
-            
-        .ellipsis 
-          %i.icon-chevron-down
-        
-        .collapse{id: "sow_body_#{sow.id}"}
           %p.descriptions
             %dl
               %dt Statement of work
@@ -27,6 +23,9 @@
                 :markdown
                   #{sow.statement_of_work}
       
+        .ellipsis 
+          %i.icon-chevron-down
+        
       .actions
         = link_to 'View', sow_path(sow), class: 'btn' 
             

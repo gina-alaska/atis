@@ -11,8 +11,6 @@
       %th Group
       %th Pi
       %th
-      %th
-      %th
   %tbody
   - @awards.each do |award|
     %tr
@@ -20,6 +18,8 @@
       %td= award.title
       %td= award.group.name
       %td= award.pi.name
-      %td= link_to 'Show', award, class: 'btn'
-      %td= link_to 'Edit', edit_award_path(award), class: 'btn'
-      %td= link_to 'Destroy', award, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn'
+      %td
+        %nobr
+          = link_to 'Show', award, class: 'btn'
+          = link_to 'Edit', edit_award_path(award), class: 'btn'
+          = link_to 'Destroy', award, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn'
