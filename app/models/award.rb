@@ -1,5 +1,5 @@
 class Award < ActiveRecord::Base
-  attr_accessible :description, :group_id, :pi_id, :slug, :title, :pi, :group
+  attr_accessible :description, :group_id, :pi_id, :slug, :title, :pi, :group, :mau_id, :mau, :institute
   
   state_machine :state, :initial => :created do
     event :present do
