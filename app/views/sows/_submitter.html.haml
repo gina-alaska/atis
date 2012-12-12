@@ -8,4 +8,11 @@
     .span6
       %dt Telephone
       %dd= sow.telephone
+
+- if sow.mau_id.present?      
+  %dt MAU
+  %dd= sow.mau_id
+
+%dt Institute
+%dd= sow.institute
     

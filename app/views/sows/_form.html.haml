@@ -57,6 +57,13 @@
       .control-group
         = f.label :telephone
         = f.telephone_field :telephone, class: 'span12'
+  .row-fluid
+    .span6
+      = f.label :mau_id
+      = f.text_field :mau_id, class: 'span12'    
+    .span6
+      = f.label :institute
+      = f.text_field :institute, class: 'span12'    
 
   %h4 Dates/Work periods
   .control-group

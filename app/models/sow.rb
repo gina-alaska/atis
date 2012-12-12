@@ -78,10 +78,10 @@ class Sow < ActiveRecord::Base
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
     :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
-    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes
+    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
-  validates_presence_of :group_id
+  validates_presence_of :group_id, :institute, :mau_id
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   
