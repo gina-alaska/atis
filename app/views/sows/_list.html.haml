@@ -19,8 +19,10 @@
         
       .actions
         = link_to 'View', sow_path(sow), class: 'btn' 
-            
-        - if sow.can_submit?
+
+        = link_to 'Open Award', sow.award, class: 'btn btn-info' if current_user.has_role?(:admin) and !sow.award.nil?
+        
+        - if sow.owner == current_user and sow.can_submit?
           = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
           
         - if sow.can_review? and current_user.has_role?(:reviewer) and !sow.accepted?

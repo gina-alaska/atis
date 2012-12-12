@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211221812) do
+ActiveRecord::Schema.define(:version => 20121212014541) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20121211221812) do
     t.integer  "pi_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "state"
   end
 
   create_table "disciplines", :force => true do |t|
@@ -104,7 +105,7 @@ ActiveRecord::Schema.define(:version => 20121211221812) do
     t.text     "budget_justification"
     t.string   "research_period_of_performance"
     t.integer  "other_period"
-    t.integer  "user_id"
+    t.integer  "owner_id"
     t.string   "state"
     t.integer  "created_by"
     t.datetime "submitted_on"
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20121211221812) do
     t.integer  "pi_approval_id"
     t.integer  "group_leader_approval_id"
     t.text     "review_notes"
+    t.integer  "award_id"
   end
 
   create_table "users", :force => true do |t|

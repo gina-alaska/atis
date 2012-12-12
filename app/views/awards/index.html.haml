@@ -16,8 +16,8 @@
     %tr
       %td= award.slug
       %td= award.title
-      %td= award.group.name
-      %td= award.pi.name
+      %td= award.group.try(:name_path)
+      %td= award.pi.try(:name)
       %td
         %nobr
           = link_to 'Show', award, class: 'btn'

@@ -33,4 +33,16 @@ class Group < ActiveRecord::Base
       self.name
     end
   end
+  
+  def acronym_path
+    if self.parent
+      ap = self.parent.acronym_path << self.acronym
+    elsif self.acronym
+      ap = [self.acronym]
+    else
+      ap = []
+    end
+    
+    ap.compact
+  end
 end

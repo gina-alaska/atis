@@ -80,13 +80,17 @@ class SowsController < ApplicationController
     end
   end
   
-  def accept
-    if @sow.accept(current_user)
-      flash[:success] = "Statement of work has been accepted"
-      redirect_to @sow
+  def new_award
+    if @award = Award.from_sow(@sow)
+      @sow.accept(current_user)
+      flash[:success] = "New award has been generated"
+      redirect_to edit_award_path(@award)
+    elsif @award.nil?
+      flash.now[:error] = "Error while trying to create a new award"
+      render 'show'
     else
-      flash[:error] = "Error while trying to accept statement of work"
-      redirect_to sows_path
+      flash.now[:error] = "Error while trying to create a new award"
+      render 'show'
     end
   end
   
@@ -111,7 +115,7 @@ class SowsController < ApplicationController
   
   def create
     @sow = Sow.new(sow_params)
-    @sow.user = current_user
+    @sow.owner = current_user
     
     if @sow.save
       flash[:success] = "Statement of work has been saved"

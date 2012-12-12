@@ -1,3 +1,5 @@
+- if @award and @award.errors
+  = @award.errors.full_messages
 .row
   .span8
     %h4= @sow.project_title
@@ -18,7 +20,11 @@
     = link_to sows_path, class: 'btn btn-block' do
       %i.icon-arrow-left
       Back to statements of work
-    - unless @sow.accepted? or @sow.user != current_user  
+      
+    - unless @sow.award.nil?
+      = link_to 'View Award', @sow.award, class: 'btn btn-info btn-block'
+      
+    - unless @sow.accepted? or @sow.owner != current_user  
       - if @sow.created? or @sow.editing?
         = link_to edit_sow_path(@sow), class: 'btn btn-block' do
           %i.icon-edit
@@ -28,7 +34,7 @@
           %i.icon-edit
           Edit
 
-    - if @sow.can_submit? and @sow.user == current_user
+    - if @sow.can_submit? and @sow.owner == current_user
       = link_to submit_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Submit for review
 
@@ -47,7 +53,7 @@
         %i.icon-thumbs-down.icon-white
         Reject
     - if current_user.has_role?(:reviewer) and @sow.can_accept?
-      = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
+      = link_to new_award_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Generate new award
       = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Attach to existing award
