@@ -2,23 +2,12 @@
   .span8
     %h4= @sow.project_title
     %dl.dl-horizontal
-      %p.submitter
-        = render 'submitter', sow: @sow
-          
-      %p.status.dl-horizontal
-        = render 'status', sow: @sow
-        
-      %p.dates.dl-horizontal
-        = render 'dates', sow: @sow
-        
-      %p.time_info
-        = render 'period', sow: @sow
-        
-      %p.strategic_objectives
-        = render 'strategic_objectives', sow: @sow
-            
-      %p.project_info
-        = render 'project_details', sow: @sow
+      = render 'submitter', sow: @sow
+      = render 'status', sow: @sow
+      = render 'dates', sow: @sow
+      = render 'period', sow: @sow
+      = render 'strategic_objectives', sow: @sow
+      = render 'project_details', sow: @sow
     
     #attachment_list
       %h5 Attachments
@@ -52,7 +41,7 @@
         = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
           Review
     - if current_user.has_role?(:reviewer) and @sow.reviewing?
-      = sow_approval_buttons(@sow)
+      = render 'sow_approval_buttons', sow: @sow
     
       = link_to '#', data: { toggle: 'modal', target: '#rejection_modal' }, class: 'btn btn-block btn-danger' do
         %i.icon-thumbs-down.icon-white
@@ -63,6 +52,33 @@
       = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Attach to existing award
     = render 'layouts/activity_stream', activities: @sow.activities.for(current_user)
+    
+#pi_approval_modal.modal.hide.fade
+  = form_for @sow, html: { style: 'margin: 0;' } do |f|
+    = f.hidden_field :pi_approval, value: true
+    .modal-header
+      %button.close{data:{dismiss:"modal"}} &times;
+      %h3 Reviewer Notes
+    .modal-body
+      .row-fluid
+        = f.text_area :review_notes, value: '', rows: 8, class: 'span12'
+    .modal-footer
+      = link_to 'Close', '#', class: 'btn', data: { dismiss: 'modal' }
+      = f.submit class: 'btn btn-primary'
+      
+#gl_approval_modal.modal.hide.fade
+  = form_for @sow, html: { style: 'margin: 0;' } do |f|
+    = f.hidden_field :gl_approval, value: true
+    .modal-header
+      %button.close{data:{dismiss:"modal"}} &times;
+      %h3 Reviewer Notes
+    .modal-body
+      .row-fluid
+        = f.text_area :review_notes, value: '', rows: 8, class: 'span12'
+    .modal-footer
+      = link_to 'Close', '#', class: 'btn', data: { dismiss: 'modal' }
+      = f.submit class: 'btn btn-primary'
+      
 #rejection_modal.modal.hide.fade
   = form_for @sow, html: { style: 'margin: 0;' } do |f|
     = f.hidden_field :rejected, value: true

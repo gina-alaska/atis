@@ -107,6 +107,11 @@ class Sow < ActiveRecord::Base
     self.update_attribute(field, Time.zone.now)
   end
   
+  def review_notes=(notes)
+    prev_notes = read_attribute(:review_notes) || ''
+    write_attribute(:review_notes, prev_notes + "\n\n" + notes)
+  end
+  
   def strategic_objectives
     active = []
     Sow::STRATEGIC_OBJECTIVES.each do |k,v| 

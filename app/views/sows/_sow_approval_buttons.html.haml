@@ -1,0 +1,17 @@
+- if sow.pi_approval.nil?
+  = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
+    %i.icon-thumbs-up.icon-white
+    PI approval
+- else
+  = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
+    %i.icon-ok.icon-white
+    = "PI approval by #{sow.pi_approval.name}"
+    
+- if sow.group_leader_approval.nil?
+  = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#gl_approval_modal' } do
+    %i.icon-thumbs-up.icon-white
+    Group leader approval
+- else
+  = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
+    %i.icon-ok.icon-white
+    = "Group leader approval by #{sow.group_leader_approval.name}"

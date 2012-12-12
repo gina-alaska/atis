@@ -25,7 +25,6 @@ class SowsController < ApplicationController
     redirect_to sows_path
   end
   
-  
   def submit
     if @sow.submit(current_user)
       flash[:success] = 'Statement of work has been submitted for review'
@@ -49,6 +48,7 @@ class SowsController < ApplicationController
     if @sow.group_leader_approval.nil?
       flash[:success] = "Statement of work has been approved by #{current_user.name}"
       @sow.group_leader_approval = current_user
+      @sow.review_notes = sow_params[:review_notes]
     else
       flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
       @sow.group_leader_approval = nil
@@ -66,6 +66,7 @@ class SowsController < ApplicationController
     if @sow.pi_approval.nil?
       flash[:success] = "Statement of work has been approved by #{current_user.name}"
       @sow.pi_approval = current_user
+      @sow.review_notes = sow_params[:review_notes]
     else
       flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
       @sow.pi_approval = nil
@@ -90,8 +91,6 @@ class SowsController < ApplicationController
   end
   
   def reject
-    notes = @sow.review_notes + "\n\n#{sow_params[:review_notes]} - _#{current_user.name_email} @ #{Time.zone.now.strftime('%F')}_"
-    
     if @sow.reject(current_user, notes)
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow
@@ -139,11 +138,11 @@ class SowsController < ApplicationController
   def update
     if sow_params.delete(:rejected)
       reject
+    elsif sow_params.delete(:pi_approval)
+      pi_approve
+    elsif sow_params.delete(:gl_approval)
+      group_approve
     else
-      logger.info '*******'
-      logger.info sow_params.inspect
-      logger.info '*******'
-
       if @sow.update_attributes(sow_params)
         flash[:success] = "Statement of work has been saved"
         if params[:continue].to_i == 1
@@ -162,6 +161,10 @@ class SowsController < ApplicationController
   
   def sow_params
     p = params[:sow].dup
+    
+    if p[:review_notes].present? and !p[:review_notes].empty?
+      p[:review_notes] = "#{p[:review_notes]} - _#{current_user.name_email} @ #{Time.zone.now.strftime('%F')}_"
+    end
     
     if p[:disciplines].present?
       discs = p.delete(:disciplines)
