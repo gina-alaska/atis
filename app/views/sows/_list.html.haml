@@ -2,20 +2,24 @@
   - sows.each do |sow|
     .sow
       .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
-        %h4= sow.project_title
+        %h4.title
+          = sow.project_title
+          %small= "Last updated: #{sow.updated_at.strftime('%F')}"
         .status.alert{class: sow_status_class(sow)}
           = sow.state.humanize
-    
-        %dl.dl-horizontal
-          = render 'sows/submitter', sow: sow
-          = render 'sows/status', sow: sow
+        %p.submitter= " - #{sow.first_name} #{sow.last_name} <#{sow.email}>"
+        %p.description= sow.statement_of_work
+          
+        .collapse{id: "sow_body_#{sow.id}"}
+          %dl.dl-horizontal
+            = render 'sows/submitter', sow: sow
+            = render 'sows/status', sow: sow
         
-          .collapse{id: "sow_body_#{sow.id}"}
             = render 'sows/dates', sow: sow
             = render 'sows/project_details', sow: sow
       
-          .ellipsis 
-            %i.icon-chevron-down
+        .ellipsis 
+          %i.icon-chevron-down
         
       .actions
         = link_to 'View', sow_path(sow), class: 'btn' 

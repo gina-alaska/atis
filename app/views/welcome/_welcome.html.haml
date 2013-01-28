@@ -5,4 +5,13 @@
     %p In order to use the application you must be signed in.  Please click the button below to get started
     = link_to 'Sign in', signin_path, class: 'btn btn-large btn-primary btn-block'
   - else
-    %p To get started click the Statements of work button above
+    %p Choose an options below to get started
+    .row-fluid
+      .span6
+        = link_to 'New statement of work', new_sow_path, class: 'btn btn-success btn-block btn-large'
+      .span6
+        = link_to 'View current statements of work', sows_path, class: 'btn btn-primary btn-block btn-large'
+    %br/
+    .row-fluid
+      .span6.offset3
+        = link_to 'View awards', awards_path, class: 'btn btn-block btn-large'
