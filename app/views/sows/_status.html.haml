@@ -1,22 +1,14 @@
-.row-fluid
-  .span6
-    %dt Award Group
-    %dd= sow.group.present? ? sow.group.try(:name_path) : '&nbsp;'.html_safe
-    %dt Status
-    %dd= sow.state.humanize
-  .span6
-    %dt
-      PI Approval
-    - if sow.pi_approval
-      %dd
-        Yes
-        = " (#{sow.pi_approval.name})"
-    - else
-      %dd No
-    %dt GL Approval
-    - if sow.group_leader_approval
-      %dd
-        Yes
-        = " (#{sow.group_leader_approval.name})"
-    - else
-      %dd No
+%dt Status
+%dd= sow.state.humanize
+%dt PI Approval
+- if sow.pi_approval
+  %dd= "Yes (#{sow.pi_approval.name})"
+- else
+  %dd No
+%dt 
+  %abbr{title:'Group Leader'} GL 
+  Approval
+- if sow.group_leader_approval
+  %dd= "Yes (#{sow.group_leader_approval.name})"
+- else
+  %dd No

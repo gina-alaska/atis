@@ -45,4 +45,8 @@ class Group < ActiveRecord::Base
     
     ap.compact
   end
+  
+  def to_s
+    self.name_path
+  end
 end

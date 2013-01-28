@@ -14,5 +14,8 @@
   %dd= sow.mau_id
 
 %dt Institute
-%dd= sow.institute
+%dd= sow.institute || '&nbsp;'.html_safe
+
+%dt Award Group
+%dd= sow.group || '&nbsp;'.html_safe
     

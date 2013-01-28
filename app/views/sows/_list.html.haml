@@ -7,15 +7,18 @@
           %small= "Last updated: #{sow.updated_at.strftime('%F')}"
         .status.alert{class: sow_status_class(sow)}
           = sow.state.humanize
-        %p.submitter= " - #{sow.first_name} #{sow.last_name} <#{sow.email}>"
         %p.description= sow.statement_of_work
+        %p.submitter= "by #{sow.first_name} #{sow.last_name} <#{sow.email}>"
           
         .collapse{id: "sow_body_#{sow.id}"}
-          %dl.dl-horizontal
-            = render 'sows/submitter', sow: sow
-            = render 'sows/status', sow: sow
+          %dl
+            .row-fluid
+              .span8
+                = render 'sows/submitter', sow: sow
+              .span4
+                = render 'sows/dates', sow: sow
+                = render 'sows/status', sow: sow
         
-            = render 'sows/dates', sow: sow
             = render 'sows/project_details', sow: sow
       
         .ellipsis 

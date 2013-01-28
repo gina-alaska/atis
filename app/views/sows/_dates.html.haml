@@ -1,15 +1,12 @@
-.row-fluid
-  .span6
-    %dt Created on
-    %dd= sow.created_at.strftime('%F %r')
-    - if sow.accepted_on?
-      %dt Accepted on
-      %dd= sow.accepted_on.strftime('%F %r')
-  .span6
-    - if sow.submitted_on?
-      %dt Submitted on
-      %dd= sow.submitted_on.strftime('%F %r')
-    - if sow.rejected_on?
-      %dt Rejected on
-      %dd= sow.rejected_on.strftime('%F %r')
+%dt Created
+%dd= sow.created_at.strftime('%F %r')
+- if sow.accepted_on?
+  %dt Accepted
+  %dd= sow.accepted_on.strftime('%F %r')
+- if sow.submitted_on?
+  %dt Submitted
+  %dd= sow.submitted_on.strftime('%F %r')
+- if sow.rejected_on?
+  %dt Rejected
+  %dd= sow.rejected_on.strftime('%F %r')
     
