@@ -13,5 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require bootstrap-datepicker/core
 //= require select2/select2.min
 //= require_tree .
+
+$(document).ready(function() {
+  $('[data-toggle="datepicker"]').datepicker({
+    format: 'yyyy-mm-dd', 'autoclose': true
+  })
+});
