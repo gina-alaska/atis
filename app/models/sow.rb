@@ -34,11 +34,9 @@ class Sow < ActiveRecord::Base
     end
     
     after_transition :on => :reject do |sow, transition|
-      user = transition.args.shift
-      msg = transition.args.shift
-      sow.update_attributes(:reviewed_by => user, :review_notes => msg)
       sow.touch_date(:rejected_on)
-      
+      user = transition.args.first
+      sow.reviewed_by = user      
       Activity.record(user, 'rejected', sow, user)
       Activity.record(user, 'rejected', sow, sow.owner) if sow.owner != user
     end
@@ -56,6 +54,10 @@ class Sow < ActiveRecord::Base
     
     state :accepted do
       validates_presence_of :group_id, :institute, :mau_id
+    end
+    
+    state :submitted do
+      validates_presence_of :group_id, :institute, :mau_id      
     end
     
     event :edit do

@@ -30,8 +30,12 @@ class SowsController < ApplicationController
       flash[:success] = 'Statement of work has been submitted for review'
       redirect_to @sow
     else
-      flash[:error] = 'There was an error trying to submit statement of work for review'
-      redirect_to sows_path
+      flash[:error] = "There was an error trying to submit statement of work for review<br/><ul>"
+      @sow.errors.full_messages.each do |m| 
+        flash[:error] << "<li>#{m}</li>"
+      end
+      flash[:error] << '</ul>'
+      redirect_to @sow
     end    
   end
   
@@ -39,8 +43,8 @@ class SowsController < ApplicationController
     if @sow.review(current_user)
       redirect_to @sow
     else
-      flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_message})"
-      redirect_to sows_path
+      flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_messages})"
+      redirect_to @sow
     end
   end
   
@@ -93,7 +97,11 @@ class SowsController < ApplicationController
   end
   
   def reject
-    if @sow.reject(current_user, notes)
+    @sow.reject(current_user)
+    @sow.review_notes = sow_params[:review_notes]
+    @sow.reviewed_by = current_user
+    
+    if @sow.save 
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow
     else

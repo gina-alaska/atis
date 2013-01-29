@@ -1,6 +1,10 @@
-- if @award and @award.errors
+- if @award and !@award.errors.empty?
   .alert.alert-error
     - @award.errors.full_messages.each do |e|
+      %p= e
+- if @sow and !@sow.errors.empty?
+  .alert.alert-error
+    - @sow.errors.full_messages.each do |e|
       %p= e
 .row
   .span8
@@ -20,7 +24,7 @@
       = link_to 'View Award', @sow.award, class: 'btn btn-info btn-block'
       
     - unless @sow.accepted? or @sow.owner != current_user  
-      - if @sow.created? or @sow.editing?
+      - if @sow.created? or @sow.editing? or @sow.rejected?
         = link_to edit_sow_path(@sow), class: 'btn btn-block' do
           %i.icon-edit
           Edit

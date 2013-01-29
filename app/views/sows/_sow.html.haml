@@ -1,8 +1,11 @@
 - collapse ||= false
 %h4.title
   = sow.project_title
-  %small.pull-right= "Last updated: #{sow.updated_at.strftime('%F')}"
-%p.description= sow.statement_of_work
+  %br/
+  %small= "Last updated: #{sow.updated_at.strftime('%F')}"
+%p.description
+  :markdown
+    #{sow.statement_of_work.truncate(300)}
 
 %div{id: "sow_body_#{sow.id}", class: collapse ? 'collapse' : ''}
   %dl
