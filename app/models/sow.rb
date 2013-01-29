@@ -14,6 +14,7 @@ class Sow < ActiveRecord::Base
   belongs_to :reviewed_by, :class_name => 'User'
   belongs_to :owner, :class_name => 'User'
   belongs_to :award
+  belongs_to :mau
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -53,6 +54,10 @@ class Sow < ActiveRecord::Base
       end
     end
     
+    state :accepted do
+      validates_presence_of :group_id, :institute, :mau_id
+    end
+    
     event :edit do
       transition [:created, :editing, :submitted, :rejected] => :editing
     end
@@ -66,6 +71,7 @@ class Sow < ActiveRecord::Base
     end
     
     event :accept do
+      
       transition :reviewing => :accepted, :if => lambda { |sow| sow.pi_approval and sow.group_leader_approval }
     end
     
@@ -81,7 +87,6 @@ class Sow < ActiveRecord::Base
     :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
-  validates_presence_of :group_id, :institute, :mau_id
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   

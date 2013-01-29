@@ -81,13 +81,11 @@ class SowsController < ApplicationController
   end
   
   def new_award
-    if @award = Award.from_sow(@sow)
+    @award = Award.from_sow(@sow)
+    if @award and @award.valid?
       @sow.accept(current_user)
       flash[:success] = "New award has been generated"
       redirect_to edit_award_path(@award)
-    elsif @award.nil?
-      flash.now[:error] = "Error while trying to create a new award"
-      render 'show'
     else
       flash.now[:error] = "Error while trying to create a new award"
       render 'show'

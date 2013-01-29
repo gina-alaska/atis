@@ -28,8 +28,8 @@ class Award < ActiveRecord::Base
   validates_uniqueness_of :slug
   validates_presence_of :mau_id
   validates_presence_of :institute
-  validates_presence_of :starts_at
-  validates_presence_of :ends_at
+  # validates_presence_of :starts_at
+  # validates_presence_of :ends_at
   
   after_create :add_id_to_slug
   
@@ -45,7 +45,9 @@ class Award < ActiveRecord::Base
       title: sow.project_title,
       description: sow.statement_of_work,
       group: sow.group,
-      pi: sow.owner
+      pi: sow.owner,
+      mau_id: sow.mau_id,
+      institute: sow.institute
     })
     
     award.sows << sow
