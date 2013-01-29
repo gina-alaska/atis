@@ -1,25 +1,63 @@
-.navbar
-  .navbar-inner
-    .brand Awards list
-    .pull-right= link_to 'New Award', new_award_path, class: 'btn btn-success'
-
-%table.table.table-bordered.tabled-striped.table-condensed
-  %thead
-    %tr
-      %th ID
-      %th Title
-      %th Group
-      %th Pi
-      %th
-  %tbody
-  - @awards.each do |award|
-    %tr
-      %td= award.slug
-      %td= award.title
-      %td= award.group.try(:name_path)
-      %td= award.pi.try(:name)
-      %td
-        %nobr
-          = link_to 'Show', award, class: 'btn'
-          = link_to 'Edit', edit_award_path(award), class: 'btn'
-          = link_to 'Destroy', award, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn'
+.row-fluid
+  .span9
+    .tab-content
+      #group-all.tab-pane.fade.in.active
+        %h4 All awards
+        %table.table.table-bordered.tabled-striped.table-condensed
+          %thead
+            %tr
+              %th.span7 Award
+              %th.span2 Starts
+              %th.span2 Ends
+              %th.span1 Budget
+          %tbody
+            - @awards.each do |award|
+              %tr
+                %td
+                  = link_to award.slug, award
+                  %p= award.title
+                  %small= award.pi
+                %td= award.starts_at.try(:strftime, '%F')
+                %td= award.ends_at.try(:strftime, '%F')
+                %td= number_to_currency(award.budget || 0)
+                / %td= award.status.humanize  
+  
+      - @groups.each do |g|
+        - next if g.awards.size == 0
+        .tab-pane.fade{id: dom_id(g)}
+          %h4= g
+          %table.table.table-bordered.tabled-striped.table-condensed
+            %thead
+              %tr
+                %th.span7 Award
+                %th.span2 Starts
+                %th.span2 Ends
+                %th.span1 Budget
+            %tbody
+              - g.awards.each do |award|
+                %tr
+                  %td
+                    = link_to award.slug, award
+                    %p= award.title
+                    %small= award.pi
+                  %td= award.starts_at.try(:strftime, '%F')
+                  %td= award.ends_at.try(:strftime, '%F')
+                  %td= number_to_currency(award.budget || 0)
+                  / %td= award.status.humanize
+  .span3
+    %ul.nav.nav-tabs.nav-stacked
+      %li.active
+        = link_to '#group-all', data: { toggle: 'tab' } do
+          .badge= @awards.count
+          &nbsp;
+          All
+      - @groups.each do |g|
+        - next if g.awards.size == 0
+        %li
+          = link_to "##{dom_id(g)}", data: { toggle: 'tab' } do
+            .badge= g.awards.size
+            &nbsp;
+            = g
+      
+    %br/
+    = link_to 'New Award', new_award_path, class: 'btn btn-success btn-block btn-large'

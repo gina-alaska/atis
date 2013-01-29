@@ -12,60 +12,58 @@
   }
 }
 
-.sow_list {
-  .sow {
-    position: relative;
-    border: 1px solid #ddd;
-    @include border-radius(4px);
-    background-color: #eee;
-    margin-bottom: 5px;
-    cursor: pointer;
+.sow {
+  position: relative;
+  border: 1px solid #ddd;
+  @include border-radius(4px);
+  background-color: #eee;
+  margin-bottom: 5px;
+  cursor: pointer;
     
-    &:hover {
-      background-color: #efefef;
-      border-color: #dedede;
-    }
+  &:hover {
+    background-color: #efefef;
+    border-color: #dedede;
+  }
     
-    h4 {
-      margin-right: 100px;
-    }
+  h4 {
+    margin-right: 100px;
   }
+}
   
-  .sow .title {
-    margin-bottom: 2px;
-  }
+.sow .title {
+  margin-bottom: 2px;
+}
   
-  .sow .submitter {
-    margin-left: 10px;
-  }
+.sow .submitter {
+  margin-left: 10px;
+}
   
-  .sow .description {
-    margin-left: 10px;
-  }
+.sow .description {
+  margin-left: 10px;
+}
   
-  .sow dl.dl-horizontal {
-    margin-bottom: 0;
-  }
+.sow dl.dl-horizontal {
+  margin-bottom: 0;
+}
   
-  .sow .content {
-    padding: 0 5px 5px 5px;
-  }
+.sow .content {
+  padding: 0 5px 5px 5px;
+}
 
-  .sow .actions {
-    border-top: 1px solid #ddd;
-    padding: 10px;
-    text-align: right;
-  }
+.sow .actions {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  text-align: right;
+}
 
-  .sow .status {
-    font-weight: bold;
-    position: absolute;
-    top: -1px;
-    right: -1px;
-    padding: 7px 12px;
-    border: 1px solid #ddd;
-    @include border-radius(0);
-    @include border-bottom-left-radius(4px);
-    @include border-top-right-radius(4px);
-  }
+.sow .status {
+  font-weight: bold;
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  padding: 7px 12px;
+  border: 1px solid #ddd;
+  @include border-radius(0);
+  @include border-bottom-left-radius(4px);
+  @include border-top-right-radius(4px);
 }

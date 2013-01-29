@@ -10,6 +10,8 @@ class Group < ActiveRecord::Base
   belongs_to :fiscal_coordinator, class_name: 'User'
   belongs_to :director, class_name: 'User'
   
+  has_many :awards
+  
   before_save :assign_top_group
   
   scope :top, where(:parent_id => nil)

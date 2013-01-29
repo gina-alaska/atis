@@ -5,6 +5,7 @@ class AwardsController < ApplicationController
   # GET /awards.json
   def index
     @awards = Award.all
+    @groups = Group.includes(:awards)
 
     respond_to do |format|
       format.html # index.html.erb

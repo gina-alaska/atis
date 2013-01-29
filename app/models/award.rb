@@ -1,5 +1,5 @@
 class Award < ActiveRecord::Base
-  attr_accessible :description, :group_id, :pi_id, :slug, :title, :pi, :group, :mau_id, :mau, :institute, :starts_at, :ends_at
+  attr_accessible :description, :group_id, :pi_id, :slug, :title, :pi, :group, :mau_id, :mau, :institute, :starts_at, :ends_at, :account, :budget
   
   state_machine :state, :initial => :created do
     event :present do
@@ -21,10 +21,15 @@ class Award < ActiveRecord::Base
   
   belongs_to :pi, class_name: 'User'
   belongs_to :group
+  belongs_to :mau
   has_many :sows
   
   validates_presence_of :slug
   validates_uniqueness_of :slug
+  validates_presence_of :mau_id
+  validates_presence_of :institute
+  validates_presence_of :starts_at
+  validates_presence_of :ends_at
   
   after_create :add_id_to_slug
   

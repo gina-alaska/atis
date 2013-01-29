@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128214601) do
+ActiveRecord::Schema.define(:version => 20130128235716) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -39,13 +39,15 @@ ActiveRecord::Schema.define(:version => 20130128214601) do
     t.text     "description"
     t.integer  "group_id"
     t.integer  "pi_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.string   "state"
     t.integer  "mau_id"
     t.string   "institute"
     t.datetime "starts_at"
     t.datetime "ends_at"
+    t.decimal  "budget",      :precision => 12, :scale => 2
+    t.string   "account"
   end
 
   create_table "disciplines", :force => true do |t|
@@ -68,6 +70,12 @@ ActiveRecord::Schema.define(:version => 20130128214601) do
     t.integer  "top_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+  end
+
+  create_table "maus", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "roles", :force => true do |t|

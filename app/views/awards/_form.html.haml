@@ -1,4 +1,4 @@
-= form_for(@award, html: { class: '' }) do |f|
+= form_for(@award) do |f|
   - if @award.errors.any?
     #error_explanation
       %h2
@@ -8,17 +8,21 @@
         - @award.errors.full_messages.each do |msg|
           %li= msg
   
-  .control-group.pull-right.form-horizontal
-    = f.label :slug, 'Award ID', class: 'control-label'
-    .controls
-      = f.text_field :slug, class: 'span12', readonly: true
   .clearfix
   .row-fluid.form-horizontal
-    .span6
+    .span7
+      .control-group
+        = f.label :title, class: 'control-label'
+        .controls
+          = f.text_field :title, class: 'span12'    
       .control-group
         = f.label :group_id, class: 'control-label'
         .controls
           = f.grouped_collection_select :group_id, Group.top, :all_children, :name, :id, :name_path, { :prompt => true }, { class: 'span12' }
+      .control-group
+        = f.label :pi_id, 'PI', class: 'control-label'
+        .controls
+          = f.collection_select :pi_id, User.all, :id, :name_email, { :prompt => true }, { class: 'span12' }
       .control-group
         = f.label :mau_id, 'MAU', class: 'control-label'
         .controls
@@ -27,24 +31,32 @@
         = f.label :institute, class: 'control-label'
         .controls
           = f.text_field :institute, class: 'span12'
-    .span6
+    .span5
       .control-group
-        = f.label :pi_id, 'PI', class: 'control-label'
+        = f.label :slug, 'Award ID', class: 'control-label'
         .controls
-          = f.collection_select :pi_id, User.all, :id, :name_email, { :prompt => true }, { class: 'span12' }
+          = f.text_field :slug, class: 'span12', readonly: true
       .control-group
         = f.label :starts_at, 'Start', class: 'control-label'
         .controls
-          = f.text_field :starts_at, value: @award.starts_at.strftime('%F'), class: 'span12', data: { toggle: 'datepicker' }
+          = f.text_field :starts_at, value: @award.starts_at.try(:strftime, '%F'), class: 'span12', data: { toggle: 'datepicker' }
       .control-group
         = f.label :ends_at, 'End', class: 'control-label'
         .controls
-          = f.text_field :ends_at, value: @award.ends_at.strftime('%F'), class: 'span12', data: { toggle: 'datepicker' }
-  
-  = f.label :title, class: 'control-label'
-  = f.text_field :title, class: 'span12'
-  = f.label :description
-  = f.text_area :description, class: 'span12'
-    
+          = f.text_field :ends_at, value: @award.ends_at.try(:strftime, '%F'), class: 'span12', data: { toggle: 'datepicker' }
+      .control-group
+        = f.label :account, class: 'control-label'
+        .controls
+          = f.text_field :account, class: 'span12', placeholder: 'FUND-ORG'
+      .control-group
+        = f.label :budget, class: 'control-label'
+        .controls
+          .input-prepend{style:'max-width:86%;'}
+            .add-on $
+            = f.text_field :budget, class: 'span12'
+            
   .form-actions
+    = link_to @award, class: 'btn' do
+      %i.icon-arrow-left
+      Back
     = f.submit class: 'btn btn-primary pull-right'

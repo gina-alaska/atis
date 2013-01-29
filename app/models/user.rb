@@ -25,4 +25,8 @@ class User < ActiveRecord::Base
   def name_email
     "#{self.name} <#{self.email}>"
   end
+  
+  def to_s
+    self.name_email
+  end
 end

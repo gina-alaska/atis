@@ -1,0 +1,23 @@
+<h1>Listing maus</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @maus.each do |mau| %>
+  <tr>
+    <td><%= mau.name %></td>
+    <td><%= link_to 'Show', mau %></td>
+    <td><%= link_to 'Edit', edit_mau_path(mau) %></td>
+    <td><%= link_to 'Destroy', mau, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Mau', new_mau_path %>

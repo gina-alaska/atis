@@ -1,4 +1,7 @@
 Atis::Application.routes.draw do
+  resources :maus
+
+
   resources :awards
 
   resources :groups

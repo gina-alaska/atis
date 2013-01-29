@@ -1,19 +1,40 @@
-%p#notice= notice
-%p
-  %b Slug:
-  = @award.slug
-%p
-  %b Title:
-  = @award.title
-%p
-  %b Description:
-  = @award.description
-%p
-  %b Group:
-  = @award.group_id
-%p
-  %b Pi:
-  = @award.pi_id
-= link_to 'Edit', edit_award_path(@award)
-|
-\#{link_to 'Back', awards_path}
+.row-fluid
+  .span9
+    %h4= @award.title
+      
+    %dl.dl-horizontal
+      %dt Award ID:
+      %dd= @award.slug
+      %dt PI:
+      %dd= @award.pi
+      %dt Group:
+      %dd= @award.group
+      %dt MAU:
+      %dd= @award.mau || '&nbsp;'.html_safe
+      %dt Institute:
+      %dd= @award.institute || '&nbsp;'.html_safe
+      %dt Starts:
+      %dd= @award.starts_at.try(:strftime, '%F')
+      %dt Ends:
+      %dd= @award.ends_at.try(:strftime, '%F')
+      %dt Account:
+      %dd= @award.account || '&nbsp;'.html_safe
+      %dt Budget:
+      %dd= number_to_currency(@award.budget || 0)
+      
+    %h5 Statements of Work
+    - @award.sows.each do |sow|
+      = render sow
+      
+      
+  .span3
+    = link_to awards_path, class: 'btn btn-block' do
+      %i.icon-arrow-left
+      Back to award list
+    = link_to edit_award_path(@award), class: 'btn btn-primary btn-block' do
+      %i.icon-edit.icon-white
+      Edit
+    = link_to @award, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-block' do
+      %i.icon-trash.icon-white
+      Delete
+    
