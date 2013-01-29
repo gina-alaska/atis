@@ -17,8 +17,9 @@
       %dd= @award.starts_at.try(:strftime, '%F') || '&nbsp;'.html_safe
       %dt Ends:
       %dd= @award.ends_at.try(:strftime, '%F') || '&nbsp;'.html_safe
-      %dt Account:
-      %dd= @award.account || '&nbsp;'.html_safe
+      - unless @award.account.empty?
+        %dt Account:
+        %dd= @award.account || '&nbsp;'.html_safe
       %dt Budget:
       %dd= number_to_currency(@award.budget || 0)
       
