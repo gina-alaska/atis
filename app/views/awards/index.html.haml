@@ -16,7 +16,9 @@
                 %td
                   = link_to award.slug, award
                   %p= award.title
-                  %small= award.pi
+                  %small
+                    %b PI:
+                    = award.pi
                 %td= award.starts_at.try(:strftime, '%F')
                 %td= award.ends_at.try(:strftime, '%F')
                 %td= number_to_currency(award.budget || 0)
@@ -39,7 +41,9 @@
                   %td
                     = link_to award.slug, award
                     %p= award.title
-                    %small= award.pi
+                    %small
+                      %b PI:
+                      = award.pi
                   %td= award.starts_at.try(:strftime, '%F')
                   %td= award.ends_at.try(:strftime, '%F')
                   %td= number_to_currency(award.budget || 0)
