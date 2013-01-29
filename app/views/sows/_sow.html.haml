@@ -1,34 +1,19 @@
-.sow
-  .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
-    %h4.title
-      = sow.project_title
-      %small= "Last updated: #{sow.updated_at.strftime('%F')}"
-    .status.alert{class: sow_status_class(sow)}
-      = sow.state.humanize
-    %p.description= sow.statement_of_work
-    %p.submitter= "by #{sow.first_name} #{sow.last_name} <#{sow.email}>"
-          
-    .collapse{id: "sow_body_#{sow.id}"}
-      %dl
-        .row-fluid
-          .span8
-            = render 'sows/submitter', sow: sow
-          .span4
-            = render 'sows/dates', sow: sow
-            = render 'sows/status', sow: sow
-        
-        = render 'sows/project_details', sow: sow
-      
-    .ellipsis 
-      %i.icon-chevron-down
-        
-  .actions
-    = link_to 'View', sow_path(sow), class: 'btn' 
+- collapse ||= false
+%h4.title
+  = sow.project_title
+  %small.pull-right= "Last updated: #{sow.updated_at.strftime('%F')}"
+%p.description= sow.statement_of_work
 
-    = link_to 'Open Award', sow.award, class: 'btn btn-info' if current_user.has_role?(:admin) and !sow.award.nil? and !current_page?(sow.award)
+%div{id: "sow_body_#{sow.id}", class: collapse ? 'collapse' : ''}
+  %dl
+    .row-fluid
+      .span8
+        = render 'sows/submitter', sow: sow
+        %br/
+        = render 'sows/group_info', sow: sow
+      .span4
+        = render 'sows/dates', sow: sow
+        %br/
+        = render 'sows/status', sow: sow
         
-    - if sow.owner == current_user and sow.can_submit?
-      = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
-          
-    - if sow.can_review? and current_user.has_role?(:reviewer) and !sow.accepted?
-      = link_to 'Review', review_sow_path(sow), method: 'POST', class: 'btn btn-primary'
+    = render 'sows/project_details', sow: sow

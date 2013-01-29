@@ -1,0 +1,13 @@
+- if sow.mau
+  %dt MAU
+  %dd= sow.mau
+
+%dt Institute
+%dd= sow.institute || '&nbsp;'.html_safe
+
+- if sow.award
+  %dt Award ID
+  %dd= sow.award.slug
+
+%dt Award Group
+%dd= sow.group || '&nbsp;'.html_safe

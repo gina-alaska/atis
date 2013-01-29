@@ -1,15 +1,10 @@
 - if @award and @award.errors
-  = @award.errors.full_messages
+  .alert.alert-error
+    - @award.errors.full_messages.each do |e|
+      %p= e
 .row
   .span8
-    %h4= @sow.project_title
-    %dl.dl-horizontal
-      = render 'submitter', sow: @sow
-      = render 'status', sow: @sow
-      = render 'dates', sow: @sow
-      = render 'period', sow: @sow
-      = render 'strategic_objectives', sow: @sow
-      = render 'project_details', sow: @sow
+    = render @sow
     
     #attachment_list
       %h5 Attachments

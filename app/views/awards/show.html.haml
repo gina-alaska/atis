@@ -14,9 +14,9 @@
       %dt Institute:
       %dd= @award.institute || '&nbsp;'.html_safe
       %dt Starts:
-      %dd= @award.starts_at.try(:strftime, '%F')
+      %dd= @award.starts_at.try(:strftime, '%F') || '&nbsp;'.html_safe
       %dt Ends:
-      %dd= @award.ends_at.try(:strftime, '%F')
+      %dd= @award.ends_at.try(:strftime, '%F') || '&nbsp;'.html_safe
       %dt Account:
       %dd= @award.account || '&nbsp;'.html_safe
       %dt Budget:
@@ -24,7 +24,14 @@
       
     %h5 Statements of Work
     - @award.sows.each do |sow|
-      = render sow
+      .sow
+        .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
+          .status.alert{class: sow_status_class(sow)}= sow.state.humanize
+          = render sow, collapse: true
+          .ellipsis 
+            %i.icon-chevron-down
+        .actions
+          = link_to 'View', sow_path(sow), class: 'btn' 
       
       
   .span3
