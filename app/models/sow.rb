@@ -86,7 +86,8 @@ class Sow < ActiveRecord::Base
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
     :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
-    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute
+    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute,
+    :starts_at, :ends_at
 
   validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
@@ -109,6 +110,14 @@ class Sow < ActiveRecord::Base
   
   def to_param
     "#{id}-#{self.project_title.parameterize}"
+  end
+  
+  def period_days
+    if self.period == 'other'
+      self.other_period
+    else
+      self.period.to_i
+    end
   end
   
   def touch_date(field)

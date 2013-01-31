@@ -15,8 +15,10 @@
         %br/
         = render 'sows/group_info', sow: sow
       .span4
+        = render 'sows/status', sow: sow
+        %br/
         = render 'sows/dates', sow: sow
         %br/
-        = render 'sows/status', sow: sow
+        = render 'sows/period', sow: sow
         
     = render 'sows/project_details', sow: sow

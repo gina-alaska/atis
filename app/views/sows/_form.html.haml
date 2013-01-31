@@ -65,10 +65,10 @@
       = f.label :institute
       = f.text_field :institute, class: 'span12'    
 
-  %h4 Dates/Work periods
+  %h4 Research period of performance
   .control-group
     .row-fluid
-      .span1
+      .span1.offset1
         = f.label :period
       .span2
         %label.radio
@@ -88,11 +88,14 @@
           Other
         &nbsp;
         = f.text_field :other_period, class: 'span6'
-  .row-fluid
-    .span12
-      .control-group
-        = f.label :research_period_of_performance
-        = f.text_field :research_period_of_performance, class: 'span12'
+  .control-group
+    .row-fluid.form-inline
+      .span5.offset1
+        = f.label :starts_at, 'Starts', class: 'control-label'
+        = f.text_field :starts_at, value: @sow.starts_at.try(:strftime, '%F'), class: 'span6', data: { toggle: 'datepicker' }
+      .span5
+        = f.label :ends_at, 'Ends', class: 'control-label'
+        = f.text_field :ends_at, value: @sow.ends_at.try(:strftime, '%F'), class: 'span6', data: { toggle: 'datepicker' }
         
   %h4 Other information
   .control-group

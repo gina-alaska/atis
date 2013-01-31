@@ -1,7 +1,8 @@
-%dt Period
-%dd
-  = @sow.period == 'other' ? "#{@sow.other_period}" : @sow.period
-  days
-- if @sow.research_period_of_performance.present?
-  %dt Period of performance
-  %dd= @sow.research_period_of_performance
+%dt Period of performance
+%dd= "#{sow.try(:period_days)} days"
+- if sow.starts_at?
+  %dt Starts
+  %dd= sow.starts_at.strftime('%F')
+- if sow.ends_at?
+  %dt Ends
+  %dd= sow.ends_at.strftime('%F')
