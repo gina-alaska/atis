@@ -31,10 +31,10 @@
         
   .row-fluid
     .span6
-      = f.label :group_id, 'Award group'
-      = f.select :group_id, award_group_options(sow), { prompt: "Select one" }
+      = f.label :award_group_id, 'Award group'
+      = f.select :award_group_id, award_group_options(sow), { prompt: "Select one" }
       
-  %h4 Submitter information
+  %h4 Principle Investigator
   .row-fluid
     .span5
       .control-group
@@ -101,7 +101,8 @@
   .control-group
     %label.control-label Faculty Discipline
     .controls
-      = f.select :disciplines, options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
+      = f.collection_select :disciplines, Discipline.all, :id, :name, { }, { multiple: true, class: 'select2', style: 'width:100%' }
+      / options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
     
   .control-group
     %label.control-label Indicate Strategic Objectives
@@ -129,7 +130,7 @@
   .row-fluid
     .span12
       .control-group
-        = f.label :project_title
+        = f.label :project_title, 'Title'
         = f.text_field :project_title, class: 'span12'    
     
   .row-fluid

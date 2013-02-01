@@ -5,18 +5,6 @@
     %dl.dl-horizontal
       %dt Award ID:
       %dd= @award.slug
-      %dt PI:
-      %dd= @award.pi
-      %dt Group:
-      %dd= @award.group
-      %dt MAU:
-      %dd= @award.mau || '&nbsp;'.html_safe
-      %dt Institute:
-      %dd= @award.institute || '&nbsp;'.html_safe
-      %dt Starts:
-      %dd= @award.starts_at.try(:strftime, '%F') || '&nbsp;'.html_safe
-      %dt Ends:
-      %dd= @award.ends_at.try(:strftime, '%F') || '&nbsp;'.html_safe
       - unless @award.account.empty?
         %dt Account:
         %dd= @award.account || '&nbsp;'.html_safe
@@ -26,14 +14,8 @@
     %h5 Statements of Work
     - @award.sows.each do |sow|
       .sow
-        .content{ "data-target" => "#sow_body_#{sow.id}", "data-toggle"=>"collapse" }
-          .status.alert{class: sow_status_class(sow)}= sow.state.humanize
-          = render sow, collapse: true
-          .ellipsis 
-            %i.icon-chevron-down
-        .actions
-          = link_to 'View', sow_path(sow), class: 'btn' 
-      
+        .content
+          = render sow, collapse: false      
       
   .span3
     = link_to awards_path, class: 'btn btn-block' do

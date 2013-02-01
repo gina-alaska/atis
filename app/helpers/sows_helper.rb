@@ -76,6 +76,6 @@ module SowsHelper
   def award_group_options(sow)
     # groups = sorted_group_list(Group.top)
     # groups = groups.reject { |g| g.parent.nil? }
-    option_groups_from_collection_for_select(Group.top, :all_children, :name, :id, :name_path, { selected: sow.group.try(:id) })
+    option_groups_from_collection_for_select(Group.top, :all_children, :name, :id, :name_path, { selected: sow.award_group.try(:id) })
   end
 end

@@ -1,5 +1,5 @@
 class Award < ActiveRecord::Base
-  attr_accessible :description, :group_id, :pi_id, :slug, :title, :pi, :group, :mau_id, :mau, :institute, :starts_at, :ends_at, :account, :budget
+  attr_accessible :slug, :title, :account, :budget
   
   state_machine :state, :initial => :created do
     event :present do
@@ -19,9 +19,6 @@ class Award < ActiveRecord::Base
     end
   end
   
-  belongs_to :pi, class_name: 'User'
-  belongs_to :group
-  belongs_to :mau
   has_many :sows
   
   validates_presence_of :slug
@@ -41,13 +38,7 @@ class Award < ActiveRecord::Base
     return nil unless sow.can_accept?
     
     award = Award.create({ 
-      slug: generate_slug(sow.group),
-      title: sow.project_title,
-      description: sow.statement_of_work,
-      group: sow.group,
-      pi: sow.owner,
-      mau_id: sow.mau_id,
-      institute: sow.institute
+      slug: generate_slug(sow.group)
     })
     
     award.sows << sow

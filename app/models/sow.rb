@@ -7,7 +7,7 @@ class Sow < ActiveRecord::Base
   
   has_and_belongs_to_many :disciplines
   has_many :attachments, :as => :parent, :dependent => :destroy
-  belongs_to :group
+  belongs_to :award_group, class_name: 'Group'
   belongs_to :pi_approval, :class_name => 'User'
   belongs_to :group_leader_approval, :class_name => 'User'
   belongs_to :submitted_by, :class_name => 'User'
@@ -53,11 +53,11 @@ class Sow < ActiveRecord::Base
     end
     
     state :accepted do
-      validates_presence_of :group_id, :institute, :mau_id
+      validates_presence_of :institute, :mau_id
     end
     
     state :submitted do
-      validates_presence_of :group_id, :institute, :mau_id      
+      validates_presence_of :institute, :mau_id      
     end
     
     event :edit do
@@ -86,10 +86,10 @@ class Sow < ActiveRecord::Base
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
     :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
-    :discipline_ids, :disciplines, :group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute,
+    :discipline_ids, :disciplines, :award_group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute,
     :starts_at, :ends_at
 
-  validates_presence_of :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
+  validates_presence_of :award_group_id, :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   
@@ -127,6 +127,10 @@ class Sow < ActiveRecord::Base
   def review_notes=(notes)
     prev_notes = read_attribute(:review_notes) || ''
     write_attribute(:review_notes, prev_notes + "\n\n" + notes)
+  end
+  
+  def pi
+    "#{self.first_name} #{self.last_name}"
   end
   
   def strategic_objectives

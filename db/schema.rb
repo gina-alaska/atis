@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130131205507) do
+ActiveRecord::Schema.define(:version => 20130201012816) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(:version => 20130131205507) do
     t.boolean  "resource_management"
     t.boolean  "other_strategic_objectives"
     t.string   "other_strategic_objectives_text"
-    t.integer  "group_id"
+    t.integer  "award_group_id"
     t.integer  "pi_approval_id"
     t.integer  "group_leader_approval_id"
     t.text     "review_notes"
