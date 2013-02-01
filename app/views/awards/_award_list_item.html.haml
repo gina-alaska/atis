@@ -4,8 +4,8 @@
     %p= award.title
     %small
       %b PI:
-      = award.sows.first.pi
-  %td= award.sows.first.starts_at.try(:strftime, '%F')
-  %td= award.sows.first.ends_at.try(:strftime, '%F')
+      = award.sows.first.try(:pi)
+  %td= award.sows.first.try(:starts_at).try(:strftime, '%F')
+  %td= award.sows.first.try(:ends_at).try(:strftime, '%F')
   %td= number_to_currency(award.budget || 0)
   / %td= award.status.humanize
