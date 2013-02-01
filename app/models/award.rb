@@ -23,8 +23,8 @@ class Award < ActiveRecord::Base
   
   validates_presence_of :slug
   validates_uniqueness_of :slug
-  validates_presence_of :mau_id
-  validates_presence_of :institute
+  # validates_presence_of :mau_id
+  # validates_presence_of :institute
   # validates_presence_of :starts_at
   # validates_presence_of :ends_at
   
