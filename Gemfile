@@ -16,7 +16,7 @@ gem 'pg'
 gem 'rack-cache'
 gem 'dragonfly', '~>0.9.12'
 gem 'bootstrap-datepicker-rails'
-
+gem 'axlsx_rails'
 gem 'state_machine'
 gem 'compass-rails'
 

@@ -12,17 +12,7 @@
               %th.span1 Budget
           %tbody
             - @awards.each do |award|
-              %tr
-                %td
-                  = link_to award.slug, award
-                  %p= award.title
-                  %small
-                    %b PI:
-                    = award.pi
-                %td= award.starts_at.try(:strftime, '%F')
-                %td= award.ends_at.try(:strftime, '%F')
-                %td= number_to_currency(award.budget || 0)
-                / %td= award.status.humanize  
+              = render 'award_list_item', award: award
   
       - @groups.each do |g|
         - next if g.awards.size == 0
@@ -37,17 +27,7 @@
                 %th.span1 Budget
             %tbody
               - g.awards.each do |award|
-                %tr
-                  %td
-                    = link_to award.slug, award
-                    %p= award.title
-                    %small
-                      %b PI:
-                      = award.pi
-                  %td= award.starts_at.try(:strftime, '%F')
-                  %td= award.ends_at.try(:strftime, '%F')
-                  %td= number_to_currency(award.budget || 0)
-                  / %td= award.status.humanize
+                = render 'award_list_item', award: award
   .span3
     %ul.nav.nav-tabs.nav-stacked
       %li.active
@@ -65,3 +45,4 @@
       
     %br/
     = link_to 'New Award', new_award_path, class: 'btn btn-success btn-block btn-large'
+    = link_to 'Export Awards', awards_path(format: :xlsx), class: 'btn btn-block btn-large'

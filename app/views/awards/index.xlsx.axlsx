@@ -1,0 +1,28 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Awards") do |sheet|
+  sheet.add_row ['award_id', 'protitle', 'Award_Type', 'Date', 'Start_End', 'Days', 'FName', 'LName', 'EMail', 'UAID', 'Campus', 'College', 'Acct', 'Amount']
+  currency = sheet.styles.add_style :num_fmt => 37
+  general = sheet.styles.add_style :num_fmt => 0
+  date = sheet.styles.add_style :format_code => 'mmmm dd, yyyy'
+  
+  @awards.each do |award|
+    sow = award.sows.first
+    
+    sheet.add_row [
+      award.slug, 
+      sow.project_title,
+      '',
+      Time.zone.now().try(:strftime, '%B %-d, %Y'),
+      "#{sow.starts_at.try(:strftime, '%B %-d, %Y')} - #{sow.ends_at.try(:strftime, '%B %-d, %Y')}",
+      sow.period_days,
+      sow.first_name,
+      sow.last_name,
+      sow.email,
+      sow.ua_number,
+      sow.mau,
+      sow.institute,
+      award.account, 
+      award.budget, 
+    ], :style => [general, general, general, date, general, general, general, general, general, general, general, general, general, currency]
+  end
+end
