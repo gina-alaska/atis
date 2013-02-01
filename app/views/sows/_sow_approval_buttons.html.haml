@@ -5,7 +5,7 @@
 - else
   = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
     %i.icon-ok.icon-white
-    = "#{sow.group.top.name} PI approval by #{sow.pi_approval.name}"
+    = "#{sow.award_group.top.name} PI approval by #{sow.pi_approval.name}"
     
 - if sow.group_leader_approval.nil?
   = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#gl_approval_modal' } do
