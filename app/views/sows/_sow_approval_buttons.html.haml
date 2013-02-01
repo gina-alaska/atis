@@ -14,4 +14,4 @@
 - else
   = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
     %i.icon-ok.icon-white
-    = "Group leader approval by #{sow.group_leader_approval.name}"
+    = "#{sow.award_group.name} leader approval by #{sow.group_leader_approval.name}"
