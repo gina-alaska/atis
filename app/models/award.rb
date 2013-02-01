@@ -38,7 +38,7 @@ class Award < ActiveRecord::Base
     return nil unless sow.can_accept?
     
     award = Award.create({ 
-      slug: generate_slug(sow.group)
+      slug: generate_slug(sow.award_group)
     })
     
     award.sows << sow
