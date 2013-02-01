@@ -1,13 +1,15 @@
 %dt Status
 %dd= sow.state.humanize
-%dt="#{sow.award_group.top.name} PI approval"
-- if sow.pi_approval
-  %dd= "Yes (#{sow.pi_approval.name})"
-- else
-  %dd No
-%dt 
-  = "#{sow.award_group.name} leader approval"
-- if sow.group_leader_approval
-  %dd= "Yes (#{sow.group_leader_approval.name})"
-- else
-  %dd No
+
+- unless sow.award_group.nil?
+  %dt="#{sow.award_group.top.name} PI approval"
+  - if sow.pi_approval
+    %dd= "Yes (#{sow.pi_approval.name})"
+  - else
+    %dd No
+  %dt 
+    = "#{sow.award_group.name} leader approval"
+  - if sow.group_leader_approval
+    %dd= "Yes (#{sow.group_leader_approval.name})"
+  - else
+    %dd No
