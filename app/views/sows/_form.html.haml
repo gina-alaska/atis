@@ -66,28 +66,28 @@
       = f.text_field :institute, class: 'span12'    
 
   %h4 Research period of performance
-  .control-group
-    .row-fluid
-      .span1.offset1
-        = f.label :period
-      .span2
-        %label.radio
-          = f.radio_button :period, '30'
-          30 days
-      .span2
-        %label.radio
-          = f.radio_button :period, '60'
-          60 days
-      .span2
-        %label.radio
-          = f.radio_button :period, '120'
-          120 days
-      .span4.form-inline
-        %label.radio.span4
-          = f.radio_button :period, 'other'
-          Other
-        &nbsp;
-        = f.text_field :other_period, class: 'span6'
+  / .control-group
+  /   .row-fluid
+  /     .span1.offset1
+  /       = f.label :period
+  /     .span2
+  /       %label.radio
+  /         = f.radio_button :period, '30'
+  /         30 days
+  /     .span2
+  /       %label.radio
+  /         = f.radio_button :period, '60'
+  /         60 days
+  /     .span2
+  /       %label.radio
+  /         = f.radio_button :period, '120'
+  /         120 days
+  /     .span4.form-inline
+  /       %label.radio.span4
+  /         = f.radio_button :period, 'other'
+  /         Other
+  /       &nbsp;
+  /       = f.text_field :other_period, class: 'span6'
   .control-group
     .row-fluid.form-inline
       .span5.offset1
