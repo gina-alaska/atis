@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -19,6 +19,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'axlsx_rails'
 gem 'state_machine'
 gem 'compass-rails'
+gem 'nested_form', github: 'ryanb/nested_form'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
