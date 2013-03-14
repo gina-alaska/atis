@@ -4,7 +4,11 @@ Atis::Application.routes.draw do
 
   resources :awards
 
-  resources :groups
+  resources :groups do
+    member do
+      get :sow_fields
+    end
+  end
 
   resources :disciplines
 

@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top
+  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top, :strategic_objectives_attributes
   
   belongs_to :parent, class_name: 'Group'
   belongs_to :top, class_name: 'Group'
@@ -11,6 +11,9 @@ class Group < ActiveRecord::Base
   belongs_to :director, class_name: 'User'
   
   has_many :awards
+  
+  has_many :strategic_objectives, :dependent => :destroy
+  accepts_nested_attributes_for :strategic_objectives, :allow_destroy => true, :reject_if => proc { |attributes| attributes['name'].blank? }
   
   before_save :assign_top_group
   

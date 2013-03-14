@@ -15,6 +15,7 @@
 //= require bootstrap
 //= require bootstrap-datepicker/core
 //= require select2/select2.min
+//= require jquery_nested_form
 //= require_tree .
 
 $(document).ready(function() {

@@ -1,0 +1,7 @@
+.control-group
+  = f.label :name, class: 'control-label'
+  .controls
+    .input-append
+      = f.text_field :name, class: 'span12'
+      = f.link_to_remove class: 'btn btn-danger addon' do
+        %i.icon-minus.icon-white

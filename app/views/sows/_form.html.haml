@@ -34,129 +34,103 @@
       = f.label :award_group_id, 'Award group'
       = f.select :award_group_id, award_group_options(sow), { prompt: "Select one" }
       
-  %h4 Principle Investigator
-  .row-fluid
-    .span5
-      .control-group
-        = f.label :first_name
-        = f.text_field :first_name, class: 'span12'
-    .span5
-      .control-group
-        = f.label :last_name
-        = f.text_field :last_name, class: 'span12'
-    .span2
-      .control-group
-        = f.label :ua_number, 'UA #'
-        = f.text_field :ua_number, class: 'span12'
-  .row-fluid
-    .span6
-      .control-group
-        = f.label :email
-        = f.email_field :email, class: 'span12'
-    .span6
-      .control-group
-        = f.label :telephone
-        = f.telephone_field :telephone, class: 'span12'
-  .row-fluid
-    .span6
-      = f.label :mau_id
-      = f.text_field :mau_id, class: 'span12'    
-    .span6
-      = f.label :institute
-      = f.text_field :institute, class: 'span12'    
-
-  %h4 Research period of performance
-  / .control-group
-  /   .row-fluid
-  /     .span1.offset1
-  /       = f.label :period
-  /     .span2
-  /       %label.radio
-  /         = f.radio_button :period, '30'
-  /         30 days
-  /     .span2
-  /       %label.radio
-  /         = f.radio_button :period, '60'
-  /         60 days
-  /     .span2
-  /       %label.radio
-  /         = f.radio_button :period, '120'
-  /         120 days
-  /     .span4.form-inline
-  /       %label.radio.span4
-  /         = f.radio_button :period, 'other'
-  /         Other
-  /       &nbsp;
-  /       = f.text_field :other_period, class: 'span6'
-  .control-group
-    .row-fluid.form-inline
+  %fieldset
+    %legend Principle Investigator
+    .row-fluid
+      .span5
+        .control-group
+          = f.label :first_name
+          = f.text_field :first_name, class: 'span12'
+      .span5
+        .control-group
+          = f.label :last_name
+          = f.text_field :last_name, class: 'span12'
+      .span2
+        .control-group
+          = f.label :ua_number, 'UA #'
+          = f.text_field :ua_number, class: 'span12'
+    .row-fluid
+      .span6
+        .control-group
+          = f.label :email
+          = f.email_field :email, class: 'span12'
+      .span6
+        .control-group
+          = f.label :telephone
+          = f.telephone_field :telephone, class: 'span12'
+    .row-fluid
+      .span6
+        .control-group
+          = f.label :mau_id, class: 'control-label'
+          .controls
+            = f.text_field :mau_id, class: 'span12'    
+      .span6
+        .control-group
+          = f.label :institute, class: 'control-label'
+          .controls
+            = f.text_field :institute, class: 'span12'    
+              
+    .row-fluid
+      .span12
+        .control-group
+          %label.control-label Faculty Discipline
+          .controls
+            = f.collection_select :disciplines, Discipline.all, :id, :name, { }, { multiple: true, class: 'select2', style: 'width:100%' }
+            / options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
+    
+        %label.control-label Indicate Strategic Objectives
+        #strategic_objectives
+          - if sow.award_group and sow.award_group.strategic_objectives.count > 0
+            = render 'groups/strategic_objective_sow_fields', group: sow.award_group, other_value: sow.other_strategic_objectives_text
+          - else
+            .alert.alert-info Select an award group to see the list of strategic objectives
+            
+  %fieldset.form-inline
+    %legend Research period of performance
+    .row-fluid
       .span5.offset1
         = f.label :starts_at, 'Starts', class: 'control-label'
         = f.text_field :starts_at, value: @sow.starts_at.try(:strftime, '%F'), class: 'span6', data: { toggle: 'datepicker' }
       .span5
         = f.label :ends_at, 'Ends', class: 'control-label'
         = f.text_field :ends_at, value: @sow.ends_at.try(:strftime, '%F'), class: 'span6', data: { toggle: 'datepicker' }
-        
-  %h4 Other information
-  .control-group
-    %label.control-label Faculty Discipline
-    .controls
-      = f.collection_select :disciplines, Discipline.all, :id, :name, { }, { multiple: true, class: 'select2', style: 'width:100%' }
-      / options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
-    
-  .control-group
-    %label.control-label Indicate Strategic Objectives
-    .row-fluid
-      .span4
-        %label.checkbox
-          = f.check_box :climate_glacier_dynamics
-          Climate/Glacier Dynamics
-      .span4
-        %label.checkbox
-          = f.check_box :ecosystem_variability
-          Ecosystem Variability
-      .span4
-        %label.checkbox
-          = f.check_box :resource_management
-          Resource Management
+
+  %fieldset
+    %legend Project information
     .row-fluid
       .span12
-        %label.checkbox.span2
-          = f.check_box :other_strategic_objectives
-          Other
-        = f.text_field :other_strategic_objectives_text, class: 'span6'
+        .control-group
+          = f.label :project_title, 'Title'
+          = f.text_field :project_title, class: 'span12'    
     
-  %h4 Project information
-  .row-fluid
-    .span12
-      .control-group
-        = f.label :project_title, 'Title'
-        = f.text_field :project_title, class: 'span12'    
-    
-  .row-fluid
-    .span12
-      .control-group
-        = f.label :statement_of_work
-        = f.text_area :statement_of_work, rows: 10, class: 'span12'
+        .control-group
+          = f.label :statement_of_work
+          = f.text_area :statement_of_work, rows: 10, class: 'span12'
       
-      .control-group
-        = f.label :collaborators
-        = f.text_area :collaborators, rows: 10, class: 'span12'
+        .control-group
+          = f.label :collaborators
+          = f.text_area :collaborators, rows: 10, class: 'span12'
 
-      .control-group
-        = f.label :research_milestones_and_outcomes
-        = f.text_area :research_milestones_and_outcomes, rows: 10, class: 'span12'
+        .control-group
+          = f.label :research_milestones_and_outcomes
+          = f.text_area :research_milestones_and_outcomes, rows: 10, class: 'span12'
 
-      .control-group
-        = f.label :accomplished_objectives
-        = f.text_area :accomplished_objectives, rows: 10, class: 'span12'
+        .control-group
+          = f.label :accomplished_objectives
+          = f.text_area :accomplished_objectives, rows: 10, class: 'span12'
 
-      .control-group
-        = f.label :budget_justification
-        = f.text_area :budget_justification, rows: 10, class: 'span12'
+        .control-group
+          = f.label :budget_justification
+          = f.text_area :budget_justification, rows: 10, class: 'span12'
   .row-fluid
     .span12
       = link_to sows_path, class: 'btn' do
         %i.icon-arrow-left
         Cancel
-      = f.submit 'Save', class: 'btn btn-primary pull-right'          
+      = f.submit 'Save', class: 'btn btn-primary pull-right'
+      
+:javascript
+  $('select#sow_award_group_id').on('change', function() {
+    var id = $(this).find('option:selected').val();
+    $('#strategic_objectives').load("#{groups_path}/"+id+"/sow_fields")
+  });
