@@ -44,7 +44,7 @@ class MausController < ApplicationController
 
     respond_to do |format|
       if @mau.save
-        format.html { redirect_to @mau, notice: 'Mau was successfully created.' }
+        format.html { redirect_to maus_path, notice: 'Mau was successfully created.' }
         format.json { render json: @mau, status: :created, location: @mau }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class MausController < ApplicationController
 
     respond_to do |format|
       if @mau.update_attributes(params[:mau])
-        format.html { redirect_to @mau, notice: 'Mau was successfully updated.' }
+        format.html { redirect_to maus_path, notice: 'Mau was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

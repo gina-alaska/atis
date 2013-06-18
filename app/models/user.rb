@@ -1,10 +1,14 @@
 class User < ActiveRecord::Base
   has_many :services, :dependent => :destroy
-  has_and_belongs_to_many :roles
+  # has_and_belongs_to_many :roles
   has_many :sows
   has_many :activities, as: 'subject', :dependent => :destroy
   
+  has_one :membership, class_name: 'Member'
+  
   attr_accessible :email, :name
+  
+  delegate :roles, to: :membership
   
   def has_role?(role)
     if role = Role.where(name: role).first

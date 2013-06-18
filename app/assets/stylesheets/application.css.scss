@@ -21,6 +21,12 @@ $navbarInverseBrand: white;
   height: 39px;
 }
 
+.table-title {
+  font-size:1.5em; 
+  padding-top: 5px;
+  @extend .pull-left;
+}
+
 .user_button a {
   background: no-repeat;
   .name {

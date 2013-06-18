@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
       @current_user ||= User.find_by_id(session[:user_id]) if session[:user_id]  
     end
     
+    def current_member
+      @current_member ||= (current_user.try(:membership) || Member.new)
+    end
+    
     def user_signed_in?
       return true if current_user 
     end

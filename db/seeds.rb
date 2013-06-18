@@ -9,4 +9,15 @@
 Role.create(name: 'admin')
 Role.create(name: 'reviewer')
 
-Group.create(name: 'EPSCoR', acronym: 'EP')
+g = Group.create(name: 'EPSCoR', acronym: 'EP')
+
+Group.create(name: 'Northern', acronym: 'NTC', parent: g)
+Group.create(name: 'Southcentral', acronym: 'SCTC', parent: g )
+Group.create(name: 'Southeast', acronym: 'SETC', parent: g)
+Group.create(name: 'Cyber Infrastructure', acronym: 'CIS', parent: g)
+Group.create(name: 'EOD', acronym: 'EOD', parent: g)
+Group.create(name: 'Other', acronym: 'OTHER', parent: g)
+
+[
+  'University of Alaska Fairbanks', 'University of Alaska Anchorage', 'University of Alaska Southeast', 
+  'Kenai Peninsula College'].each { |m| Mau.create(name: m) }

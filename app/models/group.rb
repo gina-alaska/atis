@@ -1,5 +1,6 @@
 class Group < ActiveRecord::Base
-  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top, :strategic_objectives_attributes
+  attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top, :strategic_objectives_attributes,
+    :parent
   
   belongs_to :parent, class_name: 'Group'
   belongs_to :top, class_name: 'Group'

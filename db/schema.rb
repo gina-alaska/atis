@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130313223045) do
+ActiveRecord::Schema.define(:version => 20130618001806) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -61,6 +61,13 @@ ActiveRecord::Schema.define(:version => 20130313223045) do
     t.integer "discipline_id"
   end
 
+  create_table "group_members", :force => true do |t|
+    t.integer  "member_id"
+    t.integer  "group_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.string   "acronym"
@@ -76,6 +83,19 @@ ActiveRecord::Schema.define(:version => 20130313223045) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "members", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "members_roles", :id => false, :force => true do |t|
+    t.integer "member_id"
+    t.integer "role_id"
   end
 
   create_table "roles", :force => true do |t|

@@ -1,0 +1,20 @@
+%h2 Listing members
+%table.table.table-bordered.table-striped.table-condensed
+  %thead
+    %tr
+      %th{colspan:4}
+        = link_to 'New Member', new_member_path, class: 'btn btn-success pull-right'
+    %tr
+      %th Name
+      %th Email
+      %th Roles
+      %th Actions
+  %tbody
+    - @members.each do |member|
+      %tr
+        %td= member.name
+        %td= member.email
+        %td= member.roles.join(', ')
+        %td
+          = link_to 'Edit', edit_member_path(member), class: 'btn'
+          = link_to 'Destroy', member, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

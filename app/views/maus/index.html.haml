@@ -1,0 +1,20 @@
+%table.table.table-bordered.table-striped.table-condensed
+  %thead
+    %tr
+      %th{colspan:2}
+        .table-title{ style:'' } Listing maus
+        .pull-right
+          = link_to new_mau_path, class: 'btn btn-success' do
+            %i.icon-plus.icon-white
+            New MAU
+    %tr
+      %th Name
+      %th Actions
+  %tbody
+    - @maus.each do |mau|
+      %tr
+        %td= mau.name
+        %td
+          .btn-group
+            = link_to 'Edit', edit_mau_path(mau), class: 'btn'
+            = link_to 'Destroy', mau, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

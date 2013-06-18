@@ -1,0 +1,31 @@
+= form_for(@member) do |f|
+  - if @member.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@member.errors.count, "error")
+        prohibited this member from being saved:
+      %ul
+        - @member.errors.full_messages.each do |msg|
+          %li= msg
+  .control-group
+    = f.label :name, class: 'control-label'
+    = f.text_field :name, class: 'span12'
+  .control-group
+    = f.label :email, class: 'control-label'
+    = f.text_field :email, class: 'span12'
+  
+  %h4 Roles
+  .row-fluid
+    .span10
+      .offset1
+        = f.fields_for :roles do |rf|
+          - Role.order('name ASC').each do |role|
+            %label.checkbox
+              = rf.check_box role.name.to_sym, { checked: @member.roles.include?(role) }
+              = role.name.humanize  
+    
+  .form-actions
+    = link_to members_path, class: 'btn' do
+      %i.icon-arrow-left
+      Back
+    = f.submit class: 'btn btn-primary pull-right'
