@@ -19,6 +19,7 @@ class Sow < ActiveRecord::Base
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
       sow.touch_date(:submitted_on)
+      sow.touch_date(:rejected_on, nil)
       user = transition.args.first
       sow.submitted_by = user
       Activity.record(user, 'submitted for review', sow, user)
@@ -44,6 +45,8 @@ class Sow < ActiveRecord::Base
     before_transition :on => :edit do |sow, transition|
       sow.pi_approval = nil
       sow.group_leader_approval = nil
+      sow.rejected_on = nil
+      sow.save!
       
       user = transition.args.first
       unless sow.editing?
@@ -89,7 +92,7 @@ class Sow < ActiveRecord::Base
     :discipline_ids, :disciplines, :award_group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute,
     :starts_at, :ends_at
 
-  validates_presence_of :award_group_id, :first_name, :last_name, :email, :period, :project_title, :statement_of_work, :ua_number
+  validates_presence_of :award_group_id, :first_name, :last_name, :email, :project_title, :statement_of_work, :ua_number
   validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
   
   
@@ -120,8 +123,8 @@ class Sow < ActiveRecord::Base
     end
   end
   
-  def touch_date(field)
-    self.update_attribute(field, Time.zone.now)
+  def touch_date(field, date = Time.zone.now)
+    self.update_attribute(field, date)
   end
   
   def review_notes=(notes)

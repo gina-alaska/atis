@@ -1,4 +1,4 @@
-#header.navbar.navbar-static-top.navbar-inverse
+#header.navbar.navbar-fixed-top.navbar-inverse
   .navbar-inner
     = link_to root_url, class: 'brand' do
       ATIS: Award Tracking Information System
@@ -18,7 +18,7 @@
               %b.caret
             %ul.dropdown-menu
               %li{class: params[:controller] == 'groups' ? 'active' : ''}= link_to 'Award Groups', groups_path
-              %li{class: params[:controller] == 'disciplines' ? 'active' : ''}= link_to 'Disciplines', disciplines_path
+              / %li{class: params[:controller] == 'disciplines' ? 'active' : ''}= link_to 'Disciplines', disciplines_path
               %li{class: params[:controller] == 'maus' ? 'active' : ''}= link_to 'MAUS', maus_path
               %li{class: params[:controller] == 'members' ? 'active' : ''}= link_to 'Members', members_path
               %li{class: active_dashboard_class(:admin)  }= link_to 'Statements of Work', admin_dashboard_path

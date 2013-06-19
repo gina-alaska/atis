@@ -15,6 +15,8 @@
       = render 'attachments/list', attachments: @sow.attachments
     
   .span4
+    = render 'sow_steps'
+  
     %h4 Actions
     = link_to sows_path, class: 'btn btn-block' do
       %i.icon-arrow-left

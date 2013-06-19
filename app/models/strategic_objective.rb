@@ -1,5 +1,5 @@
 class StrategicObjective < ActiveRecord::Base
-  attr_accessible :name
+  attr_accessible :name, :group, :group_id
   
   belongs_to :group
   

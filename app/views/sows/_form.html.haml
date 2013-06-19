@@ -29,11 +29,6 @@
         = label_tag :rejected_on
         = sow.rejected_on.strftime('%F %r')
         
-  .row-fluid
-    .span6
-      = f.label :award_group_id, 'Award group'
-      = f.select :award_group_id, award_group_options(sow), { prompt: "Select one" }
-      
   %fieldset
     %legend Principle Investigator
     .row-fluid
@@ -61,9 +56,9 @@
     .row-fluid
       .span6
         .control-group
-          = f.label :mau_id, class: 'control-label'
+          = f.label :mau_id, 'MAU', class: 'control-label'
           .controls
-            = f.text_field :mau_id, class: 'span12'    
+            = f.collection_select :mau_id, Mau.all, :id, :name, { prompt: 'Please select an MAU' }, { class: 'span12' }
       .span6
         .control-group
           = f.label :institute, class: 'control-label'
@@ -71,19 +66,15 @@
             = f.text_field :institute, class: 'span12'    
               
     .row-fluid
-      .span12
+      .span6
         .control-group
-          %label.control-label Faculty Discipline
+          = f.label :award_group_id, 'Award group', class: 'control-label'
           .controls
-            = f.collection_select :disciplines, Discipline.all, :id, :name, { }, { multiple: true, class: 'select2', style: 'width:100%' }
-            / options_from_collection_for_select(Discipline.all, :id, :name, sow.discipline_ids), {}, { class: 'select2', style: 'width: 100%', multiple: true }
-    
+            = f.select :award_group_id, award_group_options(sow), { prompt: "Select one" }, { class: 'span12' }
+      .span6
         %label.control-label Indicate Strategic Objectives
         #strategic_objectives
-          - if sow.award_group and sow.award_group.strategic_objectives.count > 0
-            = render 'groups/strategic_objective_sow_fields', group: sow.award_group, other_value: sow.other_strategic_objectives_text
-          - else
-            .alert.alert-info Select an award group to see the list of strategic objectives
+          = render 'groups/strategic_objective_sow_fields', group: sow.award_group, other_value: sow.other_strategic_objectives_text
             
   %fieldset.form-inline
     %legend Research period of performance
@@ -127,7 +118,7 @@
       = link_to sows_path, class: 'btn' do
         %i.icon-arrow-left
         Cancel
-      = f.submit 'Save', class: 'btn btn-primary pull-right'
+      = f.submit class: 'btn btn-primary pull-right'
       
 :javascript
   $('select#sow_award_group_id').on('change', function() {

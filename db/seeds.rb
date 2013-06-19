@@ -11,13 +11,35 @@ Role.create(name: 'reviewer')
 
 g = Group.create(name: 'EPSCoR', acronym: 'EP')
 
-Group.create(name: 'Northern', acronym: 'NTC', parent: g)
-Group.create(name: 'Southcentral', acronym: 'SCTC', parent: g )
-Group.create(name: 'Southeast', acronym: 'SETC', parent: g)
-Group.create(name: 'Cyber Infrastructure', acronym: 'CIS', parent: g)
-Group.create(name: 'EOD', acronym: 'EOD', parent: g)
-Group.create(name: 'Other', acronym: 'OTHER', parent: g)
+objectives = ['Climate/Glacier Dynamics', 'Ecosystem Variability', 'Resource Management', 'Other']
+
+ng = Group.create(name: 'Northern', acronym: 'NTC', parent: g)
+objectives.each { |m| StrategicObjective.create(name: m, group: ng) }
+
+ng = Group.create(name: 'Southcentral', acronym: 'SCTC', parent: g )
+objectives.each { |m| StrategicObjective.create(name: m, group: ng) }
+
+ng = Group.create(name: 'Southeast', acronym: 'SETC', parent: g)
+objectives.each { |m| StrategicObjective.create(name: m, group: ng) }
+
+ng = Group.create(name: 'Cyber Infrastructure', acronym: 'CIS', parent: g)
+[
+  'Resilience and SES Theory (Modeling and Assessments)',
+  'Adaptive Capacity', 'Delivery of Research Findings',
+  'CANSES', 'Test Case Related Components', 'Other'
+].each { |m| StrategicObjective.create(name: m, group: ng) }
+
+ng = Group.create(name: 'EOD', acronym: 'EOD', parent: g)
+[ 
+  'Education','Outreach','Diversity','EOD South Central Test Case','EOD Northern Test Case',
+  'EOD South East Test Case','Other'
+].each { |m| StrategicObjective.create(name: m, group: ng) }
+
+ng = Group.create(name: 'Other', acronym: 'OTHER', parent: g)
+[ 'Other' ].each { |m| StrategicObjective.create(name: m, group: ng) }
+
 
 [
   'University of Alaska Fairbanks', 'University of Alaska Anchorage', 'University of Alaska Southeast', 
-  'Kenai Peninsula College'].each { |m| Mau.create(name: m) }
+  'Kenai Peninsula College'
+].each { |m| Mau.create(name: m) }

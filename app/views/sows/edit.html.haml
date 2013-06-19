@@ -1,12 +1,15 @@
-%h2 Edit statement of work
 .row
   .span8
+    %h2 Edit statement of work
     = render 'form', sow: @sow
   .span4
-    %h4 Action
-    = link_to sow_path(@sow), class: 'btn btn-block' do
-      %i.icon-arrow-left
-      Back
-    = link_to 'Save statement of work', '#', "data-submit" => "form.sow_form", class: 'btn btn-primary btn-block'
+    .affix{ style: 'width: 300px;' }
+      = render 'sow_steps'
+    
+      %h4 Action
+      = link_to sow_path(@sow), class: 'btn btn-block' do
+        %i.icon-arrow-left
+        Back
+      = link_to 'Save statement of work', '#', "data-submit" => "form.sow_form", class: 'btn btn-primary btn-block'
       
-    = render 'layouts/activity_stream', activities: @sow.activities
+      / = render 'layouts/activity_stream', activities: @sow.activities
