@@ -27,11 +27,11 @@ stderr_path "#{working_directory}/log/unicorn.stderr.log"
 stdout_path "#{working_directory}/log/unicorn.stdout.log"
 # end
 
-pid "#{working_directory}/tmp/unicorn.my_site.pid"
+pid "#{working_directory}/tmp/pids/unicorn.pid"
 
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
-listen "#{working_directory}/tmp/my_site.socket", :backlog => 64
+listen "#{working_directory}/tmp/sockets/unicorn.socket", :backlog => 64
 
 
 before_fork do |server, worker|
@@ -43,7 +43,7 @@ before_fork do |server, worker|
 
   # Before forking, kill the master process that belongs to the .oldbin PID.
   # This enables 0 downtime deploys.
-  old_pid = "#{working_directory}/tmp/unicorn.my_site.pid.oldbin"
+  old_pid = "#{working_directory}/tmp/pids/unicorn.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
