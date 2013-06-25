@@ -20,9 +20,9 @@ gem 'state_machine'
 gem 'compass-rails'
 gem 'nested_form', github: 'ryanb/nested_form'
 
-group :development do
-  gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
-end
+# group :development do
+#   gem 'ruby-graphviz', :require => 'graphviz' # Optional: only required for graphing
+# end
 
 # Gems used only for assets and not required
 # in production environments by default.
