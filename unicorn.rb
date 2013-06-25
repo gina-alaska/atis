@@ -15,9 +15,10 @@ timeout 30
 # Production specific settings
 # if env == "production"
 root_path = "/home/webdev/atis"
+
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
-working_directory "#{root_path}/current"
+working_directory = "#{root_path}/current"
 
 # feel free to point this anywhere accessible on the filesystem
 user 'webdev', 'webdev'
