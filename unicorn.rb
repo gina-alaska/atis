@@ -13,25 +13,25 @@ preload_app true
 timeout 30
 
 # Production specific settings
-if env == "production"
-  root_path = "/home/webdev/atis"
-  # Help ensure your application will always spawn in the symlinked
-  # "current" directory that Capistrano sets up.
-  working_directory "#{root_path}/current"
+# if env == "production"
+root_path = "/home/webdev/atis"
+# Help ensure your application will always spawn in the symlinked
+# "current" directory that Capistrano sets up.
+working_directory "#{root_path}/current"
 
-  # feel free to point this anywhere accessible on the filesystem
-  user 'webdev', 'webdev'
-  shared_path = "#{root_path}/shared"
+# feel free to point this anywhere accessible on the filesystem
+user 'webdev', 'webdev'
+shared_path = "#{root_path}/shared"
 
-  stderr_path "#{shared_path}/log/unicorn.stderr.log"
-  stdout_path "#{shared_path}/log/unicorn.stdout.log"
-end
+stderr_path "#{working_directory}/log/unicorn.stderr.log"
+stdout_path "#{working_directory}/log/unicorn.stdout.log"
+# end
 
-pid "#{shared_path}/tmp/unicorn.my_site.pid"
+pid "#{working_directory}/tmp/unicorn.my_site.pid"
 
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
-listen "#{shared_path}/tmp/my_site.socket", :backlog => 64
+listen "#{working_directory}/tmp/my_site.socket", :backlog => 64
 
 
 before_fork do |server, worker|
@@ -43,7 +43,7 @@ before_fork do |server, worker|
 
   # Before forking, kill the master process that belongs to the .oldbin PID.
   # This enables 0 downtime deploys.
-  old_pid = "#{shared_path}/tmp/unicorn.my_site.pid.oldbin"
+  old_pid = "#{working_directory}/tmp/unicorn.my_site.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
