@@ -1,24 +1,29 @@
 - collapse ||= false
-%h4.title
-  = sow.project_title
-  %br/
-  %small= "Last updated: #{sow.updated_at.strftime('%F')}"
+%h4.title= sow.project_title
 %p.description
   :markdown
     #{sow.statement_of_work.truncate(300)}
 
 %div{id: "sow_body_#{sow.id}", class: collapse ? 'collapse' : ''}
   %dl
-    .row-fluid
-      .span8
+    %fieldset
+      %legend Principle Investigator
+      .dl-horizontal
         = render 'sows/submitter', sow: sow
-        %br/
         = render 'sows/group_info', sow: sow
-      .span4
-        = render 'sows/status', sow: sow
-        %br/
-        = render 'sows/dates', sow: sow
-        %br/
-        = render 'sows/period', sow: sow
-        
-    = render 'sows/project_details', sow: sow
+    .row-fluid
+      .span6
+        %fieldset
+          %legend Status
+          .dl-horizontal
+            = render 'sows/status', sow: sow
+      .span6
+        %fieldset
+          %legend Dates
+          .dl-horizontal
+            = render 'sows/dates', sow: sow
+            = render 'sows/period', sow: sow
+    
+    %fieldset
+      %legend Project Information
+      = render 'sows/project_details', sow: sow

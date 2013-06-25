@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   
   belongs_to :changed_item, polymorphic: true
   belongs_to :subject, polymorphic: true
-  belongs_to :owner, :class_name => 'User'
+  belongs_to :owner, :class_name => 'Member'
   
   def self.record(sub, verb, item = nil, owner = nil)
     self.create(subject: sub, verb: verb, changed_item: item, owner: owner)

@@ -1,4 +1,14 @@
 module SowsHelper
+  def sow_approval_status(sow, group)
+    if sow.rejected?
+      'error'
+    elsif !group.nil? and sow.approvals.for(group).any?
+      'success'
+    else
+      'warning'
+    end
+  end
+  
   def sow_status_class(sow)
     case sow.state.to_sym
     when :editing
@@ -23,7 +33,7 @@ module SowsHelper
       @sow_counts[user.id] ||= {}
       user_counts = @sow_counts[user.id]
     
-      sow = Sow.owner(current_user) 
+      sow = Sow.owner(current_member) 
     end
     
     case state.to_sym

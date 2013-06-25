@@ -3,8 +3,8 @@
     #sowtabs-content.tab-content
       #active.tab-pane.active
         %h2 All statements of work
-        - if sow_counts_for(current_user, :active) > 0
-          = render 'sows/list', sows: Sow.owner(current_user).all
+        - if sow_counts_for(current_member, :active) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).all
         - else
           .hero-unit
             %h3 No active statements of work found
@@ -12,8 +12,8 @@
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #unsubmitted.tab-pane
         %h2 Un-submitted statements of work
-        - if sow_counts_for(current_user, :unsubmitted) > 0
-          = render 'sows/list', sows: Sow.owner(current_user).unsubmitted.all
+        - if sow_counts_for(current_member, :unsubmitted) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).unsubmitted.all
         - else
           .hero-unit
             %h3 No un-submitted statements of work found
@@ -21,8 +21,8 @@
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #submitted.tab-pane
         %h2 Statements of work pending review 
-        - if sow_counts_for(current_user, :submitted) > 0
-          = render 'sows/list', sows: Sow.owner(current_user).submitted.all
+        - if sow_counts_for(current_member, :submitted) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).submitted.all
         - else
           .hero-unit
             %h3 No submitted statements of work found
@@ -32,8 +32,8 @@
             
       #accepted.tab-pane
         %h2 Accepted statements of work
-        - if sow_counts_for(current_user, :accepted) > 0
-          = render 'sows/list', sows: Sow.owner(current_user).accepted.all
+        - if sow_counts_for(current_member, :accepted) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).accepted.all
         - else
           .hero-unit
             %h3 No accepted statements of work found
@@ -41,8 +41,8 @@
             
       #rejected.tab-pane
         %h2 Rejected statements of work
-        - if sow_counts_for(current_user, :rejected) > 0
-          = render 'sows/list', sows: Sow.owner(current_user).rejected.all
+        - if sow_counts_for(current_member, :rejected) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).rejected.all
         - else
           .hero-unit
             %h3 No rejected statements of work
@@ -53,23 +53,23 @@
       %li.active
         = link_to '#active', "data-toggle" => "tab" do
           All
-          = sow_count_badge(sow_counts_for(current_user, :active))
+          = sow_count_badge(sow_counts_for(current_member, :active))
       %li
         = link_to '#unsubmitted', "data-toggle" => "tab" do
           Un-submitted
-          = sow_count_badge(sow_counts_for(current_user, :unsubmitted))
+          = sow_count_badge(sow_counts_for(current_member, :unsubmitted))
       %li
         = link_to '#submitted', "data-toggle" => "tab" do
           Pending review
-          = sow_count_badge(sow_counts_for(current_user, :submitted))
+          = sow_count_badge(sow_counts_for(current_member, :submitted))
       %li
         = link_to '#accepted', "data-toggle" => "tab" do
           Accepted
-          = sow_count_badge(sow_counts_for(current_user, :accepted))
+          = sow_count_badge(sow_counts_for(current_member, :accepted))
       %li
         = link_to '#rejected', "data-toggle" => "tab" do
           Rejected
-          = sow_count_badge(sow_counts_for(current_user, :rejected))
+          = sow_count_badge(sow_counts_for(current_member, :rejected))
   
   
     = link_to new_sow_path, class: 'btn btn-success btn-block btn-large' do

@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # has_and_belongs_to_many :roles
   has_many :sows
   has_many :activities, as: 'subject', :dependent => :destroy
-  
+  has_many :approvals
   has_one :membership, class_name: 'Member'
   
   attr_accessible :email, :name

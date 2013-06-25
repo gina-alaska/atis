@@ -1,0 +1,11 @@
+.control-group
+  .controls
+    = f.link_to_remove class: 'btn btn-danger pull-right' do
+      %i.icon-minus.icon-white
+      Remove
+      
+    - if member = @group.members.where(id: f.object.member_id).first
+      = f.hidden_field :member_id
+      %p= member.name_with_email
+    - else
+      = f.collection_select :member_id, Member.all, :id, :name_with_email, { prompt: 'Select a member' }

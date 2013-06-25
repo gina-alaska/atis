@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130618001806) do
+ActiveRecord::Schema.define(:version => 20130620005356) do
 
   create_table "activities", :force => true do |t|
     t.integer  "subject_id"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20130618001806) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.integer  "owner_id"
+  end
+
+  create_table "approvals", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "sow_id"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "attachments", :force => true do |t|
@@ -77,6 +85,11 @@ ActiveRecord::Schema.define(:version => 20130618001806) do
     t.integer  "top_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+  end
+
+  create_table "groups_members", :id => false, :force => true do |t|
+    t.integer "group_id"
+    t.integer "member_id"
   end
 
   create_table "maus", :force => true do |t|
@@ -159,6 +172,11 @@ ActiveRecord::Schema.define(:version => 20130618001806) do
     t.string   "institute"
     t.datetime "starts_at"
     t.datetime "ends_at"
+  end
+
+  create_table "sows_strategic_objectives", :id => false, :force => true do |t|
+    t.integer "sow_id"
+    t.integer "strategic_objective_id"
   end
 
   create_table "strategic_objectives", :force => true do |t|

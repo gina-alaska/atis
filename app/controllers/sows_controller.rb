@@ -26,7 +26,9 @@ class SowsController < ApplicationController
   end
   
   def submit
-    if @sow.submit(current_user)
+    if @sow.submit(current_member)
+      MemberMailer.review_email(@sow, sow_url(@sow)).deliver
+      
       flash[:success] = 'Statement of work has been submitted for review'
       redirect_to @sow
     else
@@ -40,7 +42,7 @@ class SowsController < ApplicationController
   end
   
   def review
-    if @sow.review(current_user)
+    if @sow.review(current_member)
       redirect_to @sow
     else
       flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_messages})"
@@ -48,46 +50,57 @@ class SowsController < ApplicationController
     end
   end
   
-  def group_approve
-    if @sow.group_leader_approval.nil?
-      flash[:success] = "Statement of work has been approved by #{current_user.name}"
-      @sow.group_leader_approval = current_user
-      @sow.review_notes = sow_params[:review_notes]
-    else
-      flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
-      @sow.group_leader_approval = nil
-    end
-    
-    if @sow.save
-      redirect_to @sow
-    else
-      flash[:error] = "Error while trying to approve statement of work"
-      redirect_to sows_path
+  def budget_approve
+    respond_to do |format|
+      format.html {
+        if @sow.approvals.for(:budget).any?
+          @sow.approvals.for(:budget).destroy_all
+        else
+          @sow.approvals.create(user: current_member, name: 'budget')
+          @sow.review_notes = sow_params[:review_notes]
+        end
+        
+        flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
+        redirect_to @sow
+      }
+      format.js
     end
   end
   
-  def pi_approve
-    if @sow.pi_approval.nil?
-      flash[:success] = "Statement of work has been approved by #{current_user.name}"
-      @sow.pi_approval = current_user
+  def group_approve
+    approvals = @sow.approvals.for(@sow.award_group.name)
+    if approvals.any?
+      flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
+      approvals.destroy_all
+    else
+      flash[:success] = "Statement of work has been approved by #{current_member.name}"
+      @sow.approvals.create(user: current_member, name: @sow.award_group.name)
       @sow.review_notes = sow_params[:review_notes]
+      @sow.save
+    end    
+    redirect_to @sow
+  end
+  
+  def pi_approve
+    approvals = @sow.approvals.for(@sow.award_group.top.name)
+    if approvals.any?
+      flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
+      approvals.destroy_all
     else
-      flash[:warning] = "Statement of work approval has been removed by #{current_user.name}"
-      @sow.pi_approval = nil
+      flash[:success] = "Statement of work has been approved by #{current_member.name}"
+      @sow.approvals.create(user: current_member, name: @sow.award_group.top.name)
+      @sow.review_notes = sow_params[:review_notes]
+      @sow.save
     end
-    
-    if @sow.save
-      redirect_to @sow
-    else
-      flash[:error] = "Error while trying to approve statement of work"
-      redirect_to sows_path
-    end
+    redirect_to @sow    
   end
   
   def new_award
     @award = Award.from_sow(@sow)
     if @award and @award.valid?
-      @sow.accept(current_user)
+      @sow.accept(current_member)
+      MemberMailer.review_email(@award, award_url(@award)).deliver
+      
       flash[:success] = "New award has been generated"
       redirect_to edit_award_path(@award)
     else
@@ -97,11 +110,13 @@ class SowsController < ApplicationController
   end
   
   def reject
-    @sow.reject(current_user)
+    @sow.reject(current_member)
     @sow.review_notes = sow_params[:review_notes]
-    @sow.reviewed_by = current_user
+    @sow.reviewed_by = current_member
     
     if @sow.save 
+      MemberMailer.reject_email(@sow, sow_url(@sow)).deliver
+      
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow
     else
@@ -112,16 +127,16 @@ class SowsController < ApplicationController
   
   def new
     @sow = Sow.new
-    @sow.first_name = current_user.first_name
-    @sow.last_name = current_user.last_name
-    @sow.email = current_user.email
+    @sow.first_name = current_member.first_name
+    @sow.last_name = current_member.last_name
+    @sow.email = current_member.email
     
     respond_with @sow
   end
   
   def create
     @sow = Sow.new(sow_params)
-    @sow.owner = current_user
+    @sow.owner = current_member
     
     if @sow.save
       flash[:success] = "Statement of work has been saved"
@@ -137,7 +152,7 @@ class SowsController < ApplicationController
   end
   
   def edit
-    if @sow.edit(current_user)
+    if @sow.edit(current_member)
       respond_with @sow
     else
       flash[:error] = 'Unable to edit the statement of work at this time'
@@ -152,6 +167,8 @@ class SowsController < ApplicationController
       pi_approve
     elsif sow_params.delete(:gl_approval)
       group_approve
+    elsif sow_params.delete(:budget_approval)
+      budget_approve
     else
       if @sow.update_attributes(sow_params)
         flash[:success] = "Statement of work has been saved"
@@ -173,17 +190,12 @@ class SowsController < ApplicationController
     p = params[:sow].dup
     
     if p[:review_notes].present? and !p[:review_notes].empty?
-      p[:review_notes] = "#{p[:review_notes]} - _#{current_user.name_email} @ #{Time.zone.now.strftime('%F')}_"
+      p[:review_notes] = "#{p[:review_notes]} - _#{current_member.name_with_email} @ #{Time.zone.now.strftime('%F')}_"
     end
     
-    if p[:disciplines].present?
-      discs = p.delete(:disciplines)
-      p[:disciplines] = [] 
-      
-      discs.each do |id|
-        next if id.to_i == 0
-        d = Discipline.find(id.to_i) 
-        p[:disciplines] << d unless d.nil?
+    if p[:strategic_objectives].present? and !p[:strategic_objectives].empty?
+      p[:strategic_objective_ids] = p.delete(:strategic_objectives).collect do |id, value|
+        id if value.to_i
       end
     end
     

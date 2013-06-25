@@ -10,10 +10,10 @@
       .actions
         = link_to 'View', sow_path(sow), class: 'btn' 
 
-        = link_to 'Open Award', sow.award, class: 'btn btn-info' if current_user.has_role?(:admin) and !sow.award.nil? and !current_page?(sow.award)
+        = link_to 'Open Award', sow.award, class: 'btn btn-info' if current_member.has_role?(:admin) and !sow.award.nil? and !current_page?(sow.award)
         
-        - if sow.owner == current_user and sow.can_submit?
+        - if sow.owner == current_member and sow.can_submit?
           = link_to 'Submit for review', submit_sow_path(sow), method: 'POST', class: 'btn btn-primary'
           
-        - if sow.can_review? and current_user.has_role?(:reviewer) and !sow.accepted?
+        - if sow.can_review? and current_member.has_role?(:review) and !sow.accepted?
           = link_to 'Review', review_sow_path(sow), method: 'POST', class: 'btn btn-primary'

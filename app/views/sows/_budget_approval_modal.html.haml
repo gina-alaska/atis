@@ -1,0 +1,12 @@
+#budget_approval_modal.modal.hide.fade
+  = form_for sow, html: { style: 'margin: 0;' } do |f|
+    = f.hidden_field :budget_approval, value: true
+    .modal-header
+      %button.close{data:{dismiss:"modal"}} &times;
+      %h3 Reviewer Notes
+    .modal-body
+      .row-fluid
+        = f.text_area :review_notes, value: '', rows: 8, class: 'span12'
+    .modal-footer
+      = link_to 'Close', '#', class: 'btn', data: { dismiss: 'modal' }
+      = f.submit class: 'btn btn-primary'

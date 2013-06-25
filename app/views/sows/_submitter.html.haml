@@ -1,11 +1,8 @@
-%dt Principle Investigator
+%dt Name
 %dd= "#{sow.first_name} #{sow.last_name} <#{sow.email}>"
-.row-fluid
-  .span6
-    %dt UA #
-    %dd= sow.ua_number
-  - if sow.telephone.present?
-    .span6
-      %dt Telephone
-      %dd= sow.telephone
+%dt UA #
+%dd= sow.ua_number
+- if sow.telephone.present?
+  %dt Telephone
+  %dd= sow.telephone
     

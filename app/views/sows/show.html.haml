@@ -25,7 +25,7 @@
     - unless @sow.award.nil?
       = link_to 'View Award', @sow.award, class: 'btn btn-info btn-block'
       
-    - unless @sow.accepted? or @sow.owner != current_user  
+    - unless @sow.accepted? or @sow.owner != current_member
       - if @sow.created? or @sow.editing? or @sow.rejected?
         = link_to edit_sow_path(@sow), class: 'btn btn-block' do
           %i.icon-edit
@@ -35,30 +35,25 @@
           %i.icon-edit
           Edit
 
-    - if @sow.can_submit? and @sow.owner == current_user
+    - if @sow.can_submit? and @sow.owner == current_member
       = link_to submit_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Submit for review
 
       = render 'attachments_form', sow: @sow
-    - if current_user.has_role?(:reviewer) and @sow.can_review? and !@sow.reviewing?
-      - if current_user.has_role?(:admin) and @sow.accepted?
-        = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
-          Send back for review
-      - else
-        = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
-          Review
-    - if current_user.has_role?(:reviewer) and @sow.reviewing?
+
+    - if @sow.reviewing? and @sow.award_group.present?
       = render 'sow_approval_buttons', sow: @sow
-    
-      = link_to '#', data: { toggle: 'modal', target: '#rejection_modal' }, class: 'btn btn-block btn-danger' do
-        %i.icon-thumbs-down.icon-white
-        Reject
-    - if current_user.has_role?(:reviewer) and @sow.can_accept?
+    - elsif @sow.can_review? and not @sow.accepted?
+      = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
+        Review
+      
+      
+    - if current_member.has_role?(:budget) and @sow.can_accept?
       = link_to new_award_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Generate new award
       = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Attach to existing award
-    = render 'layouts/activity_stream', activities: @sow.activities.for(current_user)
+    = render 'layouts/activity_stream', activities: @sow.activities.for(current_member)
     
 #pi_approval_modal.modal.hide.fade
   = form_for @sow, html: { style: 'margin: 0;' } do |f|

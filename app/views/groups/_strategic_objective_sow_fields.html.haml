@@ -3,7 +3,7 @@
     .controls
       - group.strategic_objectives.each do |so|
         %label.checkbox
-          = check_box_tag 'sow[other_strategic_objective_ids]', so.id
+          = check_box_tag "sow[strategic_objectives][#{so.id}]", 1, @sow.try(:strategic_objectives).try(:include?, so)
           = so.name
         - if so.name == 'Other'
           = text_field_tag 'sow[other_strategic_objectives_text]', other_value, placeholder: 'Specify other objective if selected', class: 'span12'            

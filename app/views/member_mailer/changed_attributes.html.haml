@@ -1,0 +1,22 @@
+%p= "Hello #{@member.name},"
+
+%p
+  The following information for your account 
+  = @member.email 
+  was updated at 
+  = Time.zone.now
+
+%p 
+  If these changes were made in error, or if you believe an unauthorized person accessed your account, please contact support at support@gina.alaska.edu
+  
+%p{ style: "margin-left: 1em;" }
+  - @changes.each do |key, values|
+    = "#{key.humanize} updated from #{values[0]} to #{values[1]}"
+          
+%p This is an automated message. Please do not reply to this email.
+
+%p
+  Thanks,
+  %br/
+  Geographic Information Network of Alaska
+  

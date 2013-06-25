@@ -1,17 +1,35 @@
-- if sow.pi_approval.nil?
-  = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
-    %i.icon-thumbs-up.icon-white
-    ="#{sow.award_group.top.name} PI approval"
-- else
-  = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
-    %i.icon-ok.icon-white
-    = "#{sow.award_group.top.name} PI approval by #{sow.pi_approval.name}"
-    
-- if sow.group_leader_approval.nil?
-  = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#gl_approval_modal' } do
-    %i.icon-thumbs-up.icon-white
-    = "#{sow.award_group.name} leader approval"
-- else
-  = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
-    %i.icon-ok.icon-white
-    = "#{sow.award_group.name} leader approval by #{sow.group_leader_approval.name}"
+- if current_member.has_role?(:review) and @sow.reviewable_by?(current_member) and
+  - if sow.award_group.top.member_ids.include?(current_member.id)
+    - if sow.approvals.for(sow.award_group.top.name).any?
+      = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
+        %i.icon-ok.icon-white
+        = "#{sow.award_group.top.name} PI approval by #{sow.approvals.for(sow.award_group.top.name).first.user.name}"
+    - else
+      = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
+        %i.icon-thumbs-up.icon-white
+        ="#{sow.award_group.top.name} PI approval" 
+
+  - if sow.award_group.member_ids.include?(current_member.id)
+    - if sow.approvals.for(sow.award_group.name).any?
+      = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
+        %i.icon-ok.icon-white
+        = "#{sow.award_group.name} leader approval by #{sow.approvals.for(sow.award_group.name).first.user.name}"
+    - else
+      = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#gl_approval_modal' } do
+        %i.icon-thumbs-up.icon-white
+        = "#{sow.award_group.name} leader approval"
+
+- if current_member.has_role?(:budget)
+  - if sow.approvals.for(:budget).any?
+    = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success" do
+      %i.icon-ok.icon-white
+      = "Budget approval by #{sow.approvals.for(:budget).first.user.name}"
+  - else
+    = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-warning", remote: true do
+      %i.icon-thumbs-up.icon-white
+      = "Budget approval"
+
+- if current_member.has_role?(:budget) or current_member.has_role?(:review)
+  = link_to '#', data: { toggle: 'modal', target: '#rejection_modal' }, class: 'btn btn-block btn-danger' do
+    %i.icon-thumbs-down.icon-white
+    Reject

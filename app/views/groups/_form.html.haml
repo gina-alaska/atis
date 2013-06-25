@@ -24,7 +24,15 @@
         = f.label :acronym, 'Award token', class: 'control-label'
         .controls
           = f.text_field :acronym, class: 'span12'
-          
+  %fieldset
+    %legend
+      PIs
+      .pull-right
+      = f.link_to_add :group_members, class: 'btn btn-success pull-right', data: { target: '#group_member_fields' } do
+        %i.icon-plus.icon-white
+        Add PI
+    #group_member_fields
+      = f.fields_for :group_members
   %fieldset
     %legend 
       Strategic Objectives

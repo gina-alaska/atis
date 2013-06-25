@@ -4,14 +4,21 @@
       Award group: 
       = @group.name
     %dl.dl-horizontal
-      %dt Parent group:
-      %dd= @group.parent.try(:name_path)
+      - unless @group.parent.nil?
+        %dt Parent group:
+        %dd= @group.parent.try(:name_path)
       
-      %dt Award Token:
-      %dd= @group.acronym
+      - unless @group.acronym.blank?
+        %dt Award Token:
+        %dd= @group.acronym
+
+      - if @group.members.any?
+        %dt PIs
+        %dd= @group.members.pluck(:name).join(', ')
       
-      %dt Strategic Objectives:
-      %dd= @group.strategic_objectives.pluck(:name).join(', ')
+      - if @group.strategic_objectives.any?
+        %dt Strategic Objectives:
+        %dd= @group.strategic_objectives.pluck(:name).join(', ')
   
   .span3
     = link_to groups_path, class: 'btn btn-block' do

@@ -7,7 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 Role.create(name: 'admin')
-Role.create(name: 'reviewer')
+Role.create(name: 'review')
+Role.create(name: 'budget')
 
 g = Group.create(name: 'EPSCoR', acronym: 'EP')
 

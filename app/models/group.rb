@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
   attr_accessible :acronym, :director_id, :fiscal_coordinator_id, :name, :parent_id, :top, :strategic_objectives_attributes,
-    :parent
+    :parent, :group_members_attributes
   
   belongs_to :parent, class_name: 'Group'
   belongs_to :top, class_name: 'Group'
@@ -15,6 +15,11 @@ class Group < ActiveRecord::Base
   
   has_many :strategic_objectives, :dependent => :destroy
   accepts_nested_attributes_for :strategic_objectives, :allow_destroy => true, :reject_if => proc { |attributes| attributes['name'].blank? }
+  
+  has_many :group_members, uniq: true, :dependent => :destroy
+  has_many :members, :through => :group_members, uniq: true
+  accepts_nested_attributes_for :group_members, :allow_destroy => true, :reject_if => proc { |attrs| attrs['member_id'].blank? }
+  # , :allow_destroy => true
   
   before_save :assign_top_group
   

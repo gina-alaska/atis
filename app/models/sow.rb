@@ -6,15 +6,25 @@ class Sow < ActiveRecord::Base
   end
   
   has_and_belongs_to_many :disciplines
+  has_and_belongs_to_many :strategic_objectives do
+    def list
+      self.pluck(:name).join(', ')
+    end
+  end
   has_many :attachments, :as => :parent, :dependent => :destroy
   belongs_to :award_group, class_name: 'Group'
-  belongs_to :pi_approval, :class_name => 'User'
-  belongs_to :group_leader_approval, :class_name => 'User'
-  belongs_to :submitted_by, :class_name => 'User'
-  belongs_to :reviewed_by, :class_name => 'User'
-  belongs_to :owner, :class_name => 'User'
+  belongs_to :pi_approval, :class_name => 'Member'
+  belongs_to :group_leader_approval, :class_name => 'Member'
+  belongs_to :submitted_by, :class_name => 'Member'
+  belongs_to :reviewed_by, :class_name => 'Member'
+  belongs_to :owner, :class_name => 'Member'
   belongs_to :award
   belongs_to :mau
+  has_many :approvals, :dependent => :destroy do        
+    def for(name)
+      where(name: name.to_s)
+    end
+  end
   
   state_machine :initial => :created do
     after_transition :on => :submit do |sow, transition, test|
@@ -43,8 +53,7 @@ class Sow < ActiveRecord::Base
     end
     
     before_transition :on => :edit do |sow, transition|
-      sow.pi_approval = nil
-      sow.group_leader_approval = nil
+      sow.approvals.destroy_all
       sow.rejected_on = nil
       sow.save!
       
@@ -68,7 +77,7 @@ class Sow < ActiveRecord::Base
     end
     
     event :review do
-      transition [:submitted, :reviewing, :accepted] => :reviewing
+      transition [:submitted, :reviewing] => :reviewing
     end
     
     event :submit do
@@ -76,8 +85,9 @@ class Sow < ActiveRecord::Base
     end
     
     event :accept do
-      
-      transition :reviewing => :accepted, :if => lambda { |sow| sow.pi_approval and sow.group_leader_approval }
+      transition :reviewing => :accepted, :if => lambda { |sow| 
+        sow.approvals.where(name: [:budget, sow.award_group.name, sow.award_group.top.name]).count >= 3
+      }
     end
     
     event :reject do
@@ -88,13 +98,11 @@ class Sow < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :other_strategic_objective, :period, :other_period, :telephone, 
     :project_title, :ua_number, :statement_of_work, :collaborators, :research_milestones_and_outcomes, 
     :accomplished_objectives, :budget_justification, :research_period_of_performance, :climate_glacier_dynamics,
-    :ecosystem_variability, :resource_management, :other_strategic_objectives, :other_strategic_objectives_text,
+    :ecosystem_variability, :resource_management, :strategic_objective_ids, :other_strategic_objectives_text,
     :discipline_ids, :disciplines, :award_group_id, :reviewed_by, :submitted_by, :review_notes, :mau_id, :institute,
     :starts_at, :ends_at
 
-  validates_presence_of :award_group_id, :first_name, :last_name, :email, :project_title, :statement_of_work, :ua_number
-  validates_presence_of :other_period, :if => Proc.new { |sow| sow.period == 'other' }
-  
+  validates_presence_of :award_group_id, :first_name, :last_name, :email, :project_title, :statement_of_work, :ua_number  
   
   scope :owner, lambda { |user| where(owner_id: user) }
   scope :unsubmitted, where(:state => [:created, :editing])
@@ -104,12 +112,9 @@ class Sow < ActiveRecord::Base
   scope :active, where(:state => [:created, :rejected])
   default_scope order('created_at DESC')
   
-  STRATEGIC_OBJECTIVES = { 
-    :climate_glacier_dynamics => "Climate/Glacier Dynamics", 
-    :ecosystem_variability => "Ecosystem Variability", 
-    :resource_management => "Resource Management",
-    :other_strategic_objectives => "Other"
-  }
+  def reviewable_by?(user)
+    self.award_group.member_ids.include?(user.id) or self.award_group.top.member_ids.include?(user.id)
+  end
   
   def to_param
     "#{id}-#{self.project_title.parameterize}"
@@ -134,17 +139,6 @@ class Sow < ActiveRecord::Base
   
   def pi
     "#{self.first_name} #{self.last_name}"
-  end
-  
-  def strategic_objectives
-    active = []
-    Sow::STRATEGIC_OBJECTIVES.each do |k,v| 
-      if self.send(k)
-        active << (k == :other_strategic_objectives ? self.other_strategic_objectives_text : v)
-      end
-    end
-    
-    active
   end
   
   def name

@@ -42,10 +42,11 @@ class MembersController < ApplicationController
   # POST /members
   # POST /members.json
   def create
-    @member = Member.new(params[:member])
-
+    @member = Member.new(member_params)
+    
     respond_to do |format|
       if @member.save
+        MemberMailer.invite_email(@member, signin_url).deliver
         format.html { redirect_to members_path, notice: 'Member was successfully created.' }
         format.json { render json: @member, status: :created, location: @member }
       else
@@ -59,8 +60,11 @@ class MembersController < ApplicationController
   # PUT /members/1.json
   def update
     @member = Member.find(params[:id])
+    @member.attributes = member_params
+    changes = @member.changes
     respond_to do |format|
-      if @member.update_attributes(member_params)
+      if @member.save
+        MemberMailer.changed_attributes(@member, changes).deliver unless changes.empty?
         format.html { redirect_to members_path, notice: 'Member was successfully updated.' }
         format.json { head :no_content }
       else
