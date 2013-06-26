@@ -9,6 +9,7 @@
 Role.create(name: 'admin')
 Role.create(name: 'review')
 Role.create(name: 'budget')
+Role.create(name: 'project administrator')
 
 g = Group.create(name: 'EPSCoR', acronym: 'EP')
 

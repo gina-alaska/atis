@@ -1,11 +1,21 @@
 .group{style:"margin-left:#{depth * 30}px;"}
   .row-fluid
     .span10.name
-      = link_to group do
+      = link_to edit_group_path(group) do
+        - if group.children.any?
+          %i.icon-folder-open
+        - else
+          %i.icon-file
         = group.name
         = "(#{group.acronym})" if group.acronym.present?
+      %p{style:'padding: 0; margin: 0; padding-left: 18px;'}
+        %b Members:
+        - if group.members.any?
+          = group.members.collect(&:name).join(', ')
+        - else
+          None
     .span2.actions
-      = link_to 'Edit', edit_group_path(group), class: 'btn'
-      = link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger'
+      .btn-group
+        = link_to 'Delete', group, method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-danger'
 - group.children.each do |child|
   = render child, depth: depth+1

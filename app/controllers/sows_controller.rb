@@ -61,7 +61,7 @@ class SowsController < ApplicationController
           @sow.approvals.for(:administrator).destroy_all
         elsif @sow.can_administrator_accept?
           # TODO: Budget review email would need to go out now
-          @members = Role.where(name: 'budget').first.members.uniq
+          @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'budget').all
           MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
           
           @sow.approvals.create(user: current_member, name: 'administrator')
@@ -70,7 +70,7 @@ class SowsController < ApplicationController
           @sow.save
         end
         
-        flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
+        flash[:success] = "Statement of work has been approved by #{current_member.name}"
         redirect_to @sow
       }
       format.js { 
@@ -115,7 +115,8 @@ class SowsController < ApplicationController
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
       
       # TODO: PA Approval email would need to go out now
-      # MemberMailer.review_email(@sow.award_group.members, @sow, sow_url(@sow)).deliver
+      @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'project administrator').all
+      MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
       
       @sow.approvals.create(user: current_member, name: @sow.award_group.name)
       @sow.review_notes = sow_params[:review_notes]
