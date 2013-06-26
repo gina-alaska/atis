@@ -27,7 +27,7 @@ class SowsController < ApplicationController
   
   def submit
     if @sow.submit(current_member)
-      MemberMailer.review_email(@sow, sow_url(@sow)).deliver
+      MemberMailer.review_email(@sow.award_group.members, @sow, sow_url(@sow)).deliver
       
       flash[:success] = 'Statement of work has been submitted for review'
       redirect_to @sow
@@ -60,6 +60,10 @@ class SowsController < ApplicationController
         if @sow.approvals.for(:administrator).any?
           @sow.approvals.for(:administrator).destroy_all
         elsif @sow.can_administrator_accept?
+          # TODO: Budget review email would need to go out now
+          @members = Role.where(name: 'budget').first.members.uniq
+          MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
+          
           @sow.approvals.create(user: current_member, name: 'administrator')
           @sow.review_notes = sow_params[:review_notes]
           @sow.administrator_accept
@@ -82,6 +86,9 @@ class SowsController < ApplicationController
         if @sow.approvals.for(:budget).any?
           @sow.approvals.for(:budget).destroy_all
         elsif @sow.can_accept_budget?
+          # TODO: PI review email would need to go out now
+          MemberMailer.review_email(@sow.award_group.top.members, @sow, sow_url(@sow)).deliver
+          
           @sow.approvals.create(user: current_member, name: 'budget')
           @sow.review_notes = sow_params[:review_notes]
           @sow.accept_budget
@@ -106,6 +113,10 @@ class SowsController < ApplicationController
       approvals.destroy_all
     elsif @sow.can_groupleader_accept? and @sow.award_group.member_ids.include?(current_member.id)
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
+      
+      # TODO: PA Approval email would need to go out now
+      # MemberMailer.review_email(@sow.award_group.members, @sow, sow_url(@sow)).deliver
+      
       @sow.approvals.create(user: current_member, name: @sow.award_group.name)
       @sow.review_notes = sow_params[:review_notes]
       @sow.groupleader_accept

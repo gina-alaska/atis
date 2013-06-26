@@ -15,14 +15,17 @@ class MemberMailer < ActionMailer::Base
     mail(:to => member.email, subject: "[ATIS] Account settings updated")
   end
   
-  def review_email(sow, url)
+  def review_email(members, sow, url)
     @sow = sow
     @url = url
+    @members = members
     
-    emails = @sow.award_group.members.collect(&:email)
-    emails += @sow.award_group.top.members.collect(&:email)
+    if @members.empty?
+      logger.error "ERROR: No members given for the review email"
+      return false 
+    end
     
-    mail(:to => emails, subject: "[ATIS] Statement of work is ready to be reviewed")
+    mail(:to => @members.collect(&:email), subject: "[ATIS] Statement of work is ready to be reviewed")
   end
   
   def reject_email(sow, url)

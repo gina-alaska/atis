@@ -56,6 +56,7 @@ class Sow < ActiveRecord::Base
     
     before_transition :on => :edit do |sow, transition|
       sow.approvals.destroy_all
+      sow.submitted_on = nil
       sow.rejected_on = nil
       sow.save!
       
@@ -83,15 +84,15 @@ class Sow < ActiveRecord::Base
     end
     
     event :groupleader_accept do
-      transition [:submitted] => :groupleader_accepted
+      transition [:submitted,:administrator_accepted,:budget_accepted,:projectleader_accepted] => :groupleader_accepted
     end
     
     event :administrator_accept do
-      transition [:groupleader_accepted] => :administrator_accepted
+      transition [:groupleader_accepted,:budget_accepted,:projectleader_accepted] => :administrator_accepted
     end
     
     event :accept_budget do
-      transition [:administrator_accepted] => :budget_accepted
+      transition [:administrator_accepted,:projectleader_accepted] => :budget_accepted
     end
     
     event :projectleader_accept do

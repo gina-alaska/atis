@@ -27,12 +27,34 @@
       /* Hotmail header color reset, Bring inline: Yes. */
       h1, h2, h3, h4, h5, h6 {color: black !important;}
 
+      h1 { font-size: 2em; }
+      h2 { font-size: 1.8em; }
+      h3 { font-size: 1.6em; }
+      h4 { font-size: 1.4em; }
+
       h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: blue !important;}
 
       h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
       color: red !important; /* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
       }
-
+      
+      fieldset {
+        border: 0;
+        font-size: 1em;
+        margin-left: 1em;
+      }
+      fieldset > legend {
+        width: 100%;
+        display: block;
+        padding: 0.5em 0;
+        margin: 0;
+        margin-left: -1em;
+        margin-bottom: 1.2em;
+        font-size: 1.3em;
+        font-weight: bold;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      
       h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
       color: purple !important; 
       /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
