@@ -24,6 +24,7 @@ Atis::Application.routes.draw do
       post 'submit'
       post 'review'
       post 'pi_approve'
+      post 'pa_approve'
       post 'group_approve'
       post 'budget_approve'
       post 'reject'

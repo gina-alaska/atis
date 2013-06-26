@@ -36,12 +36,14 @@ class Sow < ActiveRecord::Base
       Activity.record(user, 'submitted for review', sow, sow.owner) if sow.owner != user
     end
     
-    after_transition :on => :accept do |sow, transition|
-      sow.touch_date(:accepted_on)
+    before_transition :on => :generate_award do |sow, transition|
+      award = Award.from_sow(sow)
+      sow.award = award
       user = transition.args.first
       sow.reviewed_by = user
-      Activity.record(user, 'accepted', sow, user)
-      Activity.record(user, 'accepted', sow, sow.owner) if sow.owner != user
+      sow.touch_date(:accepted_on)
+      Activity.record(user, 'awarded', sow, user)
+      Activity.record(user, 'awarded', sow, sow.owner) if sow.owner != user
     end
     
     after_transition :on => :reject do |sow, transition|
@@ -64,7 +66,7 @@ class Sow < ActiveRecord::Base
       end
     end
     
-    state :accepted do
+    state :awarded do
       validates_presence_of :institute, :mau_id
     end
     
@@ -76,22 +78,38 @@ class Sow < ActiveRecord::Base
       transition [:created, :editing, :submitted, :rejected] => :editing
     end
     
-    event :review do
-      transition [:submitted, :reviewing] => :reviewing
-    end
-    
     event :submit do
       transition [:created, :editing] => :submitted
     end
     
-    event :accept do
-      transition :reviewing => :accepted, :if => lambda { |sow| 
-        sow.approvals.where(name: [:budget, sow.award_group.name, sow.award_group.top.name]).count >= 3
+    event :groupleader_accept do
+      transition [:submitted] => :groupleader_accepted
+    end
+    
+    event :administrator_accept do
+      transition [:groupleader_accepted] => :administrator_accepted
+    end
+    
+    event :accept_budget do
+      transition [:administrator_accepted] => :budget_accepted
+    end
+    
+    event :projectleader_accept do
+      transition [:budget_accepted] => :projectleader_accepted
+    end
+    # 
+    # event :review do
+    #   transition [:submitted, :reviewing] => :reviewing
+    # end
+    
+    event :generate_award do
+      transition [:projectleader_accepted] => :awarded, :if => lambda { |sow| 
+        sow.approvals.where(name: ['administrator', 'budget', sow.award_group.name, sow.award_group.top.name]).count >= 4
       }
     end
     
     event :reject do
-      transition :reviewing => :rejected
+      transition [:projectleader_accepted,:budget_accepted,:administrator_accepted,:groupleader_accepted] => :rejected
     end
   end
 
@@ -106,14 +124,19 @@ class Sow < ActiveRecord::Base
   
   scope :owner, lambda { |user| where(owner_id: user) }
   scope :unsubmitted, where(:state => [:created, :editing])
-  scope :submitted, where(:state => [:submitted, :reviewing])
-  scope :accepted, where(:state => :accepted)
+  scope :submitted, where(:state => [:submitted])
+  scope :reviewing, where(:state => [:submitted,:projectleader_accepted,:budget_accepted,:administrator_accepted,:groupleader_accepted])
+  scope :awarded, where(:state => :awarded)
   scope :rejected, where(:state => :rejected)
   scope :active, where(:state => [:created, :rejected])
   default_scope order('created_at DESC')
   
   def reviewable_by?(user)
     self.award_group.member_ids.include?(user.id) or self.award_group.top.member_ids.include?(user.id)
+  end
+  
+  def ready_for_review?
+    self.can_groupleader_accept? or self.can_administrator_accept? or self.can_accept_budget? or self.can_projectleader_accept? or self.can_generate_award?
   end
   
   def to_param

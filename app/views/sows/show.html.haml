@@ -25,12 +25,12 @@
     - unless @sow.award.nil?
       = link_to 'View Award', @sow.award, class: 'btn btn-info btn-block'
       
-    - unless @sow.accepted? or @sow.owner != current_member
+    - unless @sow.awarded? or @sow.owner != current_member
       - if @sow.created? or @sow.editing? or @sow.rejected?
         = link_to edit_sow_path(@sow), class: 'btn btn-block' do
           %i.icon-edit
           Edit
-      - elsif !@sow.reviewing?
+      - elsif @sow.can_edit?
         = link_to edit_sow_path(@sow), class: 'btn btn-block', confirm: 'Are you sure? Editing this statement of work will remove it from the review queue' do
           %i.icon-edit
           Edit
@@ -41,18 +41,15 @@
 
       = render 'attachments_form', sow: @sow
 
-    - if @sow.reviewing? and @sow.award_group.present?
+    - if @sow.ready_for_review? and @sow.award_group.present?
       = render 'sow_approval_buttons', sow: @sow
-    - elsif @sow.can_review? and not @sow.accepted?
-      = link_to review_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
-        Review
-      
-      
-    - if current_member.has_role?(:budget) and @sow.can_accept?
+
+    - if @sow.can_generate_award? and current_member.has_role?(:budget) 
       = link_to new_award_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Generate new award
-      = link_to accept_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
+      = link_to new_award_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Attach to existing award
+        
     = render 'layouts/activity_stream', activities: @sow.activities.for(current_member)
     
 #pi_approval_modal.modal.hide.fade

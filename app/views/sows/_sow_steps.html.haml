@@ -8,15 +8,18 @@
     %tr{ class: (@sow.submitted_on.nil? ? 'warning' : 'success' )}
       %td{ style: 'text-align: center' }= "#{counter += 1}"
       %td Submitted for review
-    %tr{ class: sow_approval_status(@sow, @sow.award_group.try(:top).try(:name)) }
-      %td{ style: 'text-align: center' }= "#{counter += 1}"
-      %td= "#{@sow.award_group.try(:top).try(:name) || 'Award Group' } PI approval"
     %tr{ class: sow_approval_status(@sow, @sow.award_group.try(:name)) }
       %td{ style: 'text-align: center' }= "#{counter += 1}"
       %td= "#{@sow.award_group.try(:name) || 'Project' } PI approval"
+    %tr{ class: sow_approval_status(@sow, :administrator) }
+      %td{ style: 'text-align: center' }= "#{counter += 1}"
+      %td Project Administrator approval
     %tr{ class: sow_approval_status(@sow, :budget) }
       %td{ style: 'text-align: center' }= "#{counter += 1}"
       %td Budget approval
+    %tr{ class: sow_approval_status(@sow, @sow.award_group.try(:top).try(:name)) }
+      %td{ style: 'text-align: center' }= "#{counter += 1}"
+      %td= "#{@sow.award_group.try(:top).try(:name) || 'Award Group' } PI approval"
     %tr{ class: (@sow.award.nil? ? 'warning' : 'success' )}
       %td{ style: 'text-align: center' }= "#{counter += 1}"
       %td Awarded

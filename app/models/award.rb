@@ -35,7 +35,7 @@ class Award < ActiveRecord::Base
   end
   
   def self.from_sow(sow)
-    return nil unless sow.can_accept?
+    return nil unless sow.can_generate_award?
     
     award = Award.create({ 
       title: sow.project_title,

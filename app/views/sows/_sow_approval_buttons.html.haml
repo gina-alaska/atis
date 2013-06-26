@@ -1,10 +1,10 @@
-- if current_member.has_role?(:review) and @sow.reviewable_by?(current_member) and
+- if current_member.has_role?(:review) and @sow.reviewable_by?(current_member)
   - if sow.award_group.top.member_ids.include?(current_member.id)
     - if sow.approvals.for(sow.award_group.top.name).any?
       = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
         %i.icon-ok.icon-white
         = "#{sow.award_group.top.name} PI approval by #{sow.approvals.for(sow.award_group.top.name).first.user.name}"
-    - else
+    - elsif sow.can_projectleader_accept?
       = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
         %i.icon-thumbs-up.icon-white
         ="#{sow.award_group.top.name} PI approval" 
@@ -14,17 +14,27 @@
       = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
         %i.icon-ok.icon-white
         = "#{sow.award_group.name} leader approval by #{sow.approvals.for(sow.award_group.name).first.user.name}"
-    - else
+    - elsif sow.can_groupleader_accept?
       = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#gl_approval_modal' } do
         %i.icon-thumbs-up.icon-white
         = "#{sow.award_group.name} leader approval"
+
+- if current_member.has_role?(:budget)
+  - if sow.approvals.for(:administrator).any?
+    = link_to pa_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success" do
+      %i.icon-ok.icon-white
+      = "Project administrator approval by #{sow.approvals.for(:administrator).first.user.name}"
+  - elsif sow.can_administrator_accept?
+    = link_to pa_approve_sow_path(sow), method: :post, class: "btn btn-block btn-warning", remote: true do
+      %i.icon-thumbs-up.icon-white
+      = "Project administrator approval"
 
 - if current_member.has_role?(:budget)
   - if sow.approvals.for(:budget).any?
     = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success" do
       %i.icon-ok.icon-white
       = "Budget approval by #{sow.approvals.for(:budget).first.user.name}"
-  - else
+  - elsif sow.can_accept_budget?
     = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-warning", remote: true do
       %i.icon-thumbs-up.icon-white
       = "Budget approval"

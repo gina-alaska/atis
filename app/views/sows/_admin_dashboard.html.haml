@@ -30,13 +30,13 @@
             %p or
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
             
-      #accepted.tab-pane
+      #awarded.tab-pane
         %h2 Accepted statements of work
-        - if sow_counts_for(nil, :accepted) > 0
-          = render 'sows/list', sows: Sow.accepted.all
+        - if sow_counts_for(nil, :awarded) > 0
+          = render 'sows/list', sows: Sow.awarded.all
         - else
           .hero-unit
-            %h3 No accepted statements of work found
+            %h3 No awarded statements of work found
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
             
       #rejected.tab-pane
@@ -63,9 +63,9 @@
           Pending review
           = sow_count_badge(sow_counts_for(nil, :submitted))
       %li
-        = link_to '#accepted', "data-toggle" => "tab" do
+        = link_to '#awarded', "data-toggle" => "tab" do
           Accepted
-          = sow_count_badge(sow_counts_for(nil, :accepted))
+          = sow_count_badge(sow_counts_for(nil, :awarded))
       %li
         = link_to '#rejected', "data-toggle" => "tab" do
           Rejected

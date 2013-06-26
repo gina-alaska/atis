@@ -17,7 +17,7 @@ module SowsHelper
       'alert-info'
     when :rejected
       'alert-error'
-    when :accepted
+    when :awarded
       'alert-success'
     when :submitted
       'alert-warning'
@@ -41,10 +41,10 @@ module SowsHelper
       user_counts[:active] ||= sow.count
     when :unsubmitted
       user_counts[:unsubmitted] ||= sow.unsubmitted.count
-    when :submitted
-      user_counts[:submitted] ||= sow.submitted.count
-    when :accepted
-      user_counts[:accepted] ||= sow.accepted.count
+    when :reviewing
+      user_counts[:reviewing] ||= sow.reviewing.count
+    when :awarded
+      user_counts[:awarded] ||= sow.awarded.count
     when :rejected
       user_counts[:rejected] ||= sow.rejected.count
     end

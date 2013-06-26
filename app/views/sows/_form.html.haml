@@ -15,14 +15,14 @@
       .span6
         = label_tag :created_at, 'Created on'
         = (sow.created_at || Time.now).strftime('%F %r')
-    - if sow.submitted? or sow.accepted? or sow.rejected?
+    - if sow.submitted? or sow.awarded? or sow.rejected?
       .span6
         = label_tag :submitted_on
         = sow.submitted_on.strftime('%F %r')
   .row-fluid.form-inline
-    - if sow.accepted?
+    - if sow.awarded?
       .span6
-        = label_tag :accepted_on
+        = label_tag :awarded_on
         = sow.accepted_on.strftime('%F %r')
     - if sow.rejected?
       .span6

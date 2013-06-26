@@ -42,28 +42,60 @@ class SowsController < ApplicationController
   end
   
   def review
-    if @sow.review(current_member)
-      redirect_to @sow
-    else
-      flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_messages})"
-      redirect_to @sow
+    unless @sow.ready_for_review?
+      flash[:error] = "This statement of work is not ready for review"
     end
+    redirect_to @sow
+    # if @sow.review(current_member)
+    #   redirect_to @sow
+    # else
+      # flash[:error] = "There was an error while trying to review statement of work (#{@sow.errors.full_messages})"
+      # redirect_to @sow
+    # end
   end
+  
+  def pa_approve
+    respond_to do |format|
+      format.html {
+        if @sow.approvals.for(:administrator).any?
+          @sow.approvals.for(:administrator).destroy_all
+        elsif @sow.can_administrator_accept?
+          @sow.approvals.create(user: current_member, name: 'administrator')
+          @sow.review_notes = sow_params[:review_notes]
+          @sow.administrator_accept
+          @sow.save
+        end
+        
+        flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
+        redirect_to @sow
+      }
+      format.js { 
+        @approval_type = 'administrator'
+        render 'approve' 
+      }
+    end
+  end  
   
   def budget_approve
     respond_to do |format|
       format.html {
         if @sow.approvals.for(:budget).any?
           @sow.approvals.for(:budget).destroy_all
-        else
+        elsif @sow.can_accept_budget?
           @sow.approvals.create(user: current_member, name: 'budget')
           @sow.review_notes = sow_params[:review_notes]
+          @sow.accept_budget
+          
+          @sow.save
         end
         
         flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
         redirect_to @sow
       }
-      format.js
+      format.js { 
+        @approval_type = 'budget'
+        render 'approve' 
+      }
     end
   end
   
@@ -72,10 +104,11 @@ class SowsController < ApplicationController
     if approvals.any?
       flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
       approvals.destroy_all
-    else
+    elsif @sow.can_groupleader_accept? and @sow.award_group.member_ids.include?(current_member.id)
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
       @sow.approvals.create(user: current_member, name: @sow.award_group.name)
       @sow.review_notes = sow_params[:review_notes]
+      @sow.groupleader_accept
       @sow.save
     end    
     redirect_to @sow
@@ -90,16 +123,16 @@ class SowsController < ApplicationController
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
       @sow.approvals.create(user: current_member, name: @sow.award_group.top.name)
       @sow.review_notes = sow_params[:review_notes]
+      @sow.projectleader_accept
       @sow.save
     end
     redirect_to @sow    
   end
   
   def new_award
-    @award = Award.from_sow(@sow)
-    if @award and @award.valid?
-      @sow.accept(current_member)
-      MemberMailer.review_email(@award, award_url(@award)).deliver
+    if @sow.generate_award(current_member) and @sow.save
+      # MemberMailer.review_email(@award, award_url(@award)).deliver
+      @award = @sow.award
       
       flash[:success] = "New award has been generated"
       redirect_to edit_award_path(@award)
@@ -167,8 +200,16 @@ class SowsController < ApplicationController
       pi_approve
     elsif sow_params.delete(:gl_approval)
       group_approve
-    elsif sow_params.delete(:budget_approval)
-      budget_approve
+    elsif type = sow_params.delete(:approval_type)
+      case type
+      when 'administrator'
+        pa_approve
+      when 'budget'
+        budget_approve
+      else
+        flash[:error] = "Unknown approval type #{type}"
+        redirect_to @sow
+      end
     else
       if @sow.update_attributes(sow_params)
         flash[:success] = "Statement of work has been saved"

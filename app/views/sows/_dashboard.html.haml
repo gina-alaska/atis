@@ -21,22 +21,22 @@
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #submitted.tab-pane
         %h2 Statements of work pending review 
-        - if sow_counts_for(current_member, :submitted) > 0
-          = render 'sows/list', sows: Sow.owner(current_member).submitted.all
+        - if sow_counts_for(current_member, :reviewing) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).reviewing.all
         - else
           .hero-unit
-            %h3 No submitted statements of work found
+            %h3 No statements of work pending review found
             %p If you have created a statement of work click the 'Un-submitted' link to the right and then click the 'Submit for review' button.
             %p or
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
             
-      #accepted.tab-pane
-        %h2 Accepted statements of work
-        - if sow_counts_for(current_member, :accepted) > 0
-          = render 'sows/list', sows: Sow.owner(current_member).accepted.all
+      #awarded.tab-pane
+        %h2 Awarded statements of work
+        - if sow_counts_for(current_member, :awarded) > 0
+          = render 'sows/list', sows: Sow.owner(current_member).awarded.all
         - else
           .hero-unit
-            %h3 No accepted statements of work found
+            %h3 No awarded statements of work found
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
             
       #rejected.tab-pane
@@ -61,11 +61,11 @@
       %li
         = link_to '#submitted', "data-toggle" => "tab" do
           Pending review
-          = sow_count_badge(sow_counts_for(current_member, :submitted))
+          = sow_count_badge(sow_counts_for(current_member, :reviewing))
       %li
-        = link_to '#accepted', "data-toggle" => "tab" do
+        = link_to '#awarded', "data-toggle" => "tab" do
           Accepted
-          = sow_count_badge(sow_counts_for(current_member, :accepted))
+          = sow_count_badge(sow_counts_for(current_member, :awarded))
       %li
         = link_to '#rejected', "data-toggle" => "tab" do
           Rejected

@@ -1,6 +1,6 @@
-#budget_approval_modal.modal.hide.fade
+#approval_modal.modal.hide.fade
   = form_for sow, html: { style: 'margin: 0;' } do |f|
-    = f.hidden_field :budget_approval, value: true
+    = f.hidden_field :approval_type, value: approval_type
     .modal-header
       %button.close{data:{dismiss:"modal"}} &times;
       %h3 Reviewer Notes
