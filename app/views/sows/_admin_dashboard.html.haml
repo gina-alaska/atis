@@ -21,7 +21,7 @@
             = link_to 'Start a new statement of work', new_sow_path, class: 'btn btn-primary btn-large'
       #submitted.tab-pane
         %h2 Statements of work pending review 
-        - if sow_counts_for(nil, :submitted) > 0
+        - if sow_counts_for(nil, :reviewing) > 0
           = render 'sows/list', sows: Sow.submitted.all
         - else
           .hero-unit
@@ -61,7 +61,7 @@
       %li
         = link_to '#submitted', "data-toggle" => "tab" do
           Pending review
-          = sow_count_badge(sow_counts_for(nil, :submitted))
+          = sow_count_badge(sow_counts_for(nil, :reviewing))
       %li
         = link_to '#awarded', "data-toggle" => "tab" do
           Accepted
