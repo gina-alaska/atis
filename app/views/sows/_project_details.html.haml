@@ -35,5 +35,6 @@
 - if sow.review_notes.present?
   %dt Reviewer Notes
   %dd
-    :markdown
-      #{sow.review_notes}
+    %blockquote
+      :markdown
+        #{sow.review_notes}

@@ -222,6 +222,55 @@
       .table-hover tbody tr.info:hover > td {
         background-color: #c4e3f3;
       }
+      
+      blockquote {
+        padding: 0 0 0 15px;
+        margin: 0 0 20px;
+        border-left: 5px solid #eeeeee;
+      }
+
+      blockquote p {
+        margin-bottom: 0;
+        font-size: 1.2em;;
+        font-weight: 300;
+      }
+
+      blockquote small {
+        display: block;
+        color: #999999;
+      }
+
+      blockquote small:before {
+        content: '\2014 \00A0';
+      }
+
+      blockquote.pull-right {
+        float: right;
+        padding-right: 15px;
+        padding-left: 0;
+        border-right: 5px solid #eeeeee;
+        border-left: 0;
+      }
+
+      blockquote.pull-right p,
+      blockquote.pull-right small {
+        text-align: right;
+      }
+
+      blockquote.pull-right small:before {
+        content: '';
+      }
+
+      blockquote.pull-right small:after {
+        content: '\00A0 \2014';
+      }
+
+      q:before,
+      q:after,
+      blockquote:before,
+      blockquote:after {
+        content: "";
+      }
 
       @media only screen and (max-device-width: 480px) {
         / * Part one of controlling phone number linking for mobile. */

@@ -152,9 +152,9 @@ class SowsController < ApplicationController
   
   def new_award
     if @sow.generate_award(current_member) and @sow.save
-      # MemberMailer.review_email(@award, award_url(@award)).deliver
       @award = @sow.award
-      
+      # TODO: Generate awarded email
+      # MemberMailer.awarded_email(@award, award_url(@award)).deliver      
       flash[:success] = "New award has been generated"
       redirect_to edit_award_path(@award)
     else
@@ -169,7 +169,9 @@ class SowsController < ApplicationController
     @sow.reviewed_by = current_member
     
     if @sow.save 
-      # MemberMailer.rejection_email(@sow.owner, @sow, sow_url(@sow)).deliver
+      
+      # TODO: Generate rejection email
+      MemberMailer.rejection_email(@sow.owner, @sow, sow_url(@sow)).deliver
       
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow
