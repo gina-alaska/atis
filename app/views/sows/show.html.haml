@@ -35,7 +35,7 @@
           %i.icon-edit
           Edit
 
-    - if @sow.can_submit? and @sow.owner == current_member
+    - if @sow.can_submit? and !@sow.reviewing? and @sow.owner == current_member
       = link_to submit_sow_path(@sow), method: :post, class: 'btn btn-block btn-primary' do
         Submit for review
 

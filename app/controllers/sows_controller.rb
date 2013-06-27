@@ -26,10 +26,10 @@ class SowsController < ApplicationController
   end
   
   def submit
-    if @sow.submit(current_member)
+    if @sow.submit(current_member)      
+      flash[:success] = 'Statement of work has been submitted for review'
       MemberMailer.review_email(@sow.award_group.members, @sow, sow_url(@sow)).deliver
       
-      flash[:success] = 'Statement of work has been submitted for review'
       redirect_to @sow
     else
       flash[:error] = "There was an error trying to submit statement of work for review<br/><ul>"
@@ -59,15 +59,16 @@ class SowsController < ApplicationController
       format.html {
         if @sow.approvals.for(:administrator).any?
           @sow.approvals.for(:administrator).destroy_all
+          @sow.groupleader_accept
         elsif @sow.can_administrator_accept?
-          # TODO: Budget review email would need to go out now
-          @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'budget').all
-          MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
-          
           @sow.approvals.create(user: current_member, name: 'administrator')
           @sow.review_notes = sow_params[:review_notes]
           @sow.administrator_accept
           @sow.save
+          
+          # TODO: Budget review email would need to go out now
+          @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'budget').all
+          MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
         end
         
         flash[:success] = "Statement of work has been approved by #{current_member.name}"
@@ -86,14 +87,14 @@ class SowsController < ApplicationController
         if @sow.approvals.for(:budget).any?
           @sow.approvals.for(:budget).destroy_all
         elsif @sow.can_accept_budget?
-          # TODO: PI review email would need to go out now
-          MemberMailer.review_email(@sow.award_group.top.members, @sow, sow_url(@sow)).deliver
-          
           @sow.approvals.create(user: current_member, name: 'budget')
           @sow.review_notes = sow_params[:review_notes]
           @sow.accept_budget
           
           @sow.save
+          
+          # TODO: PI review email would need to go out now
+          MemberMailer.review_email(@sow.award_group.top.members, @sow, sow_url(@sow)).deliver
         end
         
         flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
@@ -110,18 +111,19 @@ class SowsController < ApplicationController
     approvals = @sow.approvals.for(@sow.award_group.name)
     if approvals.any?
       flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
-      approvals.destroy_all
+      @sow.submit(current_member)
+      
     elsif @sow.can_groupleader_accept? and @sow.award_group.member_ids.include?(current_member.id)
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
-      
-      # TODO: PA Approval email would need to go out now
-      @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'project administrator').all
-      MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
       
       @sow.approvals.create(user: current_member, name: @sow.award_group.name)
       @sow.review_notes = sow_params[:review_notes]
       @sow.groupleader_accept
       @sow.save
+      
+      # TODO: PA Approval email would need to go out now
+      @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'project administrator').all
+      MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
     end    
     redirect_to @sow
   end
@@ -131,12 +133,18 @@ class SowsController < ApplicationController
     if approvals.any?
       flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
       approvals.destroy_all
+      @sow.accept_budget
     else
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
+      
       @sow.approvals.create(user: current_member, name: @sow.award_group.top.name)
       @sow.review_notes = sow_params[:review_notes]
       @sow.projectleader_accept
       @sow.save
+
+      # TODO: Ready to award email would need to go out now
+      @members = @sow.award_group.top.members.joins(:roles).where('roles.name' => ['project administrator', 'budget']).all
+      MemberMailer.award_email(@members, @sow, sow_url(@sow)).deliver
     end
     redirect_to @sow    
   end
@@ -160,7 +168,7 @@ class SowsController < ApplicationController
     @sow.reviewed_by = current_member
     
     if @sow.save 
-      MemberMailer.reject_email(@sow, sow_url(@sow)).deliver
+      # MemberMailer.rejection_email(@sow.owner, @sow, sow_url(@sow)).deliver
       
       flash[:success] = "Statement of work has been rejected"
       redirect_to @sow

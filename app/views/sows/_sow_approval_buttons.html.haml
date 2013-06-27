@@ -1,14 +1,4 @@
 - if current_member.has_role?(:review) and @sow.reviewable_by?(current_member)
-  - if sow.award_group.top.member_ids.include?(current_member.id)
-    - if sow.approvals.for(sow.award_group.top.name).any?
-      = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
-        %i.icon-ok.icon-white
-        = "#{sow.award_group.top.name} PI approval by #{sow.approvals.for(sow.award_group.top.name).first.user.name}"
-    - elsif sow.can_projectleader_accept?
-      = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
-        %i.icon-thumbs-up.icon-white
-        ="#{sow.award_group.top.name} PI approval" 
-
   - if sow.award_group.member_ids.include?(current_member.id)
     - if sow.approvals.for(sow.award_group.name).any?
       = link_to(group_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
@@ -19,7 +9,7 @@
         %i.icon-thumbs-up.icon-white
         = "#{sow.award_group.name} leader approval"
 
-- if current_member.has_role?(:budget)
+- if current_member.has_role?('project administrator')
   - if sow.approvals.for(:administrator).any?
     = link_to pa_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success" do
       %i.icon-ok.icon-white
@@ -37,6 +27,17 @@
     = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-warning", remote: true do
       %i.icon-thumbs-up.icon-white
       = "Budget approval"
+
+- if current_member.has_role?(:review) and @sow.reviewable_by?(current_member)
+  - if sow.award_group.top.member_ids.include?(current_member.id)
+    - if sow.approvals.for(sow.award_group.top.name).any?
+      = link_to(pi_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success") do
+        %i.icon-ok.icon-white
+        = "#{sow.award_group.top.name} PI approval by #{sow.approvals.for(sow.award_group.top.name).first.user.name}"
+    - elsif sow.can_projectleader_accept?
+      = link_to '#', class: "btn btn-block btn-warning", data: { toggle: 'modal', target: '#pi_approval_modal' } do
+        %i.icon-thumbs-up.icon-white
+        ="#{sow.award_group.top.name} PI approval" 
 
 - if current_member.has_role?(:budget) or current_member.has_role?(:review)
   = link_to '#', data: { toggle: 'modal', target: '#rejection_modal' }, class: 'btn btn-block btn-danger' do

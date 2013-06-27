@@ -27,11 +27,15 @@ class Sow < ActiveRecord::Base
   end
   
   state_machine :initial => :created do
-    after_transition :on => :submit do |sow, transition, test|
+    before_transition :on => :submit do |sow, transition, test|
       sow.touch_date(:submitted_on)
       sow.touch_date(:rejected_on, nil)
+      
       user = transition.args.first
       sow.submitted_by = user
+      sow.approvals.destroy_all
+      sow.save!
+      
       Activity.record(user, 'submitted for review', sow, user)
       Activity.record(user, 'submitted for review', sow, sow.owner) if sow.owner != user
     end
@@ -67,6 +71,16 @@ class Sow < ActiveRecord::Base
       end
     end
     
+    before_transition :on => :groupleader_accept do |sow, transition|
+      sow.approvals.where('name != ?', sow.award_group.name).destroy_all
+    end
+    before_transition :on => :administrator_accept do |sow, transition|
+      sow.approvals.where('name = ? or name = ?', 'budget', sow.award_group.top.name).destroy_all
+    end
+    before_transition :on => :accept_budget do |sow, transition|
+      sow.approvals.where('name = ?', sow.award_group.top.name).destroy_all
+    end
+    
     state :awarded do
       validates_presence_of :institute, :mau_id
     end
@@ -80,7 +94,7 @@ class Sow < ActiveRecord::Base
     end
     
     event :submit do
-      transition [:created, :editing] => :submitted
+      transition [:created, :editing, :groupleader_accepted, :administrator_accepted,:budget_accepted,:projectleader_accepted] => :submitted
     end
     
     event :groupleader_accept do
@@ -138,6 +152,10 @@ class Sow < ActiveRecord::Base
   
   def ready_for_review?
     self.can_groupleader_accept? or self.can_administrator_accept? or self.can_accept_budget? or self.can_projectleader_accept? or self.can_generate_award?
+  end
+  
+  def reviewing?
+    self.submitted? or self.groupleader_accepted? or self.administrator_accepted? or self.budget_accepted? or self.projectleader_accepted?
   end
   
   def to_param
