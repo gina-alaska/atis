@@ -1,19 +1,15 @@
 class Member < ActiveRecord::Base
   attr_accessible :email, :name, :user_id, :user, :roles_attributes, :roles
   
-  belongs_to :user
+  belongs_to :user, dependent: :destroy
   has_and_belongs_to_many :roles, uniq: true
   
   validates_presence_of :name
   validates_presence_of :email
   validates_uniqueness_of :email
   
-  def has_role?(role)
-    if role = Role.where(name: role).first
-      return self.roles.include? role
-    end
-    
-    false
+  def has_role?(*roles)
+    self.roles.where(name: roles).any?
   end
   
   def first_name

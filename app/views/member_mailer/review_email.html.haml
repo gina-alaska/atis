@@ -3,15 +3,21 @@
 %p
   The following statement of work is now ready to be reviewed,
   visit the following link to review this statement of work:
-
-%p
+%div{style:"padding-left: 2em;"}
   = link_to @url, @url
+
+%p Current reviewer notes:
+%div{style:"padding-left: 2em;"}
+  %blockquote
+    :markdown
+      #{@sow.review_notes}
+
   
 %p This is an automated message. Please do not reply to this email.
 
 %p
   Thanks,
-  %br/
+%div{style:"padding-left: 2em;"}
   Geographic Information Network of Alaska
     
 %table{:border => "0", :cellpadding => "0", :cellspacing => "0", style: "width: 90%;"}

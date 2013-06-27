@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   before_filter :authenticate_user!, :except => [:create, :signin, :signup, :newaccount, :failure]
+  before_filter :check_membership, :except => [:signout, :failure, :signin]
   protect_from_forgery :except => :create     
 
   # GET all authentication services assigned to the current user
@@ -33,29 +34,29 @@ class ServicesController < ApplicationController
       @newuser.email = session[:authhash][:email]
       @newuser.services.build(:provider => session[:authhash][:provider], :uid => session[:authhash][:uid], :uname => session[:authhash][:name], :uemail => session[:authhash][:email])
       
-      if member = Member.where(email: @newuser.email).first
-        @newuser.membership = member
-        
-        if @newuser.save!
-          if User.count == 1
-            @newuser.roles << Role.all
-          end
-      
-          # signin existing user
-          # in the session his user id and the service id used for signing in is stored
-          session[:user_id] = @newuser.id
-          session[:service_id] = @newuser.services.first.id
-        
-          flash[:notice] = 'Your account has been created and you have been signed in!'
-          redirect_to root_url
-        else
-          flash[:error] = 'This is embarrassing! There was an error while creating your account from which we were not able to recover.'
-          redirect_to root_url
-        end          
-      else
-        flash[:error] = "We're sorry but we couldn't find an ATIS invite for the email #{@newuser.email}"
-        redirect_to root_url
+      member = Member.where(email: @newuser.email).first
+      if member.nil?
+        member = Member.new(name: @newuser.name, email: @newuser.email)
       end
+      
+      @newuser.membership = member
+      
+      if @newuser.save!
+        if User.count == 1
+          @newuser.roles << Role.all
+        end
+    
+        # signin existing user
+        # in the session his user id and the service id used for signing in is stored
+        session[:user_id] = @newuser.id
+        session[:service_id] = @newuser.services.first.id
+      
+        flash[:notice] = 'Your account has been created and you have been signed in!'
+        redirect_to root_url
+      else
+        flash[:error] = 'This is embarrassing! There was an error while creating your account from which we were not able to recover.'
+        redirect_to root_url
+      end          
     end
   end  
   
@@ -160,5 +161,17 @@ class ServicesController < ApplicationController
   def failure
     flash[:error] = 'There was an error at the remote authentication service. You have not been signed in.'
     redirect_to root_url
+  end
+  
+  protected
+  
+  def check_membership
+    if user_signed_in? and current_user.membership.nil?
+      member = Member.where(email: @newuser.email).first
+      if member.nil?
+        member = Member.new(name: @newuser.name, email: @newuser.email)
+      end
+      current_user.membership = member
+    end
   end
 end
