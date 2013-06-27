@@ -58,7 +58,7 @@ class SowsController < ApplicationController
     respond_to do |format|
       format.html {
         if @sow.approvals.for(:administrator).any?
-          @sow.approvals.for(:administrator).destroy_all
+          # @sow.approvals.for(:administrator).destroy_all
           @sow.groupleader_accept
         elsif @sow.can_administrator_accept?
           @sow.approvals.create(user: current_member, name: 'administrator')
@@ -85,7 +85,8 @@ class SowsController < ApplicationController
     respond_to do |format|
       format.html {
         if @sow.approvals.for(:budget).any?
-          @sow.approvals.for(:budget).destroy_all
+          # @sow.approvals.for(:budget).destroy_all
+          @sow.administrator_accept
         elsif @sow.can_accept_budget?
           @sow.approvals.create(user: current_member, name: 'budget')
           @sow.review_notes = sow_params[:review_notes]
@@ -132,7 +133,7 @@ class SowsController < ApplicationController
     approvals = @sow.approvals.for(@sow.award_group.top.name)
     if approvals.any?
       flash[:warning] = "Statement of work approval has been removed by #{current_member.name}"
-      approvals.destroy_all
+      # approvals.destroy_all
       @sow.accept_budget
     else
       flash[:success] = "Statement of work has been approved by #{current_member.name}"
