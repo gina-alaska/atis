@@ -95,7 +95,8 @@ class SowsController < ApplicationController
           @sow.save
           
           # TODO: PI review email would need to go out now
-          MemberMailer.review_email(@sow.award_group.top.members, @sow, sow_url(@sow)).deliver
+          @members = @sow.award_group.top.members.joins(:roles).where('roles.name = ?', 'review').all
+          MemberMailer.review_email(@members, @sow, sow_url(@sow)).deliver
         end
         
         flash[:success] = "Statement of work budget has been approved by #{current_member.name}"
