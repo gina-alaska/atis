@@ -19,6 +19,7 @@
       %i.icon-thumbs-up.icon-white
       = "Project administrator approval"
 
+- if current_member.has_role?('budget')
   - if sow.approvals.for(:budget).any?
     = link_to budget_approve_sow_path(sow), method: :post, class: "btn btn-block btn-success" do
       %i.icon-ok.icon-white
