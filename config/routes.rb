@@ -33,14 +33,7 @@ Atis::Application.routes.draw do
     end
   end
 
-  resources :services, :only => [:index, :create, :destroy] do
-    collection do
-      get 'signout'
-      get 'signup'
-      post 'newaccount'
-      get 'failure'
-    end
-  end
+  resources :services, :only => [:create, :destroy]
 
   resources :users, :only => [:index, :edit, :update] do
     collection do
@@ -48,10 +41,10 @@ Atis::Application.routes.draw do
     end
   end
 
-  match "/signin" => redirect('/auth/google'), as: 'signin'
-  match "/signout" => "services#signout", as: 'signout'
+  match "/signin" => redirect('/auth/gina'), as: 'signin'
+  match "/signout" => "services#destroy", as: 'signout'
 
-  match '/auth/:service/callback' => 'services#create', as: 'auth_signin'
+  match '/auth/:service/callback' => 'services#create'
   match '/auth/failure' => 'services#failure'
   
   match '/submit' => 'sows#submit_dashboard', as: 'submit_dashboard'

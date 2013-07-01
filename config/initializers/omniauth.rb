@@ -13,7 +13,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
    #provider :openid, OpenID::Store::Filesystem.new('./tmp'), :name => 'openid'
    
    # dedicated openid
-   provider :openid, :store => OpenID::Store::Filesystem.new('/tmp'), :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
+   provider :openid, :store => OpenID::Store::Filesystem.new("#{Rails.root}/tmp"), :name => 'gina', :identifier => 'https://id.gina.alaska.edu' 
+   provider :openid, :store => OpenID::Store::Filesystem.new("#{Rails.root}/tmp"), :name => 'google', :identifier => 'https://www.google.com/accounts/o8/id'
    # provider :google_apps, OpenID::Store::Filesystem.new('./tmp'), :name => 'google_apps'
    # /auth/google_apps; you can bypass the prompt for the domain with /auth/google_apps?domain=somedomain.com
    

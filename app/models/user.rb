@@ -10,6 +10,14 @@ class User < ActiveRecord::Base
   
   delegate :roles, to: :membership
   
+  validates_uniqueness_of :email
+
+  before_save :downcase_email
+  
+  def downcase_email
+    self.email.downcase!
+  end
+  
   def has_role?(role)
     if role = Role.where(name: role).first
       return self.roles.include? role
@@ -32,5 +40,12 @@ class User < ActiveRecord::Base
   
   def to_s
     self.name_email
+  end
+  
+  def self.create_or_find_from_hash!(hash)
+    user = where(email: hash['info']['email'].downcase).first
+    user = create!(:name => hash['info']['name'], :email => hash['info']['email'].downcase) if user.nil?
+    
+    user
   end
 end

@@ -8,6 +8,12 @@ class Member < ActiveRecord::Base
   validates_presence_of :email
   validates_uniqueness_of :email
   
+  before_save :downcase_email
+  
+  def downcase_email
+    self.email.downcase!
+  end
+  
   def has_role?(*roles)
     self.roles.where(name: roles).any?
   end

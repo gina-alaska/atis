@@ -61,6 +61,7 @@ class MembersController < ApplicationController
   def update
     @member = Member.find(params[:id])
     @member.attributes = member_params
+    
     changes = @member.changes
     respond_to do |format|
       if @member.save
