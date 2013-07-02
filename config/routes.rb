@@ -51,6 +51,11 @@ Atis::Application.routes.draw do
   match '/review' => 'sows#review_dashboard', as: 'review_dashboard'
   match '/admin' => 'sows#admin_dashboard', as: 'admin_dashboard'
 
+
+  match "/401" => "errors#unauthorized"
+  match "/404" => "errors#not_found"
+  match "/500" => "errors#error"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

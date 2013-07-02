@@ -51,6 +51,16 @@ class ApplicationController < ActionController::Base
       end
     end    
     
+    def unauthorized
+      render status: 401, template: "/errors/unauthorized.html.haml"
+      false
+    end
+
+    def not_found
+      render status: 404, template: "/errors/not_found.html.haml"
+      false
+    end
+    
     helper_method :current_member
     helper_method :current_user
     helper_method :user_signed_in?  
