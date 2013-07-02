@@ -2,25 +2,25 @@
 %dd= sow.state.humanize
 
 - unless sow.award_group.nil?
-  - top_approval = sow.approvals.for(sow.award_group.try(:top).try(:name))
+  - top_approval = sow.approvals.for(sow.award_group.top.try(:name))
 
-  %dt="#{sow.award_group.top.name} PI"
+  %dt="#{sow.award_group.top.try(:name)} PI"
   - if top_approval.any?
     %dd
       Approved by
       %br/
-      = top_approval.first.user.name
+      = top_approval.first.user.try(:name)
   - else
     %dd Not Approved
 
   - group_approval = sow.approvals.for(sow.award_group.try(:name))
 
-  %dt= "#{sow.award_group.name} PI"
+  %dt= "#{sow.award_group.try(:name)} PI"
   - if group_approval.any?
     %dd
       Approved by
       %br/
-      = group_approval.first.user.name
+      = group_approval.first.user.try(:name)
   - else
     %dd Not Approved
     
@@ -31,6 +31,6 @@
     %dd
       Approved by
       %br/
-      = budget.first.user.name
+      = budget.first.user.try(:name)
   - else
     %dd Not Approved
