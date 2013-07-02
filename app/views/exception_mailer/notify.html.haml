@@ -1,0 +1,25 @@
+%p= "Hello,"
+
+%p 
+  You are receiving this email because an exception has occured in the ATIS application
+
+%h4= "Error: #{@exception.try(:message)}"
+
+%div
+  %label{style: "display: inline-block; width: 6em; white-space: nowrap;"} Host:
+  = @request.host
+%div
+  %label{style: "display: inline-block; width: 6em; white-space: nowrap;"} Remote IP:
+  = @request.remote_ip
+%div
+  %label{style: "display: inline-block; width: 6em; white-space: nowrap;"} User Agent:
+  = @request.env['HTTP_USER_AGENT']
+%div
+  %label{style: "display: inline-block; width: 6em; white-space: nowrap;"} Time:
+  = Time.zone.now
+  
+
+%h4 Backtrace:  
+%div{style:"padding-left: 2em;"}
+  %blockquote= Array.wrap(@exception.try(:backtrace)).join("<br />").html_safe
+  

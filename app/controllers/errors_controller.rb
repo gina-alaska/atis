@@ -1,14 +1,21 @@
 class ErrorsController < ApplicationController
+  # Will render the app/views/errors/unauthorized.html.haml template
   def unauthorized
-    # Will render the app/views/errors/unauthorized.html.haml template
+    ExceptionMailer.notify(the_exception, request).deliver
+    render :status => 401, :formats => [:html]
   end
 
+  # Will render the app/views/errors/not_found.html.haml template
   def not_found
-    # Will render the app/views/errors/not_found.html.haml template
+    ExceptionMailer.notify(the_exception, request).deliver
+    render :status => 404, :formats => [:html]
   end
 
+
+  # Will render the app/views/errors/error.html.haml template
   def error
-    # Will render the app/views/errors/error.html.haml template
+    ExceptionMailer.notify(the_exception, request).deliver
+    render :status => 500, :formats => [:html]
   end
 
   protected
