@@ -1,18 +1,38 @@
 %p= "Hello #{@member.name},"
 
+%p You have been invited to join the Award Tracking Information System site.  
+
+%p= "If you have a #{link_to 'GINA::ID', 'http://id.gina.alaska.edu'} account you can immediately access the application by going to #{link_to @url, @url}".html_safe
+
+%p Otherwise you will need to create a new account using the following steps
+
+%ol
+  %li
+    If you have a UA Google account go to 
+    = link_to 'GINA::ID Login', 'http://id.gina.alaska.edu/login' 
+    and click the "Google Account" button at the bottom. 
+    %br/ 
+    %strong Note: 
+    This will associate your Google account with our single sign-on system, if you are signed into more than one Google account you will be asked to choose which accout to use, make sure to select the one that belongs to the email address you recieve the invitation from.
+    %br/
+    %strong Note: 
+    The first time you use your Google account it will ask for your permisison to allow GINA to access your name and email address, please click the "Allow" button to complete the registration process.
+    %strong Your information will be kept private and will not be shared with any other parties.
+    
+  %li 
+    If you do not have a UA Google account please go to
+    = link_to 'GINA::ID Signup', 'http://id.gina.alaska.edu/signup' 
+    to sign up for a new GINA::ID account.
+  %li 
+    Once the above steps have been completed you should receive an email asking to verify your email address.  Click the link at the bottom of the email to complete the verification processing and to activate your account.
+  %li
+    If successfull you can now access the ATIS application by going to 
+    = link_to @url, @url
+    
+%p If you sign out or try to access the application from a new computer you will be asked to sign in again to the GINA::ID site, if you have a UA Google account simply click the "Google Account" button at the bottom of the sign in page, or type in your username/email and password to login.
+  
 %p 
-  You are receiving this email because you have been invited to join the Award Tracking Information System site.
-  
-%p
-  To login to the site follow this link:
-  = link_to @url, @url
-  
-  %br/
-  
-  If you are logged into Google you will be asked to verfiy access for this application, otherwise you will be asked to sign in to a Google account and authorize this application.
-  
-%p 
-  If you have any problems logging in please contact support at support@gina.alaska.edu
+  Please contact support at support@gina.alaska.edu if you have any problems signing into the application or creating a new account.
   
   
 %p
