@@ -5,6 +5,6 @@ class ExceptionMailer < ActionMailer::Base
   def notify(exception, request)
     @exception = exception
     @request = request
-    mail(:to => 'alert@gina.alaska.edu', subject: "[ATIS::ERROR] An error occured in the ATIS application")
+    mail(:to => 'alert+atis@gina.alaska.edu', subject: "[ATIS::ERROR] An error occured in the ATIS application")
   end
 end
